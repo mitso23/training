@@ -1,0 +1,1 @@
+cmd_/home/dimitrios/workspace/modules/hello.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-2.6.32-21-generic/scripts/module-common.lds --build-id -o /home/dimitrios/workspace/modules/hello.ko /home/dimitrios/workspace/modules/hello.o /home/dimitrios/workspace/modules/hello.mod.o
