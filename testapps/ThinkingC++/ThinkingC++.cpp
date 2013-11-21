@@ -10,5 +10,24 @@
 
 int main(int argc, char* argv[])
 {
-	stringRefCount();
+	//stringRefCount();
+
+	//stringInsert();
+
+	//stringReplace();
+
+	//stlReplace();
+
+	//stripWhiteSpaces();
+
+	//removeSubString();
+
+	//compareString();
+
+	//reverseIterator();
+
+	//myStringEqualTest();
+
+	std::cout << isPalindrome("m") << endl;
+
 }
