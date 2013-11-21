@@ -198,4 +198,5 @@ bool isPalindrome(const std::string& str)
 
 
 
+
 #endif /* STRINGS_H_ */

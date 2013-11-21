@@ -28,6 +28,6 @@ int main(int argc, char* argv[])
 
 	//myStringEqualTest();
 
-	std::cout << isPalindrome("m") << endl;
+	//std::cout << isPalindrome("m") << endl;
 
 }
