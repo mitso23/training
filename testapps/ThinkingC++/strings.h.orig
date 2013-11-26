@@ -1,9 +1,9 @@
 #ifndef STRINGS_H_
 #define STRINGS_H_
 
-#include <string>
-#include <algorithm>
-#include <iostream>
+#include<string>
+
+#include<algorithm>
 using namespace std;
 
 

@@ -5,29 +5,47 @@
  *      Author: dimitrios
  */
 
-#include<iostream>
-#include"strings.h"
+#include "strings.h"
+#include "iostreams.h"
 
 int main(int argc, char* argv[])
 {
-	//stringRefCount();
+	//string operations
+#if 0
+	stringRefCount();
 
-	//stringInsert();
+	stringInsert();
 
-	//stringReplace();
+	stringReplace();
 
-	//stlReplace();
+	stlReplace();
 
-	//stripWhiteSpaces();
+	stripWhiteSpaces();
 
-	//removeSubString();
+	removeSubString();
 
-	//compareString();
+	compareString();
 
-	//reverseIterator();
+	reverseIterator();
 
-	//myStringEqualTest();
+	myStringEqualTest();
 
-	//std::cout << isPalindrome("m") << endl;
+	std::cout << isPalindrome("m") << endl;
 
+	Coordinates coord;
+	coord.x=1;
+	coord.y=2;
+
+	std::cout << coord << std::endl;
+#endif
+
+	//iostream operations
+#if 0
+	openReadFile();
+	seekFile();
+#endif
+
+	stringStream();
 }
+
+
