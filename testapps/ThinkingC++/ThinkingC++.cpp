@@ -7,6 +7,7 @@
 
 #include "strings.h"
 #include "iostreams.h"
+#include "Templates.h"
 
 int main(int argc, char* argv[])
 {
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
 
 	myStringEqualTest();
 
-	std::cout << isPalindrome("m") << endl;
+	std::cout << isPacopylindrome("m") << endl;
 
 	Coordinates coord;
 	coord.x=1;
@@ -43,9 +44,19 @@ int main(int argc, char* argv[])
 #if 0
 	openReadFile();
 	seekFile();
+	stringStream();
+	formatString();
+	std::cout << myatoi(1);
+
+	memPtr ptr[2]= { &Print::copy, &Print::execute };
+
+	Print printer;
+	(printer.*(ptr[0]))(1,2);
+	(printer.*(ptr[1]))(1,2);
 #endif
 
-	stringStream();
+
+
 }
 
 

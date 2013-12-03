@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <string.h>
 #include <sstream>
+#include <iomanip>
 
 
 typedef struct
@@ -106,7 +107,7 @@ void seekFile()
 
 void stringStream()
 {
-	std::istringstream str("1 1.0 Hello");
+	std::stringstream str("1 1.781 Hello ");
 
 	int i=0;
 	float j=0.0;
@@ -115,8 +116,81 @@ void stringStream()
 	str >> i;
 	str >> j;
 	str >> strin;
-
 	std::cout << "i: " << i << " j: " << j << " str: " << strin << std::endl;
+
+	str.seekg(0, ios::beg);
+
+	std::cout << str.str() << std::endl;
+
+	stringstream str2;
+
+}
+
+#define D(A) T << #A << endl;
+ofstream T("/home/dimitrios/training/resources/format.out");
+
+ostream& nl(ostream& stream)
+{
+	return stream << "\n";
+}
+
+/*
+123
+100 + 20 + 3 */
+
+int myitoa(unsigned char* ptr)
+{
+	int sum= 0;
+	ptr= ptr + std::string((char*)ptr).length() - 1;
+
+	for(int j=0, i=1; j <= 2; j++, ptr--)
+	{
+		sum= sum + (*ptr - (int)'0') * i;
+		i*= 10;
+	}
+
+	return sum;
+}
+
+void swap(char* a, char* b)
+{
+	char temp= *a;
+	*a= *b;
+	*b= temp;
+}
+
+void reverse(char* str)
+{
+	int length=  std::string(str).length();
+
+	for(int i=0; i < length / 2; i++)
+	{
+		swap(str, (str + length - 1) - i);
+	}
+}
+
+char* myatoi(int number)
+{
+	char* buffer= new char[10];
+	int offset= 0;
+
+	int remainder= number;
+
+	while (remainder)
+	{
+		buffer[offset++]= (remainder % 10) + '0';
+		remainder= remainder / 10;
+	}
+
+	buffer[offset]= '\0';
+	reverse(buffer);
+	return buffer;
+}
+
+void formatString()
+{
+	int i= 10;
+	std::cout << 1 << std::setw(10) << nl;
 }
 
 #endif
