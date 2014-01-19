@@ -1,7 +1,7 @@
 export PRJ_ROOT=/home/dimitrios/training
 
 export CC=g++ 
-export CFLAGS="-Wall -DDEBUG -g"
+export CFLAGS="-Wall -DDEBUG -g -O2"
 export INCLUDES="-I${PRJ_ROOT}/include"
 export LDFLAGS="-Wl,-rpath=${PRJ_ROOT}/src/libipc"
 

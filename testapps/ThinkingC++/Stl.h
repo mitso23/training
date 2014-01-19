@@ -17,15 +17,15 @@
 #if 0
 #define DECLARE_LIST(T) \
 	struct _Node
-	{								\
-		T data;						\
-		struct _Node* next;			\
-		struct _Node* previous;		\
-	};								\
-	typedef struct _Node Node;      \
-	Node* m_current= NULL;			\
-	Node* m_head= NULL;						\
-	Node* m_tail= NULL;						\
+{
+	T data;
+	struct _Node* next;
+	struct _Node* previous;
+};
+typedef struct _Node Node;
+Node* m_current= NULL;
+Node* m_head= NULL;
+Node* m_tail= NULL;
 
 #define ADD_LIST(X)                 \
 									\
@@ -76,9 +76,11 @@
 
 #endif
 
+
 template<class T>
 class MyList
 {
+public:
 	template<class U>
 	struct _Node
 	{
@@ -138,10 +140,68 @@ public:
 		std::cout << m_tail->data << std::endl;
 	}
 
+	typedef std::iterator<std::input_iterator_tag, MyList<T>, ptrdiff_t> myiter;
+
+	class MyListIterator: public myiter
+	{
+	public:
+		MyListIterator(Node* current) :
+			m_current(current)
+		{
+
+		}
+		T operator*()
+		{
+			return m_current->data;
+		}
+
+		MyListIterator operator++()
+		{
+			m_current= m_current->next;
+			return MyListIterator(m_current);
+		}
+
+		MyListIterator operator++(int)
+		{
+			Node* old= m_current;
+			m_current= m_current->next;
+
+			MyListIterator skata(m_current);
+			return skata;
+		}
+
+		friend bool operator !=(const MyListIterator& rhs, const MyListIterator& lhs)
+		{
+			return (rhs.m_current != lhs.m_current);
+		}
+
+		friend bool operator ==(const MyListIterator& rhs, const MyListIterator& lhs)
+		{
+			return (rhs.m_current == lhs.m_current);
+		}
+
+	private:
+		Node* m_current;
+
+	};
+public:
+	MyListIterator begin()
+	{
+		return MyListIterator(m_head);
+	}
+
+	MyListIterator end()
+	{
+		return MyListIterator(m_tail);
+	}
+
 private:
 	Node* m_head;
 	Node* m_tail;
+
 };
+
+
 
 template<class Container, class MemFunct>
 void Apply(Container& cont, MemFunct funct)
@@ -179,7 +239,8 @@ private:
 
 void insertToVector()
 {
-	int a[]={ 1, 2, 3, 4, 5, 6 };
+	int a[] =
+	{ 1, 2, 3, 4, 5, 6 };
 
 	std::vector<int> vec;
 
@@ -205,11 +266,11 @@ void IOStreamIterators()
 	}
 	std::vector<string> skata;
 
-	istream_iterator<string> start(istream);
-	istream_iterator<string> end;
+	istream_iterator < string > start(istream);
+	istream_iterator < string > end;
 
 	copy(start, end, back_inserter(skata));
-	copy(skata.begin(), skata.end(), ostream_iterator<string>(cout, " "));
+	copy(skata.begin(), skata.end(), ostream_iterator < string > (cout, " "));
 }
 
 //NOTE: WHEN  VECTOR RESIZES ITERATOR GET INVALIDATED
@@ -218,7 +279,7 @@ void vectorReallocation()
 	std::vector<Noisy> vect;
 
 	generate_n(back_inserter(vect), 10, NoisyGen());
-	ostream_iterator<Noisy> out(cout , "");
+	ostream_iterator<Noisy> out(cout, "");
 	copy(vect.begin(), vect.end(), out);
 	vect.erase(vect.begin() + vect.size() / 2);
 
@@ -244,7 +305,7 @@ void convertContainers()
 	std::vector<Noisy> vec;
 	vec.reserve(10);
 	vec.assign(deq.begin(), deq.end());
-	copy(deq.begin(), deq.end(), ostream_iterator<Noisy>(cout, ""));
+	copy(deq.begin(), deq.end(), ostream_iterator < Noisy > (cout, ""));
 
 }
 
@@ -259,7 +320,7 @@ void listReallocation()
 
 void listOperations()
 {
-	std::list<Noisy> list1,list2,list3;
+	std::list<Noisy> list1, list2, list3;
 
 	generate_n(back_inserter(list1), 5, NoisyGen());
 	generate_n(back_inserter(list2), 5, NoisyGen());
@@ -267,20 +328,141 @@ void listOperations()
 
 	std::cout << "before splice " << std::endl;
 
-	copy(list1.begin(), list1.end(), ostream_iterator<Noisy>(cout, " "));
+	copy(list1.begin(), list1.end(), ostream_iterator < Noisy > (cout, " "));
 
-	std::list<Noisy>::iterator it= list1.begin();
+	std::list<Noisy>::iterator it = list1.begin();
 	it++, it++, it++;
 
-	list1.splice(it,list2 );
+	list1.splice(it, list2);
 	std::cout << "after splice " << std::endl;
-	copy(list1.begin(), list1.end(), ostream_iterator<Noisy>(cout, " "));
+	copy(list1.begin(), list1.end(), ostream_iterator < Noisy > (cout, " "));
 
 	std::cout << "after merge " << std::endl;
 	list1.merge(list3);
-	copy(list1.begin(), list1.end(), ostream_iterator<Noisy>(cout, " "));
+	copy(list1.begin(), list1.end(), ostream_iterator < Noisy > (cout, " "));
 }
 
+template<class Container>
+void testSwap()
+{
+	Container cont1;
+	Container cont2;
 
+	generate_n(back_inserter(cont1), 5, NoisyGen());
+	generate_n(back_inserter(cont2), 5, NoisyGen());
 
-#endif /* STL_H_ */
+	cont1.swap(cont2);
+}
+
+void streambufIteratorTest()
+{
+	ifstream str("/home/dimitrios/training/resources/testFile.txt");
+	std::string test;
+	back_insert_iterator < string > it = back_inserter(test);
+
+	istreambuf_iterator<char> start(str), end;
+
+	while (start != end)
+	{
+		std::cout << "data is " << *start << endl;
+		*it++ = *start++;
+	}
+
+	std::cout << "data is the test: " << test << std::endl;
+
+}
+
+struct IsAlpha
+{
+	bool operator ()(char c)
+	{
+		using namespace std;
+		return std::isalpha(c);
+	}
+};
+
+class Delimiters
+{
+	std::string exclude;
+public:
+	Delimiters()
+	{
+	}
+	Delimiters(const std::string& excl) :
+			exclude(excl)
+	{
+	}
+
+	bool operator()(char c)
+	{
+		return exclude.find(c) == std::string::npos;
+	}
+};
+
+template<class InputIter, class Pred = IsAlpha>
+class TokenIterator: public std::iterator<std::input_iterator_tag, std::string,
+		ptrdiff_t>
+{
+	InputIter first;
+	InputIter last;
+	std::string word;
+	Pred predicate;
+public:
+	TokenIterator(InputIter begin, InputIter end, Pred pred = Pred()) :
+			first(begin), last(end), predicate(pred)
+	{
+
+		++*this;
+	}
+	TokenIterator()
+	{
+	} // End sentinel
+	// Prefix increment:
+	TokenIterator& operator++()
+	{
+		word.resize(0);
+		first = std::find_if(first, last, predicate);
+		while (first != last && predicate(*first))
+			word += *first++;
+		return *this;
+	}
+	// Postfix increment
+	class Proxy
+	{
+		std::string word;
+	public:
+		Proxy(const std::string& w) :
+				word(w)
+		{
+		}
+		std::string operator*()
+		{
+			return word;
+		}
+	};
+	Proxy operator++(int)
+	{
+		Proxy d(word);
+		++*this;
+		return d;
+	}
+	// Produce the actual value:
+	std::string operator*() const
+	{
+		return word;
+	}
+	std::string* operator->() const
+	{
+		return &(operator*());
+	}
+	// Compare iterators:
+	bool operator==(const TokenIterator&)
+	{
+		return word.size() == 0 && first == last;
+	}
+	bool operator!=(const TokenIterator& rv)
+	{
+		return !(*this == rv);
+	}
+};
+#endif // TOKENITERATOR_H ///:~

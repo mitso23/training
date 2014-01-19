@@ -8,6 +8,11 @@
 #include "strings.h"
 #include "iostreams.h"
 #include "Templates.h"
+#include "Stl.h"
+
+#include <vector>
+#include <queue>
+#include <deque>
 
 int main(int argc, char* argv[])
 {
@@ -40,23 +45,64 @@ int main(int argc, char* argv[])
 	std::cout << coord << std::endl;
 #endif
 
+
 	//iostream operations
 #if 0
+	openReadFile();
 	openReadFile();
 	seekFile();
 	stringStream();
 	formatString();
 	std::cout << myatoi(1);
+	openReadFile();
 
 	memPtr ptr[2]= { &Print::copy, &Print::execute };
 
 	Print printer;
 	(printer.*(ptr[0]))(1,2);
 	(printer.*(ptr[1]))(1,2);
+
+#endif
+
+	//template operations
+#if 0
+
+	Mysequence<Print, std::vector> printer;
+
+	Print print;
+	printer.push_back(&print);
+	//printer.push_back(new Print());
+	printer.apply(&Print::print);
+
+	DECLARE_LIST(int)
+	ADD_LIST(1)
+	ADD_LIST(2)
+
+#endif
+
+#if 0
+	IOStreamIterators();
+	vectorReallocation();
+	dequeuReallocation();
+	convertContainers();
+	listReallocation();
+	listOperations();
+	testSwap< std::deque<Noisy> >();
 #endif
 
 
+	NoisyReport* nr= NoisyReport::getInstance();
 
+	MyList<int> list;
+	list.push_back(1);
+	list.push_back(2);
+	MyList<int>::MyListIterator iter= list.begin();
+	MyList<int>::MyListIterator iter2= list.end();
+
+	std::cout << "value is " << *iter << std::endl;
+	++iter;
+	std::cout << "value is " << *iter << std::endl;
+	delete nr;
 }
 
 

@@ -73,11 +73,18 @@ void openReadFile()
 	//third way of reading bytes (not working)
 	std::cout << istream.rdbuf() << std::endl;
 
-#endif
-
 	//fourth way of reading bytes
 	while(istream.get(*cout.rdbuf())) { };
 
+	//fifth way of reading bytes
+	std::string current;
+
+	while(istream.good() && istream)
+	{
+		std::cout << current << endl;
+	}
+
+#endif
 }
 
 void seekFile()
