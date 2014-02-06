@@ -5,14 +5,14 @@
 # #
 #
 
-CFLAGS := $(CFLAGS) -Wall -g 
+CFLAGS := $(CFLAGS)
 INCLUDES := $(INCLUDES)
 LFLAGS := $(LDFLAGS) 
 LIBS = 
-SRCS = ThinkingC++.cpp
+SRCS = C++11.cpp
 
 OBJS = $(SRCS:.c=.o)
-NAME = ThinkingC++.out
+NAME = C++11.out
 .PHONY: depend clean
 
 

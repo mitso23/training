@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <deque>
 #include <list>
+#include <set>
+
+using namespace std;
 
 #if 0
 #define DECLARE_LIST(T) \
@@ -76,6 +79,14 @@ Node* m_tail= NULL;
 
 #endif
 
+template<class Cont, class Count, class Gen>
+void assoc_generate_n(Cont& cont, Count count, Gen gen)
+{
+	while (count--)
+	{
+		cont.insert(gen());
+	}
+}
 
 template<class T>
 class MyList
@@ -146,7 +157,7 @@ public:
 	{
 	public:
 		MyListIterator(Node* current) :
-			m_current(current)
+				m_current(current)
 		{
 
 		}
@@ -157,25 +168,27 @@ public:
 
 		MyListIterator operator++()
 		{
-			m_current= m_current->next;
+			m_current = m_current->next;
 			return MyListIterator(m_current);
 		}
 
 		MyListIterator operator++(int)
 		{
-			Node* old= m_current;
-			m_current= m_current->next;
+			Node* old = m_current;
+			m_current = m_current->next;
 
 			MyListIterator skata(m_current);
 			return skata;
 		}
 
-		friend bool operator !=(const MyListIterator& rhs, const MyListIterator& lhs)
+		friend bool operator !=(const MyListIterator& rhs,
+				const MyListIterator& lhs)
 		{
 			return (rhs.m_current != lhs.m_current);
 		}
 
-		friend bool operator ==(const MyListIterator& rhs, const MyListIterator& lhs)
+		friend bool operator ==(const MyListIterator& rhs,
+				const MyListIterator& lhs)
 		{
 			return (rhs.m_current == lhs.m_current);
 		}
@@ -200,8 +213,6 @@ private:
 	Node* m_tail;
 
 };
-
-
 
 template<class Container, class MemFunct>
 void Apply(Container& cont, MemFunct funct)
@@ -266,11 +277,11 @@ void IOStreamIterators()
 	}
 	std::vector<string> skata;
 
-	istream_iterator < string > start(istream);
-	istream_iterator < string > end;
+	istream_iterator<string> start(istream);
+	istream_iterator<string> end;
 
 	copy(start, end, back_inserter(skata));
-	copy(skata.begin(), skata.end(), ostream_iterator < string > (cout, " "));
+	copy(skata.begin(), skata.end(), ostream_iterator<string>(cout, " "));
 }
 
 //NOTE: WHEN  VECTOR RESIZES ITERATOR GET INVALIDATED
@@ -305,7 +316,7 @@ void convertContainers()
 	std::vector<Noisy> vec;
 	vec.reserve(10);
 	vec.assign(deq.begin(), deq.end());
-	copy(deq.begin(), deq.end(), ostream_iterator < Noisy > (cout, ""));
+	copy(deq.begin(), deq.end(), ostream_iterator<Noisy>(cout, ""));
 
 }
 
@@ -328,18 +339,30 @@ void listOperations()
 
 	std::cout << "before splice " << std::endl;
 
-	copy(list1.begin(), list1.end(), ostream_iterator < Noisy > (cout, " "));
+	copy(list1.begin(), list1.end(), ostream_iterator<Noisy>(cout, " "));
 
 	std::list<Noisy>::iterator it = list1.begin();
 	it++, it++, it++;
 
 	list1.splice(it, list2);
 	std::cout << "after splice " << std::endl;
-	copy(list1.begin(), list1.end(), ostream_iterator < Noisy > (cout, " "));
+	copy(list1.begin(), list1.end(), ostream_iterator<Noisy>(cout, " "));
 
 	std::cout << "after merge " << std::endl;
 	list1.merge(list3);
-	copy(list1.begin(), list1.end(), ostream_iterator < Noisy > (cout, " "));
+	copy(list1.begin(), list1.end(), ostream_iterator<Noisy>(cout, " "));
+}
+
+void mapOperations()
+{
+	std::set<int> s;
+
+	insert_iterator<std::set<int> > iter = inserter(s, s.begin());
+	*iter = 10;
+	*iter++ = 20;
+	generate_n(inserter(s, s.begin()), 10, IncGen<int>());
+	copy(s.begin(), s.end(), ostream_iterator<int>(cout, " "));
+
 }
 
 template<class Container>
@@ -358,7 +381,7 @@ void streambufIteratorTest()
 {
 	ifstream str("/home/dimitrios/training/resources/testFile.txt");
 	std::string test;
-	back_insert_iterator < string > it = back_inserter(test);
+	back_insert_iterator<string> it = back_inserter(test);
 
 	istreambuf_iterator<char> start(str), end;
 
@@ -417,7 +440,7 @@ public:
 	TokenIterator()
 	{
 	} // End sentinel
-	// Prefix increment:
+	  // Prefix increment:
 	TokenIterator& operator++()
 	{
 		word.resize(0);
@@ -465,4 +488,58 @@ public:
 		return !(*this == rv);
 	}
 };
+
+template<class T>
+class Ring
+{
+public:
+	Ring()
+	{
+
+	}
+
+	void push_back(T value)
+	{
+		m_list.push_back(value);
+	}
+
+	class iterator;
+	friend class iterator;
+
+	class iterator: public std::iterator<std::bidirectional_iterator_tag, T,
+			ptrdiff_t>
+	{
+
+		iterator(typename std::list<T>::iterator& it) :
+				m_current(it)
+		{
+
+		}
+
+		T operator*()
+		{
+			return *m_current;
+		}
+
+
+
+	private:
+		typename std::list<T>::iterator& m_current;
+	};
+
+	iterator begin()
+	{
+		return iterator(m_list.begin());
+	}
+
+	iterator end()
+	{
+		return iterator(m_list.end());
+	}
+
+private:
+	std::list<T> m_list;
+
+};
+
 #endif // TOKENITERATOR_H ///:~

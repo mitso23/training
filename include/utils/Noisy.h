@@ -1,4 +1,5 @@
 #include <iostream>
+#include <utility>
 class Noisy
 {
 	static long create, assign, copycons, destroy;
@@ -15,6 +16,12 @@ public:
 		std::cout << "c[" << id << "]";
 		copycons++;
 	}
+
+	long getId()
+	{
+		return id;
+	}
+
 	Noisy& operator=(const Noisy& rv)
 	{
 		std::cout << "(" << id << ")=[" << rv.id << "]";
@@ -50,11 +57,10 @@ struct NoisyGen
 	}
 };
 
-long Noisy::create= 0;
-long Noisy::assign= 0;
-long Noisy::copycons= 0;
-long Noisy::destroy= 0;
-
+long Noisy::create = 0;
+long Noisy::assign = 0;
+long Noisy::copycons = 0;
+long Noisy::destroy = 0;
 
 // A singleton. Will automatically report the
 // statistics as the program terminates:
@@ -77,7 +83,7 @@ public:
 	{
 		if (nr == NULL)
 		{
-			nr= new NoisyReport();
+			nr = new NoisyReport();
 			return nr;
 		}
 		else
@@ -90,4 +96,47 @@ private:
 	static NoisyReport* nr;
 };
 
-NoisyReport* NoisyReport::nr= NULL;
+template<class T>
+class IncGen
+{
+public:
+	IncGen() :
+			m_value(0)
+	{
+
+	}
+	T operator()()
+	{
+		return m_value++;
+	}
+
+private:
+	T m_value;
+};
+
+template<class T, class Y>
+class PairGen
+{
+	PairGen() :
+			m_key(0), m_value(0)
+	{
+
+	}
+
+	std::pair<T, Y> operator()()
+	{
+		std::pair<T, Y> pair(m_key++, m_value++);
+		return pair;
+	}
+
+	friend std::ostream& operator <<(std::ostream& stream, PairGen& gen)
+	{
+		stream << "first: " << gen.m_key << " second: " << gen.m_value;
+		return stream;
+	}
+private:
+	T m_key;
+	Y m_value;
+};
+
+NoisyReport* NoisyReport::nr = NULL;

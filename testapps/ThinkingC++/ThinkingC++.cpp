@@ -13,6 +13,15 @@
 #include <vector>
 #include <queue>
 #include <deque>
+#include <set>
+
+
+Noisy testFunc(const Noisy& noisy)
+{
+	Noisy n2= noisy;
+
+	return n2;
+}
 
 int main(int argc, char* argv[])
 {
@@ -45,7 +54,6 @@ int main(int argc, char* argv[])
 	std::cout << coord << std::endl;
 #endif
 
-
 	//iostream operations
 #if 0
 	openReadFile();
@@ -56,7 +64,8 @@ int main(int argc, char* argv[])
 	std::cout << myatoi(1);
 	openReadFile();
 
-	memPtr ptr[2]= { &Print::copy, &Print::execute };
+	memPtr ptr[2]=
+	{	&Print::copy, &Print::execute};
 
 	Print printer;
 	(printer.*(ptr[0]))(1,2);
@@ -88,21 +97,26 @@ int main(int argc, char* argv[])
 	listReallocation();
 	listOperations();
 	testSwap< std::deque<Noisy> >();
-#endif
-
-
-	NoisyReport* nr= NoisyReport::getInstance();
-
 	MyList<int> list;
 	list.push_back(1);
 	list.push_back(2);
-	MyList<int>::MyListIterator iter= list.begin();
+	auto iter= list.begin();
 	MyList<int>::MyListIterator iter2= list.end();
 
 	std::cout << "value is " << *iter << std::endl;
 	++iter;
 	std::cout << "value is " << *iter << std::endl;
+
+	std::set<Noisy> myset;
+	assoc_generate_n(myset, 10, NoisyGen());
+	copy(myset.begin(), myset.end(), ostream_iterator < Noisy > (cout, " "));
+#endif
+
+	//mapOperations();
+	Noisy n3= testFunc(Noisy());
+
+	std::cout << "n3 id " << n3 << std::endl;
+	NoisyReport* nr = NoisyReport::getInstance();
 	delete nr;
 }
-
 

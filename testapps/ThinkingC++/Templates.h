@@ -67,6 +67,7 @@ template <class T>
 {
 }
 
+//template that accept a member function pointer which return type R
 template<class Seq, class T, class R>
 void apply(Seq& sq, R (T::*f)()) {
   typename Seq::iterator it = sq.begin();
@@ -76,6 +77,7 @@ void apply(Seq& sq, R (T::*f)()) {
   }
 }
 
+//template that accept a member function pointer which return type R and A1,A2 arguments
 template<class Seq, class T, class R, class A1, class A2>
 void apply(Seq& sq, R (T::*f)(A1, A2), A1 a1, A2 a2) {
   typename Seq::iterator it = sq.begin();

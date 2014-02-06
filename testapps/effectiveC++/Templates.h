@@ -6,6 +6,7 @@
 template<typename IterT>
 void workWithIterator(IterT iter)
 {
+	//iterator traits hold information about the iterator type
 	typedef typename std::iterator_traits<IterT>::value_type valueType;
 
 	valueType temp(*iter);
