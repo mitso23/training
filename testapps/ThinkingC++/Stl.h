@@ -516,12 +516,30 @@ public:
 
 		}
 
-		T operator*()
+		//NOTE: return a reference to the current iterator, if the object changes then the iterator get invalidated
+		iterator& operator*()
 		{
 			return *m_current;
 		}
 
+		T operator++()
+		{
+			m_current++;
 
+			if (m_current == m_list.end())
+			{
+				m_current= m_list.begin();
+			}
+
+			return *this;
+		}
+
+		T operator++(int)
+		{
+			iterator tmp= *this;
+			operator++();
+			return tmp;
+		}
 
 	private:
 		typename std::list<T>::iterator& m_current;
@@ -536,6 +554,7 @@ public:
 	{
 		return iterator(m_list.end());
 	}
+
 
 private:
 	std::list<T> m_list;

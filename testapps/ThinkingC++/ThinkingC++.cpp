@@ -9,6 +9,7 @@
 #include "iostreams.h"
 #include "Templates.h"
 #include "Stl.h"
+#include "Functors.h"
 
 #include <vector>
 #include <queue>
@@ -89,6 +90,7 @@ int main(int argc, char* argv[])
 
 #endif
 
+	//STL operations
 #if 0
 	IOStreamIterators();
 	vectorReallocation();
@@ -110,7 +112,6 @@ int main(int argc, char* argv[])
 	std::set<Noisy> myset;
 	assoc_generate_n(myset, 10, NoisyGen());
 	copy(myset.begin(), myset.end(), ostream_iterator < Noisy > (cout, " "));
-#endif
 
 	//mapOperations();
 	Noisy n3= testFunc(Noisy());
@@ -118,5 +119,25 @@ int main(int argc, char* argv[])
 	std::cout << "n3 id " << n3 << std::endl;
 	NoisyReport* nr = NoisyReport::getInstance();
 	delete nr;
+#endif
+
+	//FUNCTION POINTERS
+#if 0
+	callFunct(1, foo);
+	Functor f;
+	callFunct(1, f);
+	tryRead(f, 1);
+	less<int> f2;
+	sort(f2);
+	testBind2Arg();
+	callFunct(1, 1.0f, 2.0, goo);
+	bindExample();
+	Test test;
+	memberFunctionTest(test, &Test::foo1, 2);
+	memberFunctionTest(test, &Test::foo2, 2);
+#endif
+
+
+
 }
 
