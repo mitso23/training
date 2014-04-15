@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 	memberFunctionTest(test, &Test::foo1, 2);
 	memberFunctionTest(test, &Test::foo2, 2);
 #endif
-
+	//Some comment for commiting
 
 
 }
