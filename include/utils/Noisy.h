@@ -1,5 +1,8 @@
 #include <iostream>
 #include <utility>
+#include <string>
+#include <boost/lexical_cast.hpp>
+
 class Noisy
 {
 	static long create, assign, copycons, destroy;
@@ -17,9 +20,14 @@ public:
 		copycons++;
 	}
 
-	long getId()
+	long getId() const
 	{
 		return id;
+	}
+
+	Noisy(const std::string& str) : id(create++)
+	{
+		std::cout << "d[" << id << "]";
 	}
 
 	Noisy& operator=(const Noisy& rv)
@@ -29,14 +37,30 @@ public:
 		assign++;
 		return *this;
 	}
+
 	friend bool operator<(const Noisy& lv, const Noisy& rv)
 	{
 		return lv.id < rv.id;
 	}
+
 	friend bool operator==(const Noisy& lv, const Noisy& rv)
 	{
 		return lv.id == rv.id;
 	}
+
+	friend bool operator==(const Noisy& lhs, const std::string& rhs)
+	{
+		try
+		{
+			return (lhs.getId() == boost::lexical_cast<long int>(rhs)) ? true : false;
+		}
+		catch(...)
+		{
+			return false;
+		}
+
+	}
+
 	~Noisy()
 	{
 		std::cout << "~[" << id << "]";

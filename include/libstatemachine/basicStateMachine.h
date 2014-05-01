@@ -45,6 +45,7 @@ private:
 };
 
 typedef void (StateMachine::*StateFunc)(EventData *);
+
 struct StateStruct
 {
 	StateFunc pStateFunc;
