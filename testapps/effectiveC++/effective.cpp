@@ -101,8 +101,6 @@ int main(int argc, char* argv[])
 	Derived d;
 	d.mf1(1);
 
-	IOFile file;
-
 	LoggMsgSender<CompanyA> msgSender;
 	msgSender.sendClearMsg();
 

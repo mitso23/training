@@ -5,14 +5,14 @@
 # #
 #
 
-CFLAGS := $(CFLAGS) 
-INCLUDES := $(INCLUDES)
-LFLAGS := $(LDFLAGS)
+CFLAGS:= $(CFLAGS)-g
+INCLUDES:=$(INCLUDES)
+LFLAGS:=$(LDFLAGS) -lpthread -lthread
 LIBS = 
-SRCS = ThinkingC++.cpp
+SRCS = Threads.cpp
 
 OBJS = $(SRCS:.c=.o)
-NAME = ThinkingC++.out
+NAME = Threads.out
 .PHONY: depend clean
 
 

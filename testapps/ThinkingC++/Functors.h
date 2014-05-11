@@ -3,13 +3,6 @@
 #include <vector>
 #include <functional>
 
-
-template<class T, template<typename> class C>
-void print(C<T>& c)
-{
-	std::copy(c.begin(), c.end(), (std::ostream_iterator<T>(std::cout, " ")));
-}
-
 class Test
 {
 public:
