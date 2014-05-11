@@ -171,6 +171,7 @@ int main(int argc, char* argv[])
 	MyBase& myBase= *mypaste1;
 #endif
 
+
 #if 0
 	//Exceptions (if exeption during array creation destructors will be called to clean up
 	try
