@@ -1,9 +1,9 @@
 export PRJ_ROOT=/home/dimitrios/training
 
-export CC=g++-4.8  
-export CFLAGS="-Wall -DDEBUG -g -O2 -D__GXX_EXPERIMENTAL_CXX0X__"
+export CC=g++  
+export CFLAGS="-Wall"
 export INCLUDES="-I${PRJ_ROOT}/include"
-export LDFLAGS="-Wl,-rpath=${PRJ_ROOT}/src/libipc"
+export LDFLAGS=" -Wl,-rpath=${PRJ_ROOT}/lib -L${PRJ_ROOT}/lib"
 
 #build the libraries
 for dir in `ls ${PRJ_ROOT}/src` 
