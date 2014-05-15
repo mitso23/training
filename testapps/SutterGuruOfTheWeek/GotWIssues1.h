@@ -42,5 +42,5 @@ string FindIdOptimised(const list<Noisy>& l, const string& name)
 	}
 
 	//fixed explicit ctor
-	return std::string;
+	return std::string();
 }
