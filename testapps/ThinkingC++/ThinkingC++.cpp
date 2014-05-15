@@ -10,6 +10,10 @@
 #include "Templates.h"
 #include "Stl.h"
 #include "Functors.h"
+#include "Algorithms.h"
+#include "MultipleInheritance.h"
+#include "Exceptions.h"
+#include "DesignPatterns.h"
 
 #include <vector>
 #include <queue>
@@ -136,8 +140,80 @@ int main(int argc, char* argv[])
 	memberFunctionTest(test, &Test::foo1, 2);
 	memberFunctionTest(test, &Test::foo2, 2);
 #endif
-	//Some comment for commiting
 
+	//ALGORITHMS
+#if 0
+	countExample();
+#endif
+
+	//MULTIPLE INHERITANCE
+#if 0
+	MI* b= new MI();
+	b->who();
+
+	MI2 mi;
+
+	out << "sizeof(mi) = "
+	<< hex << sizeof(mi) << " hex" << endl;
+	mi.printthis();
+	// A second demonstration: AMBIGIUS WILL NOT WORK
+	Base1* b1 = &mi;// Upcast
+	Base2* b2 = &mi;// Upcast
+	out << "Base 1 pointer = " << b1 << endl;
+	out << "Base 2 pointer = " << b2 << endl;
+
+	{
+		IOFile iofile;
+		std::cout << sizeof(iofile) << std::endl;
+	}
+
+	Paste1* mypaste1= new Paste1();
+	MyBase& myBase= *mypaste1;
+#endif
+
+
+#if 0
+	//Exceptions (if exeption during array creation destructors will be called to clean up
+	try
+	{
+		//testException();
+		ArrayTest a[3];
+	}
+	catch(...)
+	{
+		std::cout << "caught exception" << std::endl;
+	}
+
+	//If throw a derived type you can catch it by the base type
+	try
+	{
+		X x;
+		x.f();
+	}
+	catch(X::Trouble& trouble)
+	{
+		std::cout << "caught exception" << std::endl;
+	}
+#endif
+
+#if 0
+	//Design patterns
+	HAL& hal= HAL::getInstanse();
+
+	const char* names[]=
+	{	"Square", "Circle", "\0"};
+
+	std::cout << "Running" << sizeof(names) << std::endl;
+	for(const char** ptr= names; **ptr; ptr++)
+	{
+		std::cout << *ptr << std::endl;
+		if (ShapeCreator::createShape(*ptr) != NULL)
+		{
+			std::cout << "Created a shape" << std::endl;
+		}
+	}
+
+#endif
 
 }
 

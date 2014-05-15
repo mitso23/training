@@ -5,9 +5,9 @@
 # #
 #
 
-CFLAGS := $(CFLAGS) -Wall -g 
+CFLAGS := $(CFLAGS) 
 INCLUDES := $(INCLUDES)
-LFLAGS := $(LDFLAGS) 
+LFLAGS := $(LDFLAGS)
 LIBS = 
 SRCS = ThinkingC++.cpp
 

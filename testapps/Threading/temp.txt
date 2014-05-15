@@ -1,0 +1,238 @@
+read Thread 
+Read thread queue empty waiting for data Incrementing data: 
+1
+signaling data ready 
+Incrementing data: 2
+signaling data ready 
+Incrementing data: 3
+signaling data ready 
+Incrementing data: 4
+signaling data ready 
+Thread: 3070643056 Reading value: 0
+read Thread 
+Thread: 3070643056 Reading value: 1
+read Thread 
+Thread: 3070643056 Reading value: 2
+read Thread 
+Thread: 3070643056 Reading value: 3
+read Thread 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Incrementing data: 5
+signaling data ready 
+Incrementing data: 6
+signaling data ready 
+Incrementing data: 7
+signaling data ready 
+Incrementing data: 8
+signaling data ready 
+Incrementing data: 9
+signaling data ready 
+Incrementing data: 10
+signaling data ready 
+Thread: 3070643056 Reading value: 4
+read Thread 
+Thread: 3070643056 Reading value: 5
+read Thread 
+Thread: 3070643056 Reading value: 6
+read Thread 
+Thread: 3070643056 Reading value: 7
+read Thread 
+Thread: 3070643056 Reading value: 8
+read Thread 
+Thread: 3070643056 Reading value: 9
+read Thread 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Incrementing data: 11
+signaling data ready 
+Incrementing data: 12
+signaling data ready 
+Incrementing data: 13
+signaling data ready 
+Incrementing data: 14
+signaling data ready 
+Incrementing data: 15
+signaling data ready 
+Thread: 3070643056 Reading value: 10
+read Thread 
+Thread: 3070643056 Reading value: 11
+read Thread 
+Thread: 3070643056 Reading value: 12
+read Thread 
+Thread: 3070643056 Reading value: 13
+read Thread 
+Thread: 3070643056 Reading value: 14
+read Thread 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Incrementing data: 16
+signaling data ready 
+Incrementing data: 17
+signaling data ready 
+Incrementing data: 18
+signaling data ready 
+Incrementing data: 19
+signaling data ready 
+Incrementing data: 20
+signaling data ready 
+Thread: 3070643056 Reading value: 15
+read Thread 
+Thread: 3070643056 Reading value: 16
+read Thread 
+Thread: 3070643056 Reading value: 17
+read Thread 
+Thread: 3070643056 Reading value: 18
+read Thread 
+Thread: 3070643056 Reading value: 19
+read Thread 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Incrementing data: 21
+signaling data ready 
+Thread: 3070643056 Reading value: 20
+read Thread 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Incrementing data: 22
+signaling data ready 
+Incrementing data: 23
+signaling data ready 
+Incrementing data: 24
+signaling data ready 
+Incrementing data: 25
+signaling data ready 
+Incrementing data: 26
+signaling data ready 
+Thread: 3070643056 Reading value: 21
+read Thread 
+Thread: 3070643056 Reading value: 22
+read Thread 
+Thread: 3070643056 Reading value: 23
+read Thread 
+Thread: 3070643056 Reading value: 24
+read Thread 
+Thread: 3070643056 Reading value: 25
+read Thread 
+Read thread queue empty waiting for data 
+Read thread queue empty waiting for data 
+Incrementing data: 27
+signaling data ready 
+Incrementing data: 28
+signaling data ready 
+Incrementing data: 29
+signaling data ready 
+Incrementing data: 30
+signaling data ready 
+Incrementing data: 31
+signaling data ready 
+Incrementing data: 32
+signaling data ready 
+Incrementing data: 33
+signaling data ready 
+Thread: 3070643056 Reading value: 26
+read Thread 
+Thread: 3070643056 Reading value: 27
+read Thread 
+Thread: 3070643056 Reading value: 28
+read Thread 
+Thread: 3070643056 Reading value: 29
+read Thread 
+Thread: 3070643056 Reading value: 30
+read Thread 
+Thread: 3070643056 Reading value: 31
+read Thread 
+Thread: 3070643056 Reading value: 32
+read Thread 
+Read thread queue empty waiting for data 
+Incrementing data: 34
+signaling data ready 
+Incrementing data: 35
+signaling data ready 
+Incrementing data: 36
+signaling data ready 
+Incrementing data: 37
+signaling data ready 
+Incrementing data: 38
+signaling data ready 
+Thread: 3070643056 Reading value: 33
+read Thread 
+Thread: 3070643056 Reading value: 34
+read Thread 
+Thread: 3070643056 Reading value: 35
+read Thread 
+Thread: 3070643056 Reading value: 36
+read Thread 
+Thread: 3070643056 Reading value: 37
+read Thread 
+Read thread queue empty waiting for data 
+Incrementing data: 39
+signaling data ready 
+Incrementing data: 40
+signaling data ready 
+Incrementing data: 41
+signaling data ready 
+Incrementing data: 42
+signaling data ready 
+Incrementing data: 43
+signaling data ready 
+Incrementing data: 44
+signaling data ready 
+Incrementing data: 45
+signaling data ready 
+Incrementing data: 46
+signaling data ready 
+Incrementing data: 47
+signaling data ready 
+Incrementing data: 48
+signaling data ready 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 
+Queue is full going to sleep 

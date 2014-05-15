@@ -102,41 +102,7 @@ private:
 	HealthCalcFunct m_healthCalcFunc;
 };
 
-//THIS IS THE DIAMOND PROBLEM,
-//in IOFILE the class has two copies of FileName
-//If we use virtual inheritance IO File will have only one copy
-class File
-{
-public:
-	std::string FileName;
-};
 
-class InputFile : public File
-{
-
-};
-
-class OutputFile : public File
-{
-
-};
-
-
-class IOFile : public InputFile , public OutputFile
-{
-public:
-	IOFile()
-	{
-		InputFile::FileName= "InputFile";
-		OutputFile::FileName= "OutputFile";
-
-		std::cout << "Input: " << InputFile::FileName << std::endl;
-		std::cout << "Ouput: " << OutputFile::FileName << std::endl;
-
-		//WE CANT CALL THIS AS THIS IS AMBIGIUS
-		//std::cout << "FIle " << File::FileName;
-	}
-};
 
 
 

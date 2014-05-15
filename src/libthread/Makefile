@@ -5,10 +5,10 @@
 # #
 #
 
-CFLAGS:=$(CFLAGS) -fpic
+CFLAGS:=$(CFLAGS) -g
 INCLUDES:= $(INCLUDES)
-LDFLAGS := $(LDFLAGS) -shared 
-SRCS = thread.cpp
+LDFLAGS := $(LDFLAGS) -shared -lpthread -g
+SRCS = Thread.cpp
 
 OBJS = $(SRCS:.c=.o)
 NAME = thread
