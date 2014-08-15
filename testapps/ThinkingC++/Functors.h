@@ -138,6 +138,7 @@ void memFunExample()
 	x.push_back("World");
 
 	//mem_fun_ref creates a functor object from a function pointer
+	//THIS WILL BE CALLED IN TRANSFORM LIKE THIS length(*it)
 	std::transform(x.begin(), x.end(), result, std::mem_fun_ref(&string::length));
 
 }
