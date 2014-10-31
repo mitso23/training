@@ -4,30 +4,21 @@
 # 'make clean'  removes all .o and executable files
 # #
 #
+include ../../common.mk
 
-CFLAGS := $(CFLAGS)
-INCLUDES :=$(INCLUDES)
-LFLAGS :=$(LDFLAGS) -lpthread -lthread
-LIBS = 
-SRCS = Concurrency.cpp
+############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
-OBJS = $(SRCS:.c=.o)
-NAME = Concurrency.out
+export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
+export SRCS:= $(wildcard *.cpp)
+export LIBS= -lpthread
+export NAME= Concurrency.out
+
 .PHONY: depend clean
 
-
-all: $(NAME)
-
-$(NAME): $(OBJ)
-	 $(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(LIBS) $(INCLUDES) -o $(NAME) 
-
-.c.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+all:
+	make -C ../../ -f rules.mk depend 	
+	make -C ../../ -f rules.mk $(NAME)
 
 clean:
-	$(RM) *.o *~ $(NAME)
-
-depend: $(SRCS)
-	makedepend $(INCLUDES) $^
-
+	make -C ../../ -f rules.mk clean
 

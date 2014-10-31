@@ -10,15 +10,14 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= -ldatastructures
-export NAME= datastructures.out
+export LIBS= 
+export NAME= SutterGuru.out
 
 .PHONY: depend clean
 
 all:
-	@echo "not compiling datastuctures"
-	#make -C ../../ -f rules.mk depend 	
-	#make -C ../../ -f rules.mk $(NAME)
+	make -C ../../ -f rules.mk depend 	
+	make -C ../../ -f rules.mk $(NAME)
 
 clean:
 	make -C ../../ -f rules.mk clean

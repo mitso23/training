@@ -49,7 +49,6 @@ public:
 	{
 		if (m_thread.joinable())
 		{
-			//std::cout << "Joining for the thread" << std::endl;
 			m_thread.join();
 		}
 	}

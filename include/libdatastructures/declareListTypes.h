@@ -1,0 +1,10 @@
+#ifndef DECLARELISTTYPES_H_
+#define DECLARELISTTYPES_H_
+
+#include "list.h"
+
+DECLARE_LIST_TYPE(int)
+DECLARE_LIST_FUNCTIONS(int)
+
+
+#endif /* DECLARELISTTYPES_H_ */

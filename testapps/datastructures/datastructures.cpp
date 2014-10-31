@@ -1,9 +1,9 @@
-#include "testList.h"
-//#include "testQueue.h"
+//#include "testList.h"
+#include "testQueue.h"
 
 int main(int argc, char* argv[])
 {
-
+	//generic list tests
 #if 0
 	std::cout << "Adding elements to back " << std::endl;
 	addElementsToListBack();
@@ -18,8 +18,11 @@ int main(int argc, char* argv[])
 	clearList();
 
 	displayIntList();
-
 #endif
+
+	//dynamic queue test
+#if 1
 	addElementsTest();
 	displayElementsTest();
+#endif
 }

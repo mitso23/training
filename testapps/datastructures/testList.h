@@ -1,14 +1,8 @@
 #ifndef TESTLIST_H_
 #define TESTLIST_H_
-
 #include <libdatastructures/list.h>
 
-DECLARE_LIST(int,mylist);
-DECLARE_LIST_FUNCTIONS(mylist)
-
-DECLARE_LIST(int,mylist2);
-DECLARE_LIST_FUNCTIONS(mylist2)
-
+DECLARE_LIST(int, mylist)
 
 void testHeadTail()
 {
@@ -25,7 +19,7 @@ void testHeadTail()
 
 void displayIntList()
 {
-	mylistNode* current= mylist.listHead;
+	intNode* current= mylist.listHead;
 	LIST_FOR_EACH(mylist, current)
 	{
 		std::cout << "data: " << current->data << std::endl;
@@ -55,8 +49,8 @@ void clearList()
 
 void removeNodeTest()
 {
-	mylistNode* current= mylist.listHead;
-	mylistNode* temp= mylist.listHead;
+	intNode* current= mylist.listHead;
+	intNode* temp= mylist.listHead;
 
 	LIST_FOR_EACH_SAFE(mylist, current, temp)
 	{

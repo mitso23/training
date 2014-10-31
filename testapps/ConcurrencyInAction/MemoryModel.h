@@ -1,4 +1,9 @@
 #include<atomic>
+#include <iostream>
+#include <thread>
+#include <unistd.h>
+#include <vector>
+#include <assert.h>
 
 #ifndef MEMORYMODEL_H_
 #define MEMORYMODEL_H_
@@ -25,87 +30,48 @@ private:
 	std::atomic_flag m_atomicFlag;
 };
 
-void testAtomicBool()
-{
-	std::atomic<bool> flag;
-	bool expected= true;
-	flag.store(false);
+void testAtomicBool();
 
-	//if the value of expected is equal to the flag then do the exchange
-	flag.compare_exchange_weak(expected, true);
+void atomicPointers();
 
-	std::cout << "flag is " << flag.load() << std::endl;
-}
+void reader_thread();
+
+void writer_thread();
 
 
-void atomicPointers()
-{
-	class Foo{};
-	Foo some_array[5];
-	std::atomic<Foo*> p(some_array);
+void write_x();
 
-	Foo* x=p.fetch_add(2);
-	assert(x==some_array);
-	assert(p.load()==&some_array[2]);
+void write_y();
 
-	x=(p-=1);
-	assert(x==&some_array[1]);
+void read_x_then_y();
 
-	assert(p.load()==&some_array[1]);
-}
+void read_y_then_x();
 
-//CLASSIC MEMORY RE-ORDER PROBLEM
-std::vector<int> data;
-std::atomic<bool> data_ready(false);
 
-void reader_thread()
-{
-	while (!data_ready.load())
-	{
-		//std::this_thread::sleep(1);
-		usleep(100);
-	}
+void thread_1();
 
-	std::cout << "The answer=" << data[0] << "\n";
-}
+void thread_2();
 
-void writer_thread()
-{
-	//THE FLAG MIGHT BE SET BEFORE PUSHING THE DATA
-	data.push_back(42);
-	data_ready.store(true);
-}
-
-//SEQUENTIAL ORDERING
-#if 0
-std::atomic<bool> x,y;
-std::atomic<int> z;
-
-void write_x()
-{
-    x.store(true,std::memory_order_seq_cst);
-}
-void write_y()
-{
-    y.store(true,std::memory_order_seq_cst);
-}
-void read_x_then_y()
-{
-    while(!x.load(std::memory_order_seq_cst));
-    if(y.load(std::memory_order_seq_cst))
-        ++z;
-}
-void read_y_then_x()
-{
-    while(!y.load(std::memory_order_seq_cst));
-    if(x.load(std::memory_order_seq_cst))
-        ++z;
-}
-#endif
+void thread_3();
 
 
 
+void create_x();
+void use_x();
+
+void populate_queue();
+
+void consume_queue_items();
 
 
+struct read_values;
+
+void increment(std::atomic<int>* var_to_inc, read_values* values, const std::string& str);
+
+void read_vals(read_values* values);
+
+void print(read_values* v);
+
+void print2();
 
 #endif /* MEMORYMODEL_H_ */

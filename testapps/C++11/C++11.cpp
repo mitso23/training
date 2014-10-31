@@ -10,8 +10,8 @@
 
 int main(int argc, char* argv[])
 {
+	Noisy w1;
+	Noisy w2(std::move(w1));
 
-	//Noisy w1;
-	//Noisy w2(std::move(w1));
 }
 

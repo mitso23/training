@@ -1,10 +1,9 @@
 #ifndef TESTQUEUE_H_
 #define TESTQUEUE_H_
 
-#include<libdatastructures/dynamicQueue.h>
-
+DECLARE_QUEUE_TYPE(int)
 DECLARE_QUEUE(int,myqueue)
-DECLARE_QUEUE_FUNCTIONS(myqueue)
+DECLARE_QUEUE_FUNCTIONS(int)
 
 
 void addElementsTest()

@@ -2,6 +2,7 @@
 #include "SharingDataThreads.h"
 #include "Synchronization.h"
 #include "MemoryModel.h"
+#include "LockBasedDesign.h"
 
 int main()
 {
@@ -89,6 +90,8 @@ int main()
 	//testAtomicBool();
 
 #if 0
+	extern std::atomic<bool> x,y;
+	extern std::atomic<int> z;
 	x=false;
 	y=false;
 	z=0;
@@ -101,10 +104,63 @@ int main()
 	c.join();
 	d.join();
 
+	//std::cout << "z:" << z.load() << std::endl;
+	return z.load() != 0 ? 0 : 1;
 	assert(z.load()!=0);
 #endif
 
+#if 0
+	scoped_thread t1{ std::move(std::thread(thread_1)) };
+	scoped_thread t2{ std::move(std::thread(thread_2)) };
+	scoped_thread t3{ std::move(std::thread(thread_3)) };
+#endif
 
+#if 0
+	scoped_thread t1{ std::move(std::thread(create_x)) };
+	scoped_thread t2{ std::move(std::thread(use_x)) };
+#endif
+
+#if 0
+	scoped_thread t1{ std::move(std::thread(populate_queue)) };
+	scoped_thread t2{ std::move(std::thread(consume_queue_items)) };
+	scoped_thread t3{ std::move(std::thread(consume_queue_items)) };
+	//scoped_thread t4{ std::move(std::thread(consume_queue_items)) };
+#endif
+
+#if 0
+	extern std::atomic<int> x, y, z;
+	extern std::atomic<bool> go;
+
+	unsigned int const loop_count= 10;
+
+	extern read_values values1[loop_count];
+	extern read_values values2[loop_count];
+	extern read_values values3[loop_count];
+	extern read_values values4[loop_count];
+	extern read_values values5[loop_count];
+
+	std::thread t1(increment,&x,values1, "x");
+	std::thread t2(increment,&y,values2, "y");
+	std::thread t3(increment,&z,values3, "z");
+	std::thread t4(read_vals,values4);
+	std::thread t5(read_vals,values5);
+	go=true;
+
+	t5.join();
+	t4.join();
+	t3.join();
+	t2.join();
+	t1.join();
+
+	print(values1);
+	print(values2);
+	print(values3);
+	print(values4);
+	print(values5);
+#endif
+
+	scoped_thread t1(std::move(std::thread(producer_thread)));
+	scoped_thread t2(std::move(std::thread(consumer_thread)));
 }
 
 
