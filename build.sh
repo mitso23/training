@@ -1,7 +1,7 @@
-export PRJ_ROOT=/home/dimitrios/training
+export PRJ_ROOT=/home_local/miranda/training
 
-export CC=g++  
-export CFLAGS="-Wall"
+export CC=g++ -std=c++0x  
+export CFLAGS="-Wall -fPIC"
 export INCLUDES="-I${PRJ_ROOT}/include"
 export LDFLAGS=" -Wl,-rpath=${PRJ_ROOT}/lib -L${PRJ_ROOT}/lib"
 

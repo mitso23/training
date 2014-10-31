@@ -20,42 +20,34 @@ public:
 	Motor() :
 			StateMachine(ST_MAX_STATES)
 	{
+		externalEvent(ST_IDLE, boost::shared_ptr<EventData>());
 	}
 
 	// external events taken by this state machine
-	void Halt();
-	void SetSpeed(MotorData*);
+	void halt();
+
+	void setSpeed(MotorData*);
+
 private:
-	// state machine state functions
-	void ST_Idle()
-	{
+	// state machine state objects
+	void ST_Idle();
 
-	}
-	void ST_Stop()
-	{
+	void ST_Stop();
 
-	}
-	void ST_Start(MotorData*)
-	{
-
-	}
-
-	void ST_ChangeSpeed(MotorData*)
-	{
-		StateFunc ptr= (StateFunc)this->ST_Start;
+	void ST_Start(MotorData*);
 
 
-	}
+	void ST_ChangeSpeed(MotorData*);
 
-#if 0
-// state map to define state function order
+
+// state map to define Moter states
 BEGIN_STATE_MAP
-		STATE_MAP_ENTRY(ST_Idle)
-		STATE_MAP_ENTRY(ST_Stop)
-		STATE_MAP_ENTRY(ST_Start)
-		STATE_MAP_ENTRY(ST_ChangeSpeed)
+		STATE_MAP_ENTRY(&Motor::ST_Idle)
+		STATE_MAP_ENTRY(&Motor::ST_Stop)
+		STATE_MAP_ENTRY(&Motor::ST_Start)
+		STATE_MAP_ENTRY(&Motor::ST_ChangeSpeed)
 END_STATE_MAP
-#endif
+
 
 		// state enumeration order must match the order of state
 		// method entries in the state map
@@ -70,12 +62,9 @@ END_STATE_MAP
 	};
 
 using namespace std;
-int main(int argc, char* argv[])
-{
 
-#if 0
 	// halt motor external event
-	void Motor::Halt(void)
+	void Motor::halt(void)
 	{
 	    // given the Halt event, transition to a new state based upon
 	    // the current state of the state machine
@@ -84,23 +73,24 @@ int main(int argc, char* argv[])
 	        TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)  // ST_Stop
 	        TRANSITION_MAP_ENTRY (ST_STOP)        // ST_Start
 	        TRANSITION_MAP_ENTRY (ST_STOP)        // ST_ChangeSpeed
-	    END_TRANSITION_MAP(NULL)
+	    END_TRANSITION_MAP(boost::shared_ptr<EventData>(), [] () { return true; } )
 	}
 
 	// set motor speed external event
-	void Motor::SetSpeed(MotorData* pData)
+	void Motor::setSpeed(MotorData* pData)
 	{
 	    BEGIN_TRANSITION_MAP                      // - Current State -
 	        TRANSITION_MAP_ENTRY (ST_START)       // ST_Idle
 	        TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)  // ST_Stop
 	        TRANSITION_MAP_ENTRY (ST_CHANGE_SPEED)// ST_Start
 	        TRANSITION_MAP_ENTRY (ST_CHANGE_SPEED)// ST_ChangeSpeed
-	    END_TRANSITION_MAP(pData)
+	    END_TRANSITION_MAP(boost::shared_ptr<EventData>(), [] () { return true; })
 	}
 
 	// state machine sits here when motor is not running
 	void Motor::ST_Idle()
 	{
+		std::cout << "We are in the IDLE state " << std::endl;
 	}
 
 	// stop the motor
@@ -108,19 +98,35 @@ int main(int argc, char* argv[])
 	{
 	    // perform the stop motor processing here
 	    // transition to ST_Idle via an internal event
-	    InternalEvent(ST_IDLE);
+		std::cout << "We are in the STOP state " << std::endl;
+	    internalEvent(ST_IDLE, boost::shared_ptr<EventData>());
 	}
 
 	// start the motor going
 	void Motor::ST_Start(MotorData* pData)
 	{
+		std::cout << "We are in the START state " << std::endl;
 	    // set initial motor speed processing here
 	}
 
 	// changes the motor speed once the motor is moving
 	void Motor::ST_ChangeSpeed(MotorData* pData)
 	{
+		std::cout << "We are in the CHANGE SPEED state " << std::endl;
 	    // perform the change motor speed to pData->speed here
 	}
-#endif
+
+int main(int argc, char* argv[])
+{
+	std::cout << "Starting the motor" << std::endl;
+
+	Motor motor;
+	MotorData* data= new MotorData();
+	data->speed= 1;
+	motor.setSpeed(data);
+	data->speed= 2;
+	motor.setSpeed(data);
+	motor.halt();
+
+
 }
