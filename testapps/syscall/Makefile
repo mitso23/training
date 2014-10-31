@@ -4,30 +4,21 @@
 # 'make clean'  removes all .o and executable files
 # #
 #
+include ../../common.mk
 
-CFLAGS := $(CFLAGS) -Wall -g
-INCLUDES := $(INCLUDES)
-LFLAGS := $(LDFLAGS) -L${PRJ_ROOT}/src/libipc/ 
-LIBS = -lipc
-SRCS = syscall.cpp
+############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
-OBJS = $(SRCS:.c=.o)
-NAME = syscall.out
+export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
+export SRCS:= $(wildcard *.cpp)
+export LIBS= 
+export NAME= syscall.out
+
 .PHONY: depend clean
 
-
-all: $(NAME)
-
-$(NAME): $(OBJ)
-	 $(CC) $(OBJS) $(LFLAGS) $(LIBS) $(INCLUDES) -o $(NAME) 
-
-.c.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+all:
+	make -C ../../ -f rules.mk depend 	
+	make -C ../../ -f rules.mk $(NAME)
 
 clean:
-	$(RM) *.o *~ $(NAME)
-
-depend: $(SRCS)
-	makedepend $(INCLUDES) $^
-
+	make -C ../../ -f rules.mk clean
 

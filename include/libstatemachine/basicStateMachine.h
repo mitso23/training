@@ -27,6 +27,7 @@ struct StateStruct;
 class StateMachine
 {
 public:
+
 	StateMachine(int maxStates);
 
 	virtual ~StateMachine()
@@ -71,8 +72,8 @@ struct StateStruct
 
 
 StateMachine::StateMachine(int maxStates) :
+	m_currentState(0),
     m_maxStates(maxStates),
-    m_currentState(0),
     m_eventGenerated(false),
     m_eventData()
 {

@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 
 	if(pid < 0)
 	{
-		std::cerr << "fork failed " << strerror(errno) << std::endl;
+		std::cerr << "fork failed" << strerror(errno) << std::endl;
 		return -1;
 	}
 

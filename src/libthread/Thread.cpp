@@ -44,7 +44,7 @@ void Pthread::setCancelationPoint()
 
 void Pthread::setThreadSpecificData(void* data)
 {
-	pthread_setspecific (m_threadDataKey, data);
+	pthread_setspecific(m_threadDataKey, data);
 }
 
 void* Pthread::getThreadSpecificData()

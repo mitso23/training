@@ -101,6 +101,11 @@ public:
 
 	void* getThreadSpecificData();
 
+	void stopThread()
+	{
+		//pthread_kill(getId(), 15);
+	}
+
 private:
 	pthread_t m_threadId;
 	pthread_attr_t m_threadAttr;
@@ -169,6 +174,11 @@ public:
 
 	{
 		return pthread_mutex_unlock(&m_mutex);
+	}
+
+	pthread_mutex_t* getRawMutex()
+	{
+		return &m_mutex;
 	}
 
 	~Mutex()
@@ -267,7 +277,7 @@ private:
 	pthread_rwlock_t rwLock;
 };
 
-class SemaphoreInterface
+class SyncPrimitive
 {
 public:
 
@@ -277,13 +287,50 @@ public:
 
 	virtual int post()= 0;
 
-	virtual ~SemaphoreInterface()
+	virtual int broadcast()= 0;
+
+	virtual ~SyncPrimitive()
 	{
 
 	}
 };
 
-class PosixSemaphore : public SemaphoreInterface
+class CondVariable : public SyncPrimitive
+{
+public:
+	CondVariable(Mutex* mutex) :
+			m_mutex(mutex)
+	{
+		pthread_cond_init(&m_cond_variable, NULL);
+	}
+
+	int wait()
+	{
+		return pthread_cond_wait(&m_cond_variable, m_mutex->getRawMutex());
+	}
+
+	int tryWait()
+	{
+		//NOT SUPPORTED AT THE MOMENT
+		return -1;
+	}
+
+	int post()
+	{
+		return pthread_cond_signal (&m_cond_variable);
+	}
+
+	int broadcast()
+	{
+		return pthread_cond_broadcast(&m_cond_variable);
+	}
+
+private:
+	Mutex* m_mutex;
+	pthread_cond_t m_cond_variable;
+};
+
+class PosixSemaphore : public SyncPrimitive
 {
 
 public:
@@ -305,6 +352,11 @@ public:
 	int post()
 	{
 		return sem_post(&m_semaphore);
+	}
+
+	int broadcast()
+	{
+		return -1;
 	}
 
 private:

@@ -4,28 +4,20 @@
 # 'make clean'  removes all .o and executable files
 # #
 #
+include ../../common.mk
 
-CFLAGS:=$(CFLAGS) -fpic
-INCLUDES:= $(INCLUDES)
-LDFLAGS := $(LDFLAGS) -shared 
-SRCS = ipc.cpp
+############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
-OBJS = $(SRCS:.c=.o)
-NAME = ipc
+export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
+export SRCS:= $(wildcard *.cpp)
+export NAME= ipc.so
+export LDFLAGS= -shared
 .PHONY: depend clean
 
-lib: lib$(NAME).so
-
-lib$(NAME).so: $(OBJ)
-	 $(CC) $(CFLAGS) $(INCLUDES) -o lib$(NAME).so $(OBJS) $(LDFLAGS) $(LIBS)
-
-.c.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+all:
+	make -C ../../ -f rules.mk depend 	
+	make -C ../../ -f rules.mk $(NAME)
 
 clean:
-	$(RM) *.o *~ lib$(NAME).so
-
-depend: $(SRCS)
-	makedepend $(INCLUDES) $^
-
+	make -C ../../ -f rules.mk clean
 

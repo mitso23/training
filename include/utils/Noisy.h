@@ -3,6 +3,7 @@
 #include <string>
 #include <boost/lexical_cast.hpp>
 
+
 class Noisy
 {
 	static long create, assign, copycons, destroy;
@@ -11,12 +12,12 @@ public:
 	Noisy() :
 			id(create++)
 	{
-		std::cout << "d[" << id << "]";
+		std::cout << "construct[" << id << "]" << std::endl;
 	}
 	Noisy(const Noisy& rv) :
 			id(rv.id)
 	{
-		std::cout << "c[" << id << "]";
+		std::cout << "copy[" << id << "]";
 		copycons++;
 	}
 
@@ -72,6 +73,13 @@ public:
 		return os << n.id;
 	}
 	friend class NoisyReport;
+
+	void operator()()
+	{
+		std::cout << "Running Thread" << std::endl;
+		usleep(1);
+		std::cout << "Terminating Thread" << std::endl;
+	}
 };
 struct NoisyGen
 {

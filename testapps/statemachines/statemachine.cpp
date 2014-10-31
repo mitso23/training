@@ -36,9 +36,7 @@ private:
 
 	void ST_Start(MotorData*);
 
-
 	void ST_ChangeSpeed(MotorData*);
-
 
 // state map to define Moter states
 BEGIN_STATE_MAP

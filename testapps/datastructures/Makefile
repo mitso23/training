@@ -10,14 +10,15 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= 
-export NAME= effectiveC++.out
+export LIBS= -ldatastructures
+export NAME= datastructures.out
 
 .PHONY: depend clean
 
 all:
-	make -C ../../ -f rules.mk depend 	
-	make -C ../../ -f rules.mk $(NAME)
+	@echo "not compiling datastuctures"
+	#make -C ../../ -f rules.mk depend 	
+	#make -C ../../ -f rules.mk $(NAME)
 
 clean:
 	make -C ../../ -f rules.mk clean

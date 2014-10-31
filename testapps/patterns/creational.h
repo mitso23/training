@@ -60,7 +60,7 @@ class Wall : public MapSite
 public:
 	void enter()
 	{
-		std::cout << "entering the wall" << std::endl;
+		std::cout << "entering the wall: " << std::endl;
 	}
 
 	virtual Wall* clone()
