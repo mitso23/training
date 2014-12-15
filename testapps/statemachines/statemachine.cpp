@@ -20,7 +20,7 @@ public:
 	Motor() :
 			StateMachine(ST_MAX_STATES)
 	{
-		externalEvent(ST_IDLE, boost::shared_ptr<EventData>());
+		externalEvent(ST_IDLE, std::shared_ptr<EventData>());
 	}
 
 	// external events taken by this state machine
@@ -71,7 +71,7 @@ using namespace std;
 	        TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)  // ST_Stop
 	        TRANSITION_MAP_ENTRY (ST_STOP)        // ST_Start
 	        TRANSITION_MAP_ENTRY (ST_STOP)        // ST_ChangeSpeed
-	    END_TRANSITION_MAP(boost::shared_ptr<EventData>(), [] () { return true; } )
+	    END_TRANSITION_MAP(std::shared_ptr<EventData>(), [] () { return true; } )
 	}
 
 	// set motor speed external event
@@ -82,7 +82,7 @@ using namespace std;
 	        TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)  // ST_Stop
 	        TRANSITION_MAP_ENTRY (ST_CHANGE_SPEED)// ST_Start
 	        TRANSITION_MAP_ENTRY (ST_CHANGE_SPEED)// ST_ChangeSpeed
-	    END_TRANSITION_MAP(boost::shared_ptr<EventData>(), [] () { return true; })
+	    END_TRANSITION_MAP(std::shared_ptr<EventData>(), [] () { return true; })
 	}
 
 	// state machine sits here when motor is not running
@@ -97,7 +97,7 @@ using namespace std;
 	    // perform the stop motor processing here
 	    // transition to ST_Idle via an internal event
 		std::cout << "We are in the STOP state " << std::endl;
-	    internalEvent(ST_IDLE, boost::shared_ptr<EventData>());
+	    internalEvent(ST_IDLE, std::shared_ptr<EventData>());
 	}
 
 	// start the motor going

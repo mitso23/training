@@ -9,9 +9,9 @@ include ../../common.mk
 ############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
-export SRCS:= $(wildcard *.cpp)
+export SRCS:= $(wildcard *.c)
 export NAME= libdatastructures.so
-export LDFLAGS= -shared
+export LDFLAGS:= -shared
 .PHONY: depend clean
 
 all:

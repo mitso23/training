@@ -4,21 +4,20 @@
 # 'make clean'  removes all .o and executable files
 # #
 #
-include ../../common.mk
+include ../../common_c.mk
 
 ############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
-export SRCS:= $(wildcard *.cpp)
+export SRCS:= $(wildcard *.c)
 export LIBS= -ldatastructures
 export NAME= datastructures.out
 
 .PHONY: depend clean
 
 all:
-	@echo "not compiling datastuctures"
-	#make -C ../../ -f rules.mk depend 	
-	#make -C ../../ -f rules.mk $(NAME)
+	make -C ../../ -f rules.mk depend 	
+	make -C ../../ -f rules.mk $(NAME)
 
 clean:
 	make -C ../../ -f rules.mk clean

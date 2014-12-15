@@ -1,7 +1,12 @@
 DIR:=$(PRJ_ROOT)/$(DIR)
 
 SRCS:= $(patsubst %,$(DIR)/%,$(SRCS))
-OBJS:= $(patsubst %.cpp,%.o,$(SRCS))
+
+ifneq (,$(findstring g++,$(CC)))
+	OBJS:= $(patsubst %.cpp,%.o,$(SRCS))
+else
+	OBJS:= $(patsubst %.c,%.o,$(SRCS))
+endif
 
 ifneq (,$(findstring .so,$(NAME)))
 	OUTDIR:=$(PRJ_ROOT)/lib/$(NAME)
@@ -15,15 +20,18 @@ $(NAME) : $(OBJS)
 $(DIR)/%.o: $(DIR)/%.cpp
 	$(CC) -c $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+$(DIR)/%.o: $(DIR)/%.c
+	$(CC) -c $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 depend: $(SRCS)
 	makedepend -f ${PRJ_ROOT}/rules.mk -- $(SRCS) -I ${PRJ_ROOT}/include  -Y > /dev/null 2>&1  
 
 clean:
+	@echo $(MAKE_CPP)
 	$(RM) $(DIR)/*.o $(PRJ_ROOT)/bin/$(NAME) 
 
 
 
 # DO NOT DELETE
 
-/home/dimitrios/training//testapps/ipc/ipctest.o: /home/dimitrios/training/include/libipc/ipc.h
-/home/dimitrios/training//testapps/ipc/ipctest.o: /home/dimitrios/training/include/libbase/logger.h
+/home/dimitrios/training//testapps/datastructures/datastructures.o: /home/dimitrios/training/include/libdatastructures/hash.h

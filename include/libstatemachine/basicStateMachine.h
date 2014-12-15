@@ -17,8 +17,7 @@ class EventData
 public:
 	virtual ~EventData()
 	{
-	}
-	;
+	};
 };
 
 struct StateStruct;
@@ -37,9 +36,9 @@ public:
 
 protected:
 
-	void externalEvent(unsigned char, boost::shared_ptr<EventData>);
+	void externalEvent(unsigned char, std::shared_ptr<EventData>);
 
-	void internalEvent(unsigned char, boost::shared_ptr<EventData>);
+	void internalEvent(unsigned char, std::shared_ptr<EventData>);
 
 	virtual const StateStruct* GetStateMap() = 0;
 
@@ -58,11 +57,11 @@ protected:
 private:
 	const int m_maxStates;
 	bool m_eventGenerated;
-	boost::shared_ptr<EventData> m_eventData;
+	std::shared_ptr<EventData> m_eventData;
 
 };
 
-typedef void (StateMachine::*StateFunc)(boost::shared_ptr<EventData>);
+typedef void (StateMachine::*StateFunc)(std::shared_ptr<EventData>);
 typedef boost::function<bool (void)> guardFunct;
 
 struct StateStruct
@@ -82,7 +81,7 @@ StateMachine::StateMachine(int maxStates) :
 // generates an external event. called once per external event
 // to start the state machine executing
 void StateMachine::externalEvent(unsigned char newState,
-                                 boost::shared_ptr<EventData> pData)
+                                 std::shared_ptr<EventData> pData)
 {
 	if (newState > m_maxStates)
 	{
@@ -121,7 +120,7 @@ void StateMachine::externalEvent(unsigned char newState,
 // generates an internal event. called from within a state
 // function to transition to a new state
 void StateMachine::internalEvent(unsigned char newState,
-				boost::shared_ptr<EventData>pData)
+				std::shared_ptr<EventData> pData)
 {
     m_eventData = pData;
     m_eventGenerated = true;

@@ -10,8 +10,8 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export NAME= libipc.so
-export LDFLAGS= -shared
+export NAME= thread_safe_cont_test.out
+export LDFLAGS= 
 .PHONY: depend clean
 
 all:
