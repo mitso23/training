@@ -25,5 +25,6 @@ clean:
 
 # DO NOT DELETE
 
-/home/dimitrios/training//testapps/ipc/ipctest.o: /home/dimitrios/training/include/libipc/ipc.h
-/home/dimitrios/training//testapps/ipc/ipctest.o: /home/dimitrios/training/include/libbase/logger.h
+/home_local/miranda/training//testapps/C/Arrays.o: /home_local/miranda/training/testapps/C/Arrays.h
+/home_local/miranda/training//testapps/C/main.o: /home_local/miranda/training/testapps/C/Arrays.h
+/home_local/miranda/training//testapps/C/main.o: /home_local/miranda/training/testapps/C/Io.h

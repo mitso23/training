@@ -2,23 +2,34 @@
 #include <utility>
 #include <string>
 #include <boost/lexical_cast.hpp>
-
+#include <string.h>
 
 class Noisy
 {
-	static long create, assign, copycons, destroy;
+	static long create, assign, copycons, destroy, move;
 	long id;
+	long int* data;
 public:
 	Noisy() :
-			id(create++)
+			id(create++),
+			data(nullptr)
 	{
 		std::cout << "construct[" << id << "]" << std::endl;
 	}
+
 	Noisy(const Noisy& rv) :
-			id(rv.id)
+			id(rv.id),
+			data(nullptr)
 	{
 		std::cout << "copy[" << id << "]";
 		copycons++;
+	}
+
+	Noisy(Noisy&& rv) : id(create++), data(rv.data)
+	{
+		rv.data= nullptr;
+		rv.id= 0;
+		std::cout << "move[" << id << "]" << std::endl;
 	}
 
 	long getId() const
@@ -26,16 +37,71 @@ public:
 		return id;
 	}
 
-	Noisy(const std::string& str) : id(create++)
+	void setData(int _data)
+	{
+		if (data)
+		{
+			delete data;
+		}
+
+		data= new long int();
+		*data= _data;
+	}
+
+	int getData() const
+	{
+		if (data)
+		{
+			return *data;
+		}
+
+		return -1;
+	}
+
+	Noisy(const std::string& str) : id(create++), data(nullptr)
 	{
 		std::cout << "d[" << id << "]";
 	}
 
 	Noisy& operator=(const Noisy& rv)
 	{
-		std::cout << "(" << id << ")=[" << rv.id << "]";
+		if (&rv != this)
+		{
+			long int* newData= nullptr;
+			try
+			{
+				newData= new long int();
+
+			}catch(std::exception& e)
+			{
+				//if we fail make sure the state of the object doesn't change
+				return *this;
+			}
+
+			if (data)
+			{
+				//delete the old data
+				delete data;
+			}
+
+			std::cout << "(" << id << ")=[" << rv.id << "]";
+			id = rv.id;
+			memcpy(newData, rv.data, sizeof(long int));
+			data= newData;
+			assign++;
+		}
+
+		return *this;
+	}
+
+	Noisy& operator=(Noisy&& rv)
+	{
+		std::cout << "move: (" << id << ")=[" << rv.id << "]";
 		id = rv.id;
-		assign++;
+		data= rv.data;
+		rv.id= 0;
+		rv.data= nullptr;
+		move++;
 		return *this;
 	}
 
@@ -67,20 +133,29 @@ public:
 		std::cout << "~[" << id << "]";
 		destroy++;
 	}
+
 	friend std::ostream&
 	operator<<(std::ostream& os, const Noisy& n)
 	{
-		return os << n.id;
+		return os << "id: " << n.id << " data: " << n.getData();
 	}
+
 	friend class NoisyReport;
 
 	void operator()()
 	{
-		std::cout << "Running Thread" << std::endl;
+		std::cout << "Function operator called" << std::endl;
 		usleep(1);
-		std::cout << "Terminating Thread" << std::endl;
 	}
 };
+
+void swap(Noisy& lhs, Noisy& rhs)
+{
+	Noisy tmp= std::move(lhs);
+	lhs= std::move(rhs);
+	rhs= std::move(tmp);
+}
+
 struct NoisyGen
 {
 	Noisy operator()()
@@ -93,6 +168,8 @@ long Noisy::create = 0;
 long Noisy::assign = 0;
 long Noisy::copycons = 0;
 long Noisy::destroy = 0;
+long Noisy::move= 0;
+
 
 // A singleton. Will automatically report the
 // statistics as the program terminates:
@@ -108,7 +185,7 @@ public:
 		std::cout << "\n-------------------\n" << "Noisy creations: "
 				<< Noisy::create << "\nCopy-Constructions: " << Noisy::copycons
 				<< "\nAssignments: " << Noisy::assign << "\nDestructions: "
-				<< Noisy::destroy << std::endl;
+				<< Noisy::destroy << " Move opeartions: " << Noisy::move <<  std::endl;
 	}
 
 	static NoisyReport* getInstance()
