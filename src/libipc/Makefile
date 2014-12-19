@@ -10,8 +10,9 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export NAME= ipc.so
-export LDFLAGS= -shared
+export NAME= libipc.so
+export CFLAGS:=${CFLAGS} -fPIC
+export LDFLAGS= -shared 
 .PHONY: depend clean
 
 all:

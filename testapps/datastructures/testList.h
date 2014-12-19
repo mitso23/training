@@ -2,19 +2,13 @@
 #define TESTLIST_H_
 #include <libdatastructures/list.h>
 
+DECLARE_LIST_FUNCTIONS(int)
 DECLARE_LIST(int, mylist)
 
-void testHeadTail()
+#if 0
+void testHeadTail(void)
 {
-	std::cout << "tail is " << mylist.listTail->data << std::endl;
-	std::cout << "before tail is " << mylist.listTail->previous->data
-			<< std::endl;
-	std::cout << "after tail is " << mylist.listTail->next->data << std::endl;
 
-	std::cout << "head is " << mylist.listHead->data << std::endl;
-	std::cout << "before head is " << mylist.listHead->previous->data
-			<< std::endl;
-	std::cout << "after head is " << mylist.listHead->next->data << std::endl;
 }
 
 void displayIntList()
@@ -57,7 +51,7 @@ void removeNodeTest()
 		remove_node(&mylist, current);
 	}
 }
-
+#endif
 
 
 

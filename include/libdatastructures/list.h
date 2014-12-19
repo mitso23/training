@@ -6,15 +6,13 @@
  */
 #ifndef DATASTRUCTURES_H_
 #define DATASTRUCTURES_H_
-#include<stdlib.h>
-#include<iostream>
 
 #define DECLARE_LIST_TYPE(type) \
 typedef struct type##_Node \
 { \
-	type##_Node* next; \
-	type##_Node* previous; \
-	typeof(type) data; \
+	struct type##_Node* next; \
+	struct type##_Node* previous; \
+	__typeof__(type) data; \
 \
 }type##Node; \
 \
@@ -78,16 +76,16 @@ type##List name= { 0 }; \
 	--name->size; \
 }\
 
-#define DECLARE_REMOVE_NODE(type) bool remove_node(type##List* name, type##Node* deleteNode) \
+#define DECLARE_REMOVE_NODE(type) int remove_node(type##List* name, type##Node* deleteNode) \
 { \
 		if (!name->listHead) \
 		{ \
-			return false; \
+			return 0; \
 		}\
 		\
 		\
 		__remove_node(type, deleteNode); \
-		return true; \
+		return 1; \
 }\
 
 #define DECLARE_SIZE(type)  const size_t size(type##List* list) \
@@ -95,15 +93,15 @@ type##List name= { 0 }; \
 	return list->size; \
 } \
 
-#define DECLARE_IS_EMPTY(type) bool is_empty(type##List* list)\
+#define DECLARE_IS_EMPTY(type) int is_empty(type##List* list)\
 {\
-	return !list->listHead; \
+	return !list->listHead ? 1 : 0; \
 }\
 
 
 // HEAD   MID    TAIL      NEW
 // 0->  <-1->  <-2->       <-3
-#define DECLARE_PUSH_BACK(type) void push_back(type##List* name, typeof(type##Node::data) value) \
+#define DECLARE_PUSH_BACK(type) void push_back(type##List* name, __typeof__(type##Node::data) value) \
 { \
 	if (name->listHead == NULL) \
 	{\
@@ -130,21 +128,21 @@ type##List name= { 0 }; \
 }														\
 
 
-#define DECLARE_POP_BACK(type) bool pop_back(type##List* name, typeof(type##Node::data)* value) \
+#define DECLARE_POP_BACK(type) int pop_back(type##List* name, __typeof__(type##Node::data)* value) \
 {\
 	if (!name->listHead)\
 	{ \
-		return false; \
+		return 0; \
 	} \
 	\
 	*value= name->listTail->data; \
 	__remove_node(type, name->listTail); \
-	return true; \
+	return 1; \
 }\
 
 // NEW      HEAD    MID     TAIL
 // 3->    <-0->   <-1->   <-2
-#define DECLARE_PUSH_FRONT(type) void push_front(type##List* name, typeof(type##Node::data) value) \
+#define DECLARE_PUSH_FRONT(type) void push_front(type##List* name, __typeof__(type##Node::data) value) \
 {\
 	if (name->listHead == NULL) \
 	{\
@@ -182,6 +180,7 @@ type##List name= { 0 }; \
 
 
 #define DECLARE_LIST_FUNCTIONS(type) \
+	DECLARE_LIST_TYPE(type) \
 	DECLARE_IS_EMPTY(type); \
 	DECLARE_REMOVE_NODE(type); \
 	DECLARE_PUSH_BACK(type); \

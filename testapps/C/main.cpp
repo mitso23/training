@@ -1,5 +1,4 @@
 #include "Arrays.h"
-#include "Io.h"
 
 int main(int argc, char* argv[])
 {
@@ -10,7 +9,6 @@ int main(int argc, char* argv[])
 	enterStrings(strings, 10);
 #endif
 
-	testsscanf();
 }
 
 

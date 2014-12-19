@@ -1,7 +1,12 @@
 DIR:=$(PRJ_ROOT)/$(DIR)
 
 SRCS:= $(patsubst %,$(DIR)/%,$(SRCS))
-OBJS:= $(patsubst %.cpp,%.o,$(SRCS))
+
+ifneq (,$(findstring g++,$(CC)))
+	OBJS:= $(patsubst %.cpp,%.o,$(SRCS))
+else
+	OBJS:= $(patsubst %.c,%.o,$(SRCS))
+endif
 
 ifneq (,$(findstring .so,$(NAME)))
 	OUTDIR:=$(PRJ_ROOT)/lib/$(NAME)
@@ -15,16 +20,19 @@ $(NAME) : $(OBJS)
 $(DIR)/%.o: $(DIR)/%.cpp
 	$(CC) -c $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+$(DIR)/%.o: $(DIR)/%.c
+	$(CC) -c $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 depend: $(SRCS)
 	makedepend -f ${PRJ_ROOT}/rules.mk -- $(SRCS) -I ${PRJ_ROOT}/include  -Y > /dev/null 2>&1  
 
 clean:
+ifeq (,$(findstring .so,$(NAME)))
 	$(RM) $(DIR)/*.o $(PRJ_ROOT)/bin/$(NAME) 
-
-
-
+else
+	$(RM) $(DIR)/*.o $(DIR)/*.so $(PRJ_ROOT)/lib/$(NAME)
+endif
 # DO NOT DELETE
 
-/home_local/miranda/training//testapps/C/Arrays.o: /home_local/miranda/training/testapps/C/Arrays.h
-/home_local/miranda/training//testapps/C/main.o: /home_local/miranda/training/testapps/C/Arrays.h
-/home_local/miranda/training//testapps/C/main.o: /home_local/miranda/training/testapps/C/Io.h
+/home_local/miranda/training//testapps/syscall/syscall.o: /home_local/miranda/training/include/libipc/ipc.h
+/home_local/miranda/training//testapps/syscall/syscall.o: /home_local/miranda/training/include/libbase/logger.h

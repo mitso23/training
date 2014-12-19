@@ -1,4 +1,4 @@
 while((1))
 do
-	./Concurrency.out || break;
+	time Concurrency.out || break;
 done

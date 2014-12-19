@@ -1,9 +1,7 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#include "declareListTypes.h"
-
-#define DECLARE_QUEUE(type, name)
+#include "list.h"
 
 #define DECLARE_QUEUE_PUSH_BACK(type) void queue_push_back(type##List* name, typeof(type##Node::data) value) \
 { \
