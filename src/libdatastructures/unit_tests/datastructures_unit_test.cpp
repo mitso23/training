@@ -255,19 +255,30 @@ BOOST_AUTO_TEST_CASE(__queue_uint__)
 BOOST_AUTO_TEST_CASE(__vector__)
 {
 	DEFINE_VECTOR(int, myVector)
+	const unsigned int numElements= 1000;
 
-	for (int i=0; i< 1000; ++i)
+	for (int i=0; i< numElements; ++i)
 	{
 		vector_push_back_int(&myVector, i);
 	}
 
-	BOOST_CHECK(vector_size_int(&myVector) == 1000);
+	BOOST_CHECK(vector_size_int(&myVector) == numElements);
 	BOOST_CHECK(vector_capacity_int(&myVector) == 1024);
 
 	for(unsigned i=0; i< vector_size_int(&myVector); ++i)
 	{
-		BOOST_CHECK(vector_at_int(&myVector, (int)i) == i);
+		BOOST_CHECK(vector_at_int(&myVector, (int)i) == (int)i);
 	}
+
+	int data= 0;
+	int expected_data= 0;
+	VECTOR_FOR_EACH(myVector, data)
+	{
+		BOOST_CHECK(expected_data == data);
+		++expected_data;
+	}
+
+	BOOST_CHECK(expected_data == numElements);
 }
 
 BOOST_AUTO_TEST_SUITE_END( )

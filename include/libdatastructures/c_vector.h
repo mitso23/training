@@ -4,7 +4,6 @@
  *  Created on: 31 Jan 2015
  *      Author: root
  */
-
 #ifndef C_VECTOR_H_
 #define C_VECTOR_H_
 
@@ -88,6 +87,9 @@ __error: \
 { \
 	return vector->capacity; \
 }\
+
+#define VECTOR_FOR_EACH(vector, data) \
+	for(vector_size_t i=0U, data=vector.data[0]; i< vector.length; data=vector.data[++i])
 
 #define DECLARE_VECTOR_FUNCTIONS(type, prefix) \
 		DECLARE_VECTOR(type, prefix) \
