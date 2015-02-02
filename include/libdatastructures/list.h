@@ -7,38 +7,41 @@
 #ifndef DATASTRUCTURES_H_
 #define DATASTRUCTURES_H_
 
-#define DECLARE_LIST_TYPE(type) \
-typedef struct type##_Node \
+#define DECLARE_LIST_TYPE(type, postfix) \
+typedef struct postfix##_Node \
 { \
-	struct type##_Node* next; \
-	struct type##_Node* previous; \
+	struct postfix##_Node* next; \
+	struct postfix##_Node* previous; \
 	__typeof__(type) data; \
 \
-}type##Node; \
+}postfix##Node; \
 \
 typedef struct \
 {\
-	type##Node* listHead; \
-	type##Node* listTail; \
+	postfix##Node* listHead; \
+	postfix##Node* listTail; \
 	size_t size; \
-}type##List; \
+}postfix##List; \
 \
 
-#define DECLARE_LIST(type, name) \
-type##List name= { 0 }; \
+#define DECLARE_LIST(postfix, name) \
+postfix##List name= { 0 }; \
 
 
 #define LIST_FOR_EACH(name, currentNode)\
 	for(; currentNode != NULL; currentNode=currentNode->next) \
 
 #define LIST_FOR_EACH_SAFE(name, currentNode, temp)\
-	for(; currentNode != NULL, temp= currentNode->next; currentNode=temp) \
+	for(; currentNode != NULL; currentNode=temp) \
 
+#define DELETE_SAFE_NODE(postfix, name, currentNode, tmpNode) \
+	tmpNode=currentNode->next; \
+	list_remove_node_##postfix(name, currentNode) \
 
-#define __remove_node(type, deleteNode) \
+#define __remove_node(postfix, name, deleteNode) \
 { \
-	type##Node* previous= deleteNode->previous; \
-	type##Node* next= deleteNode->next; \
+	postfix##Node* previous= deleteNode->previous; \
+	postfix##Node* next= deleteNode->next; \
 	\
 	if(deleteNode == name->listTail)		\
 	{\
@@ -76,24 +79,24 @@ type##List name= { 0 }; \
 	--name->size; \
 }\
 
-#define DECLARE_REMOVE_NODE(type) int remove_node(type##List* name, type##Node* deleteNode) \
+#define DECLARE_REMOVE_NODE(postfix) bool list_remove_node_##postfix(postfix##List* name, postfix##Node* deleteNode) \
 { \
 		if (!name->listHead) \
 		{ \
-			return 0; \
+			return false; \
 		}\
 		\
 		\
-		__remove_node(type, deleteNode); \
-		return 1; \
+		__remove_node(postfix, name, deleteNode); \
+		return true; \
 }\
 
-#define DECLARE_SIZE(type)  const size_t size(type##List* list) \
+#define DECLARE_SIZE(postfix)  const size_t list_size_##postfix(postfix##List* list) \
 { \
 	return list->size; \
 } \
 
-#define DECLARE_IS_EMPTY(type) int is_empty(type##List* list)\
+#define DECLARE_IS_EMPTY(postfix) int list_is_empty_##postfix(postfix##List* list)\
 {\
 	return !list->listHead ? 1 : 0; \
 }\
@@ -101,11 +104,11 @@ type##List name= { 0 }; \
 
 // HEAD   MID    TAIL      NEW
 // 0->  <-1->  <-2->       <-3
-#define DECLARE_PUSH_BACK(type) void push_back(type##List* name, __typeof__(type##Node::data) value) \
+#define DECLARE_PUSH_BACK(postfix) void list_push_back_##postfix(postfix##List* name, __typeof__(postfix##Node::data) value) \
 { \
 	if (name->listHead == NULL) \
 	{\
-		name->listHead= new type##Node(); \
+		name->listHead= new postfix##Node(); \
 		name->listHead->data= value; \
 		name->listHead->next= NULL; \
 		name->listHead->previous= NULL; \
@@ -113,7 +116,7 @@ type##List name= { 0 }; \
 	}\
 	else \
 	{ \
-		type##Node* newNode= new type##Node();\
+		postfix##Node* newNode= new postfix##Node();\
 		newNode->data= value; 				   \
 							   	   	   	   	   	\
 		newNode->previous= name->listTail; 			 \
@@ -128,25 +131,25 @@ type##List name= { 0 }; \
 }														\
 
 
-#define DECLARE_POP_BACK(type) int pop_back(type##List* name, __typeof__(type##Node::data)* value) \
+#define DECLARE_POP_BACK(postfix) bool list_pop_back_##postfix(postfix##List* name, __typeof__(postfix##Node::data)* value) \
 {\
 	if (!name->listHead)\
 	{ \
-		return 0; \
+		return false; \
 	} \
 	\
 	*value= name->listTail->data; \
-	__remove_node(type, name->listTail); \
-	return 1; \
+	__remove_node(postfix, name, name->listTail); \
+	return true; \
 }\
 
 // NEW      HEAD    MID     TAIL
 // 3->    <-0->   <-1->   <-2
-#define DECLARE_PUSH_FRONT(type) void push_front(type##List* name, __typeof__(type##Node::data) value) \
+#define DECLARE_PUSH_FRONT(postfix) void list_push_front_##postfix(postfix##List* name, __typeof__(postfix##Node::data) value) \
 {\
 	if (name->listHead == NULL) \
 	{\
-		name->listHead= new type##Node(); \
+		name->listHead= new postfix##Node(); \
 		name->listHead->data= value; \
 		name->listHead->next= NULL;       \
 		name->listHead->previous= NULL;    \
@@ -154,7 +157,7 @@ type##List name= { 0 }; \
 	}\
 	else \
 	{\
-		type##Node* newNode= new type##Node(); \
+		postfix##Node* newNode= new postfix##Node(); \
 		newNode->data= value; \
 									\
 		newNode->next= name->listHead; 	  \
@@ -167,28 +170,28 @@ type##List name= { 0 }; \
 	++name->size; \
 }\
 
-#define DECLARE_CLEAR_LIST(type) void clear_list(type##List* name) \
+#define DECLARE_CLEAR_LIST(postfix) void list_clear_list_##postfix(postfix##List* name) \
 { \
-		type##Node* current= name->listHead; \
+		postfix##Node* current= name->listHead; \
 		for(; current != NULL; ) \
 		{ \
-			type##Node* next= current->next; \
-			__remove_node(type, current); \
+			postfix##Node* next= current->next; \
+			__remove_node(postfix, name, current); \
 			current= next; \
 		}\
 }\
 
 
-#define DECLARE_LIST_FUNCTIONS(type) \
-	DECLARE_LIST_TYPE(type) \
-	DECLARE_IS_EMPTY(type); \
-	DECLARE_REMOVE_NODE(type); \
-	DECLARE_PUSH_BACK(type); \
-	DECLARE_POP_BACK(type); \
-	DECLARE_PUSH_FRONT(type); \
-	DECLARE_CLEAR_LIST(type); \
-	DECLARE_SIZE(type); \
+#define DECLARE_LIST_FUNCTIONS(type, postfix) \
+		DECLARE_LIST_TYPE(type, postfix) \
+		DECLARE_IS_EMPTY(postfix); \
+		DECLARE_REMOVE_NODE(postfix); \
+		DECLARE_PUSH_BACK(postfix); \
+		DECLARE_POP_BACK(postfix); \
+		DECLARE_PUSH_FRONT(postfix); \
+		DECLARE_CLEAR_LIST(postfix); \
+		DECLARE_SIZE(postfix); \
+
 
 #endif
-
 /* DATASTRUCTURES_H_ */

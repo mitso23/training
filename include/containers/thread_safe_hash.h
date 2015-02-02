@@ -91,6 +91,11 @@ private:
 #endif
 		}
 
+		size_t get_size()
+		{
+			return data.size();
+		}
+
 		void printValues()
 		{
 #ifndef OPTIMIZE
@@ -117,6 +122,7 @@ private:
 		std::size_t const bucket_index = hasher(key) % buckets.size();
 		return *buckets[bucket_index];
 	}
+
 public:
 	typedef Key key_type;
 
@@ -156,8 +162,21 @@ public:
 			(*it)->printValues();
 		}
 	}
+
+	size_t get_size()
+	{
+		size_t numElements= 0;
+
+		for(auto it=buckets.begin(); it != buckets.end(); ++it)
+		{
+			numElements+= (*it)->get_size();
+		}
+
+		return numElements;
+	}
 };
 
+//NAIVE IMPLEMENTATION USED FOR COMPARISON
 template<typename Key, typename Value>
 class thread_safe_map
 {

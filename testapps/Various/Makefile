@@ -10,8 +10,9 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export NAME= thread_safe_cont_test.out
-export LDFLAGS= 
+export LIBS= 
+export NAME= various++.out
+
 .PHONY: depend clean
 
 all:

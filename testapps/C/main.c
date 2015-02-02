@@ -1,4 +1,9 @@
 #include "Arrays.h"
+#include <libdatastructures/c_vector.h>
+#include <stdio.h>
+
+DECLARE_VECTOR_FUNCTIONS(int, int)
+DEFINE_VECTOR(int, myVector)
 
 int main(int argc, char* argv[])
 {

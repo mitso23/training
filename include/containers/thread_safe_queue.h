@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-//NEXT_ITEM->TAIL->ITEM->ITEM->HEAD
+//NEXT_ITEM<-TAIL<-ITEM<-ITEM<-HEAD
 template<typename T>
 class FineGrainLockQueue
 {
@@ -56,7 +56,7 @@ public:
 		}
 		else
 		{
-			newNode->next= m_tail;
+			m_tail->next= newNode;
 			m_tail = newNode;
 		}
 

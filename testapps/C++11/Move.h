@@ -1,4 +1,4 @@
-#include <utility>
+#include <string>
 
 template <class T>
 void swap(T& a, T& b)
@@ -14,4 +14,10 @@ void swap2(T& a, T& b)
 	T tmp(std::move(a));
 	a= std::move(b);
 	b= std::move(tmp);
+}
+
+//By default it will use the move operator to get the noisy
+Noisy getNoisy()
+{
+	return Noisy();
 }

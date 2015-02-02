@@ -22,7 +22,7 @@ typedef unsigned int (*value_type##_##key_type_##_funct_ptr)(__typeof__(key_type
 value_type##_##key_type##_hash_item* hash_name=NULL; \
 value_type##_##key_type##_hash_item* hash_name##_end=NULL; \
 
-#define DECLARE_HASH_CREATE(value_type, key_type) void hash_create(value_type##_##key_type##_hash_item** hash, value_type##_##key_type##_hash_item** hash_end, \
+#define DECLARE_HASH_CREATE(value_type, key_type) void hash_create_##value_type(value_type##_##key_type##_hash_item** hash, value_type##_##key_type##_hash_item** hash_end, \
 																   unsigned int size) \
 { \
 	if (hash && *hash) \
@@ -36,8 +36,8 @@ value_type##_##key_type##_hash_item* hash_name##_end=NULL; \
 	*hash_end= *hash + alloc_size;\
 }\
 
-#define DECLARE_HASH_INSERT(value_type, key_type) void hash_insert(value_type##_##key_type##_hash_item* hash, \
-							__typeof__(value_type) value, __typeof__(key_type) key, value_type##_##key_type_##_funct_ptr hash_funct_ptr, unsigned int size) \
+#define DECLARE_HASH_INSERT(value_type, key_type) void hash_insert_##value_type(value_type##_##key_type##_hash_item* hash, \
+							__typeof__(value_type) value, __typeof__(key_type) key, value_type##_##key_type_##_funct_ptr hash_funct_ptr, unsigned int size, size_t* numItems) \
 { \
 	unsigned int hashed_key= 0; \
 	if (hash_funct_ptr) \
@@ -76,10 +76,11 @@ value_type##_##key_type##_hash_item* hash_name##_end=NULL; \
 		*current->next_item= item; \
 		current->next_item->parent= &hash[hashed_key]; \
 	}\
+	++(*numItems); \
 }
 
 
-#define DECLARE_HASH_GET_NEXT_ITEM(value_type, key_type) value_type##_##key_type##_hash_item* hash_get_next_item(value_type##_##key_type##_hash_item* hash, \
+#define DECLARE_HASH_GET_NEXT_ITEM(value_type, key_type) value_type##_##key_type##_hash_item* hash_get_next_item_##value_type(value_type##_##key_type##_hash_item* hash, \
 																											value_type##_##key_type##_hash_item* end, value_type* values, \
 																											key_type* key) \
 { \
@@ -126,7 +127,7 @@ value_type##_##key_type##_hash_item* hash_name##_end=NULL; \
 	return NULL; \
 } \
 
-#define DECLARE_HASH_FIND(value_type, key_type) unsigned int hash_find(value_type##_##key_type##_hash_item* hash, value_type* value, key_type key, \
+#define DECLARE_HASH_FIND(value_type, key_type) unsigned int hash_find_##value_type(value_type##_##key_type##_hash_item* hash, value_type* value, key_type key, \
 																	    value_type##_##key_type_##_funct_ptr generate_key, unsigned int size) \
 { \
 	unsigned int hashed_key=0;\
@@ -152,7 +153,7 @@ value_type##_##key_type##_hash_item* hash_name##_end=NULL; \
 	return 0; \
 }\
 
-#define DECLARE_HASH_ERASE(value_type, key_type) void hash_erase(value_type##_##key_type##_hash_item* hash, key_type key, value_type##_##key_type_##_funct_ptr generate_key, unsigned int size)\
+#define DECLARE_HASH_ERASE(value_type, key_type) void hash_erase_##value_type(value_type##_##key_type##_hash_item* hash, key_type key, value_type##_##key_type_##_funct_ptr generate_key, unsigned int size, size_t* num_items)\
 {\
 	unsigned int hashed_key= 0;\
 	if(generate_key)\
@@ -169,15 +170,15 @@ value_type##_##key_type##_hash_item* hash_name##_end=NULL; \
 		if (next->present && next->key == key) \
 		{ \
 			next->present= 0x0; \
+			--(*num_items); \
 			break; \
 		}\
 		next= next->next_item; \
 	}\
 }\
 
-#define HASH_FOR_EACH(hash, end, value, key) \
-		for(__typeof__(hash) start=hash;(start= hash_get_next_item(start, end, value, key));)
-
+#define HASH_FOR_EACH(hash, end, value, key, type) \
+		for(__typeof__(hash) start=hash;(start= hash_get_next_item_##type(start, end, value, key));)
 
 #define DECLARE_HASH_FUNCTIONS(value_type, key_type) \
 		DECLARE_HASH_TYPE(value_type, key_type) \

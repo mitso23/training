@@ -8,3 +8,4 @@ all:
 clean:
 	$(foreach LIB_DIR, $(LIBS_DIR), make clean -C $(LIB_DIR);)
 	$(foreach DIR, $(TESTAPPS_DIR), make clean -C $(DIR);)
+
