@@ -12,3 +12,21 @@
 
 # EXAMPLE 3: echo today is a wonderful day in the park (123)
 #echo today is a wonderful day in the park 123 | sed 's/[1-9]\+/(&)/'
+
+# EXAMPLE 4: abcd it will match only the first part of the match pattern
+#echo abcd123 | sed 's/\([a-z]*\).*/\1/'
+
+# EXAMPLE 5: name skata (\1 matches exactly what [a-z]* matches which is name) so it removes the second name
+# echo name name skata | sed -E 's/([a-z]*) \1/\1/'
+
+# EXAMPLE 6: This will print (this is a duplicate duplicate world) p means print it and \1 is the first matched pattern
+# cat sample.txt | sed -rn '/(\<[a-z]+\>) \1/p'
+
+# EXAMPLE 7: This will print any douplicate found in a line
+# cat sample.txt | sed -rn '/(\<[a-z]+\>)(.*)\1/p'
+
+# EXAMPLE 8: This will replace every world in a line by () Result: (Hello) (My) (Dear) (Friend)
+# echo Hello My Dear Friend | sed -r 's/[^ ]+/(&)/g'
+
+# EXAMPLE 9: This will find and replace only the second match pattern Result: First DELETE Third Forth Fifth
+# echo First Second Third Forth Fifth| sed 's/[a-zA-Z]* /DELETE /2'

@@ -34,3 +34,6 @@
 
 # Find all the *.txt files in the current directory and /etc excluding tesetDir
 # find ./ /etc/ -iname testDir -prune -o -iname "*.txt" -print
+
+# Find the files and do a full listing
+#ls -l `find . -print`

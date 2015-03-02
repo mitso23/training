@@ -4,12 +4,12 @@
 # 'make clean'  removes all .o and executable files
 # #
 #
-include ../../common.mk
+include ../../common_c.mk
 
 ############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
-export SRCS:= $(wildcard *.cpp)
+export SRCS:= $(wildcard *.c)
 export LIBS= 
 export NAME= C.out
 

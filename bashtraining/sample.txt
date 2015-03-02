@@ -1,3 +1,5 @@
+This is a duplicate duplicate line
+This is another duplicate duplicate line
 abcd abcx abcd acd axd abcd
 axbcd
 aabcd

@@ -34,5 +34,3 @@ else
 endif
 # DO NOT DELETE
 
-/home_local/miranda/training//testapps/syscall/syscall.o: /home_local/miranda/training/include/libipc/ipc.h
-/home_local/miranda/training//testapps/syscall/syscall.o: /home_local/miranda/training/include/libbase/logger.h
