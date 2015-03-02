@@ -1,6 +1,7 @@
 #ifndef LOCK_FREE_STACK_H_
 #define LOCK_FREE_STACK_H_
 #include <memory>
+#include <atomic>
 
 //NEW_NODE->HEAD->NEXT->NEXT->NEXT->LAST
 template <typename T>
@@ -32,6 +33,7 @@ public:
 		while(!head.compare_exchange_weak(new_node->next,new_node));
 	}
 
+
 	//Read the current value of head.
 	//Read head->next.
 	//Set head to head->next.
@@ -51,11 +53,11 @@ public:
 			}
 
 			auto next = head_copy->next;
-			done = !head.compare_exchange_weak(head_copy, next);
+			done = head.compare_exchange_weak(head_copy, next);
 		}
 
-		result= head_copy.data;
-		//delete head;
+		result= head_copy->data;
+		delete head_copy;
 
 		return true;
 	}

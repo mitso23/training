@@ -37,7 +37,6 @@ int main()
 	//throw 2;
 
 #if 0
-	my_stack<int> stack;
 
 	for(int i=0; i< 1600; ++i)
 	{
@@ -176,65 +175,6 @@ int main()
 	scoped_thread t3(std::move(std::thread(hash_lookup_thread)));
 #endif
 
-	{
-		int count= 0;
-		threadsafe_list<int> list;
-		list.push_front(1);
-		list.push_front(2);
-		list.push_front(5);
-
-		//iterate through
-		list.for_each([&](std::shared_ptr<int> data) { std::cout << "data for index " << count++ << " is " << *data << std::endl; });
-
-		//Find an element
-		{
-			auto result = list.find_first_if([](std::shared_ptr<int> data)
-			{
-				if(*data == 5)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			});
-
-			if (result)
-			{
-				std::cout << "Found data " << *result << std::endl;
-			}
-			else
-			{
-				std::cout << "Failed to find data " << std::endl;
-			}
-		}
-
-		//Remove an element
-		{
-			bool result = list.remove_if([](std::shared_ptr<int> data)
-			{
-				if(*data == 5)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			});
-
-			if (result)
-			{
-				std::cout << "Successfully deleted " << std::endl;
-			}
-			else
-			{
-				std::cout << "Failed to delete " << std::endl;
-			}
-		}
-
-	}
 }
 
 

@@ -113,7 +113,7 @@ struct X
 void workerThread2()
 {
 	{
-		std::future<int> the_answer=std::async(std::launch::async, X(), 1, 1); // Y object will be moved and not copied
+		std::future<int> the_answer=std::async(std::launch::async, X(), 1, 1); // X object will be moved and not copied
 	}
 
 	{

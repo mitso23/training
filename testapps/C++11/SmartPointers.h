@@ -16,7 +16,7 @@ void testUniquePointer()
 
 	if (ptr2 && !ptr1)
 	{
-		std::cout << "ptr3 has the ownership" << std::endl;
+		std::cout << "ptr2 has the ownership" << std::endl;
 	}
 }
 

@@ -1,23 +1,19 @@
 #include "Arrays.h"
-
-#include <stdlib.h>
+#include <libdatastructures/c_vector.h>
 #include <stdio.h>
-#include <string.h>
 
-//The default linkage is extern (this is defined in the Array.c
-void printArrayTest();
-
-//This is defined in bithacks.c
-extern int x;
-
-//This is define in the bithacks.c
-extern int countParity(unsigned int value);
+DECLARE_VECTOR_FUNCTIONS(int, int)
+DEFINE_VECTOR(int, myVector)
 
 int main(int argc, char* argv[])
 {
-	printArrayTest();
-	printf("Value of x is %d",x);
-	printf("Parity of the value is %d", countParity(1));
+
+#if 0 //Array related stuff
+	sizeTest();
+	char* strings[10];
+	enterStrings(strings, 10);
+#endif
+
 }
 
 

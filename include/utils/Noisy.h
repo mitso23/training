@@ -105,6 +105,11 @@ public:
 		return *this;
 	}
 
+	friend const Noisy& operator + (const Noisy&& lhs, const Noisy&& rhs)
+	{
+		return lhs;
+	}
+
 	friend bool operator<(const Noisy& lv, const Noisy& rv)
 	{
 		return lv.id < rv.id;
