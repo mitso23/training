@@ -1,6 +1,0 @@
-rd -D 0 
-rd -D 1 
-rs -S 0 -D 0 
-del -t 1000 
-rs -S 1 -D 1 
-del -t 1000 
