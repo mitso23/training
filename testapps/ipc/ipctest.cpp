@@ -17,8 +17,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-
-
 void pipeTesting()
 {
 	int fds[2];
@@ -70,7 +68,6 @@ void pipeTesting2()
 			fflush(stream);
 
 	pclose (stream);
-
 }
 
 int main(int argc, char* argv[])

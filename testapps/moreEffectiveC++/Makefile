@@ -11,7 +11,7 @@ include ../../common.mk
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
 export LIBS= 
-export NAME= effectiveC++.out
+export NAME= moreEffectiveC++.out
 
 .PHONY: depend clean
 

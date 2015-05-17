@@ -64,3 +64,12 @@ This island is beautiful
 </body>
 </html>
 
+if (x == 1)
+x= 10
+y = 1
+z  = 12
+
+# START: THIS IS A COMMENT
+# ajdksadjsakdjsa
+# sdjskdjskdjskdjskdjsd
+# END:

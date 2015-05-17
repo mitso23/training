@@ -25,6 +25,9 @@
 #Find all the users that they login with the bash as default
 #cat /etc/passwd | grep  -w --color "/bin/bash"
 
+# Find all the instances of x = 1, z =  12
+#rgrep -E "[a-zA-Z0-9]+\s+=[^=]" ./ --colour
+
 # Check that access time of a file is after 13:00 for the current directory
 #data=`ls -al | grep -o -w --colour "[0-2][0-4]:[0-5][0-9]" | cut -d: -f1`
 #for i in $data
