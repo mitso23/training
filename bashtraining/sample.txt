@@ -19,7 +19,11 @@ a.b.1.2 10.96.201.37 12.a.14.15
 1.11.22
 1.a.b.ff
 1 2 3 44 55 66 77 888 999 9a9
+
+
 This island is beautiful
+
+
 <html> This is a HTML tag </html>
 <html> This is a HTML tag <//html>
 <html >> This is a HTML tag </html>
@@ -60,7 +64,8 @@ This island is beautiful
 <font color="White" p>3. Wait here for confirmation that the upload was successful and that the installation has started.</p>
 <font color="White" p>4. Remove the USB drive and monitor the progress on the front panel. Do not power off the unit during this process, when the upgrade is complete the unit will restart automatically</p>
 </form>
-
+.*ls[^](){}
+*.ls.*
 </body>
 </html>
 
