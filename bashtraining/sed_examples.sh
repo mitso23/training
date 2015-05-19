@@ -29,4 +29,9 @@
 # echo Hello My Dear Friend | sed -r 's/[^ ]+/(&)/g'
 
 # EXAMPLE 9: This will find and replace only the second match pattern Result: First DELETE Third Forth Fifth
-# echo First Second Third Forth Fifth| sed 's/[a-zA-Z]* /DELETE /2'
+# echo First Second Third Forth Fifth| sed 's/[a-zA-Z]* /DELETE /2
+
+#EXAMPLE 10: This will find an expression of this form x = 1, y   =  1; and delete the space and the output would be of this form x= 1
+#cat sample.txt | sed -E '/[a-zA-Z0-9]+\s+=[^=]/ s/\s+//''
+
+
