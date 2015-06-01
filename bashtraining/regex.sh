@@ -1,4 +1,5 @@
-#Find all the worlds that containi an "a"
+#
+ind all the worlds that containi an "a"
 #cat sample.txt | rgrep a.* -n --colour 
 
 #Find all the worlds that start with an "a" (the entire line must start with a)

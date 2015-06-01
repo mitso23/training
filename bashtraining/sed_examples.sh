@@ -34,4 +34,10 @@
 #EXAMPLE 10: This will find an expression of this form x = 1, y   =  1; and delete the space and the output would be of this form x= 1
 #cat sample.txt | sed -E '/[a-zA-Z0-9]+\s+=[^=]/ s/\s+//''
 
+#EXAMPLE 11: This will find the world Operator in the end of a line. Once found it will read the second line and try to to pattern matching on two lines
+#cat sample.txt | sed -E '/Operator/ {N; s/Owner and Operator\nGuide/Installation Guide/ }'
+
+#EXAMPLE 12: Find the # symbol and read the next line. If the next line is just the new line then delete it
+#cat sample.txt | sed -E '/#$/ {N; s/\n$// }'
+
 

@@ -73,8 +73,64 @@ if (x == 1)
 x= 10
 y = 1
 z  = 12
-
+w = 20
+ww  =  22
 # START: THIS IS A COMMENT
 # ajdksadjsakdjsa
 # sdjskdjskdjskdjskdjsd
 # END:
+
+void calculate(int param, int param2)
+{
+	if (x < 1)
+	{
+
+		
+
+	}
+
+
+
+}
+
+
+
+
+
+
+void calculate2(int param, int param2)
+{
+        if (x < 1)
+        {
+
+        }
+
+
+
+//Some comments
+
+#skata#mapa
+#
+
+I want to delete this line
+
+
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+available on your system.
+
+1
+
+
+
+
+2
+
+3
+
+4
+
+5
+
+}
+
