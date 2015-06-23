@@ -1,4 +1,5 @@
-#Find all the worlds that containi an "a"
+#
+ind all the worlds that containi an "a"
 #cat sample.txt | rgrep a.* -n --colour 
 
 #Find all the worlds that start with an "a" (the entire line must start with a)
@@ -37,6 +38,9 @@
 		#echo $i;
 	#fi
 #done
+
+#Find all the empty lines in a file
+# cat sample.txt | grep -v "^\s*$"
 
 # Check for html tags like <html> Hi this is a website </html>
 #cat sample.txt | grep --colour "<[a-zA-Z1-9\"= ]*>.*</\([a-zA-Z0-9]*\)>" 

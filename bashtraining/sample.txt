@@ -19,7 +19,11 @@ a.b.1.2 10.96.201.37 12.a.14.15
 1.11.22
 1.a.b.ff
 1 2 3 44 55 66 77 888 999 9a9
+
+
 This island is beautiful
+
+
 <html> This is a HTML tag </html>
 <html> This is a HTML tag <//html>
 <html >> This is a HTML tag </html>
@@ -60,7 +64,8 @@ This island is beautiful
 <font color="White" p>3. Wait here for confirmation that the upload was successful and that the installation has started.</p>
 <font color="White" p>4. Remove the USB drive and monitor the progress on the front panel. Do not power off the unit during this process, when the upgrade is complete the unit will restart automatically</p>
 </form>
-
+.*ls[^](){}
+*.ls.*
 </body>
 </html>
 
@@ -68,8 +73,64 @@ if (x == 1)
 x= 10
 y = 1
 z  = 12
-
+w = 20
+ww  =  22
 # START: THIS IS A COMMENT
 # ajdksadjsakdjsa
 # sdjskdjskdjskdjskdjsd
 # END:
+
+void calculate(int param, int param2)
+{
+	if (x < 1)
+	{
+
+		
+
+	}
+
+
+
+}
+
+
+
+
+
+
+void calculate2(int param, int param2)
+{
+        if (x < 1)
+        {
+
+        }
+
+
+
+//Some comments
+
+#skata#mapa
+#
+
+I want to delete this line
+
+
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+available on your system.
+
+1
+
+
+
+
+2
+
+3
+
+4
+
+5
+
+}
+
