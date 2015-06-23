@@ -118,7 +118,7 @@ public:
 	}
 
 	//HOW TO DO IT
-	T operator*()
+	T& operator*()
 	{
 		return m_resource;
 	}

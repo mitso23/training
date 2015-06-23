@@ -39,7 +39,6 @@ public:
 	//Set head to head->next.
 	//Return the data from the retrieved node.
 	//Delete the retrieved node
-
 	bool pop(T& result)
 	{
 		bool done = false;

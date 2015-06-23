@@ -3,8 +3,13 @@
 #include "Synchronization.h"
 #include "MemoryModel.h"
 #include "LockBasedDesign.h"
-#include <map>
+#include "DesigningConcurrentCode.h"
 
+#include <algorithms/quicksort.h>
+#include <libbase/random_generator.h>
+
+#include <map>
+#include <utils/utils.h>
 
 int main()
 {
@@ -16,8 +21,9 @@ int main()
 
 	//NOTE: destructor of Noisy will be called when thread is terminated
 	//scopeTest();
+	//std::cout << "Sleeping" << std::endl;
 	//sleep(6);
-
+	//std::cout << "Done" << std::endl;
 	//NOTE: You must pass it by reference otherwise it will get a reference of the internal copy that the thread gets
 	//int x= 1;
 	//std::thread t{testArgumentByReference, 1, std::ref(x)};
@@ -174,6 +180,37 @@ int main()
 	scoped_thread t2(std::move(std::thread(hash_lookup_thread)));
 	scoped_thread t3(std::move(std::thread(hash_lookup_thread)));
 #endif
+
+
+	//A parallel accumulate function
+#if 0
+	std::vector<int> vec= { 1, 2, 3, 4 ,5 ,6, 7 };
+	typedef struct parallel_accumulate<typename std::vector<int>::iterator, int> parallel_int;
+
+	parallel_int parallel_accumulate;
+	int result= parallel_accumulate(vec.begin(), vec.end());
+	std::cout << "Result is " << result << std::endl;
+#endif
+
+	std::vector<int> vec = { 1 , 4 , 7 , 3 , 2 , 8 , 4, 5, 6 ,9 };
+	unsigned const int size= 10;
+	vec.reserve(size);
+	RandomGenerator gen(size);
+
+#if 0
+	for (unsigned int i=0; i< size; ++i)
+	{
+		auto randomValue= gen.generate();
+		vec.push_back(randomValue);
+	}
+#endif
+
+	//quickSortWrapper(vec, 0, vec.size() - 1);
+	quickSortWrapper1(vec, 0 , vec.size() - 1);
+	//std::sort(vec.begin(), vec.end());
+
+	sleep(5);
+	print_cont(vec);
 
 }
 

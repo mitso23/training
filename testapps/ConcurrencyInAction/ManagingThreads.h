@@ -39,17 +39,24 @@ class scoped_thread
 	std::thread m_thread;
 
 public:
-	explicit scoped_thread(std::thread t) :
+	explicit scoped_thread(std::thread&& t) :
 			m_thread(std::move(t))
 	{
 
+	}
+
+	scoped_thread(scoped_thread&& rhs)
+	{
+		m_thread= std::move(rhs.m_thread);
 	}
 
 	~scoped_thread()
 	{
 		if (m_thread.joinable())
 		{
+			std::cout << "waiting for thread to exit " << std::endl;
 			m_thread.join();
+			std::cout << "thread exited" << std::endl;
 		}
 	}
 };
@@ -110,66 +117,74 @@ void startManyThreads()
 			std::mem_fn(&std::thread::join));
 }
 
-template<typename InputIterator, typename OutputIterator, typename T>
-void accumulate(InputIterator begin, OutputIterator end, T& result)
-{
-	for (auto it = begin; it != end; ++it)
-	{
-		result += *it;
-	}
-}
-
 template<typename Iterator,typename T>
 struct accumulate_block
 {
-    void operator()(Iterator first,Iterator last,T& result)
-    {
-        result=accumulate(first,last,result);
-    }
+	void operator()(Iterator first, Iterator last, T& result)
+	{
+		result = accumulate(first, last, 0);
+		std::cout << "result is " << result << std::endl;
+	}
 };
 
-
-
-//NOTE: For some reason it doesn't compile
 template<typename Iterator, typename T>
 struct parallel_accumulate
 {
-	T operator()(Iterator first, Iterator last, T init)
+	T operator()(Iterator first, Iterator last)
 	{
-		unsigned long const length = std::distance(first, last);
+		unsigned distance= std::abs(std::distance(first, last)) ;
 
-		if (!length)
-			return init;
-		unsigned long const min_per_thread = 25;
-		unsigned long const max_threads =
+		const unsigned minNumberItemsPerThread= 3;
+		const unsigned maxNumberThreads= 2;
 
-		(length + min_per_thread - 1) / min_per_thread;
-		unsigned long const hardware_threads =
-				std::thread::hardware_concurrency();
+		unsigned int numItemsPerThread= 0;
+		unsigned int numThreads= 0;
 
-		unsigned long const num_threads = std::min(
-				hardware_threads != 0 ? hardware_threads : 2, max_threads);
-
-		unsigned long const block_size = length / num_threads;
-		std::vector<T> results(num_threads);
-
-		std::vector<std::thread> threads;
-		Iterator block_start = first;
-		for (unsigned long i = 0; i < (num_threads - 1); ++i)
+		if (distance <= minNumberItemsPerThread)
 		{
-			Iterator block_end = block_start;
-			std::advance(block_end, block_size);
-			//std::thread(accumulate_block<Iterator, T>(),
-				//	block_start, block_end, std::ref(results[i]));
-			block_start = block_end;
+			numThreads= 1;
+			numItemsPerThread= distance;
 		}
-		//accumulate_block<Iterator, T>()(block_start, last,
-			//	results[num_threads - 1]);
+		else if (distance < (minNumberItemsPerThread * maxNumberThreads))
+		{
+			numItemsPerThread= minNumberItemsPerThread;
+			numThreads= distance / numItemsPerThread;
+		}
+		else
+		{
+			numThreads= maxNumberThreads;
+			numItemsPerThread= distance / numThreads;
+		}
 
-		//std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+		std::cout << "num items: " << numItemsPerThread << " numThreads: " << numThreads << std::endl;
 
-		//return accumulate(results.begin(), results.end(), init);
 
+		int results[maxNumberThreads] = { 0 };
+
+		{
+			Iterator block_start= first;
+			std::vector<scoped_thread> threads;
+
+			for (auto i = 0U; i < numThreads; ++i)
+			{
+				Iterator block_end= block_start;
+
+				if (i == numThreads - 1)
+					std::advance(block_end, numItemsPerThread + (distance % numItemsPerThread));
+				else
+					std::advance(block_end, numItemsPerThread);
+
+				std::cout << "start  is " << *block_start <<  " end is " << *(block_end - 1) << std::endl ;
+
+				scoped_thread sk(std::thread(accumulate_block<Iterator, T> (),
+						block_start, block_end, std::ref(results[i])));
+				block_start= block_end;
+
+				threads.push_back(std::move(sk));
+			}
+		}
+
+		return std::accumulate(results, results + numThreads, 0);
 	}
 };
 

@@ -33,7 +33,7 @@ private:
 
 public:
 	FineGrainLockQueue() :
-			m_dummyNode(new Node(0)), m_head(m_dummyNode), m_tail(m_dummyNode)
+			m_dummyNode(new Node(T())), m_head(m_dummyNode), m_tail(m_dummyNode)
 	{
 
 	}

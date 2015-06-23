@@ -25,11 +25,12 @@ public:
 		copycons++;
 	}
 
-	Noisy(Noisy&& rv) : id(create++), data(rv.data)
+	Noisy(Noisy&& rv) : id(create), data(rv.data)
 	{
 		rv.data= nullptr;
 		rv.id= 0;
-		std::cout << "move[" << id << "]" << std::endl;
+		std::cout << "mov[" << id << "]" << std::endl;
+		move++;
 	}
 
 	long getId() const
@@ -96,7 +97,7 @@ public:
 
 	Noisy& operator=(Noisy&& rv)
 	{
-		std::cout << "move: (" << id << ")=[" << rv.id << "]";
+		std::cout << "mov: (" << id << ")=[" << rv.id << "]";
 		id = rv.id;
 		data= rv.data;
 		rv.id= 0;
@@ -149,8 +150,9 @@ public:
 
 	void operator()()
 	{
-		std::cout << "Function operator called" << std::endl;
+		std::cout << "Function operator called (doing some work) id " <<  id << std::endl;
 		usleep(1);
+		std::cout << "Thread execution is being terminated" << std::endl;
 	}
 };
 
