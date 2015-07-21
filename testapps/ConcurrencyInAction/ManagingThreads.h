@@ -7,6 +7,8 @@
 #include <vector>
 #include <algorithm>
 #include <future>
+#include <list>
+#include "LockBasedDesign.h"
 
 //NOTE: Make sure that when exception is thrown thread is joined, the only way to pass the thread is by reference as it is non copyable
 // or by moving the object
@@ -15,7 +17,7 @@ class thread_guard
 	std::thread& t;
 public:
 	explicit thread_guard(std::thread& t_) :
-			t(t_)
+		t(t_)
 	{
 
 	}
@@ -29,9 +31,9 @@ public:
 		}
 	}
 
-	thread_guard(thread_guard const&) = delete;
+	thread_guard(thread_guard const&)= delete;
 
-	thread_guard& operator=(thread_guard const&) = delete;
+	thread_guard& operator=(thread_guard const&)= delete;
 };
 
 class scoped_thread
@@ -40,7 +42,7 @@ class scoped_thread
 
 public:
 	explicit scoped_thread(std::thread&& t) :
-			m_thread(std::move(t))
+	m_thread(std::move(t))
 	{
 
 	}
@@ -52,6 +54,7 @@ public:
 
 	~scoped_thread()
 	{
+
 		if (m_thread.joinable())
 		{
 			std::cout << "waiting for thread to exit " << std::endl;
@@ -117,7 +120,7 @@ void startManyThreads()
 			std::mem_fn(&std::thread::join));
 }
 
-template<typename Iterator,typename T>
+template<typename Iterator, typename T>
 struct accumulate_block
 {
 	void operator()(Iterator first, Iterator last, T& result)
@@ -132,53 +135,55 @@ struct parallel_accumulate
 {
 	T operator()(Iterator first, Iterator last)
 	{
-		unsigned distance= std::abs(std::distance(first, last)) ;
+		unsigned distance = std::abs(std::distance(first, last));
 
-		const unsigned minNumberItemsPerThread= 3;
-		const unsigned maxNumberThreads= 2;
+		const unsigned minNumberItemsPerThread = 3;
+		const unsigned maxNumberThreads = 2;
 
-		unsigned int numItemsPerThread= 0;
-		unsigned int numThreads= 0;
+		unsigned int numItemsPerThread = 0;
+		unsigned int numThreads = 0;
 
 		if (distance <= minNumberItemsPerThread)
 		{
-			numThreads= 1;
-			numItemsPerThread= distance;
-		}
-		else if (distance < (minNumberItemsPerThread * maxNumberThreads))
+			numThreads = 1;
+			numItemsPerThread = distance;
+		} else if (distance < (minNumberItemsPerThread * maxNumberThreads))
 		{
-			numItemsPerThread= minNumberItemsPerThread;
-			numThreads= distance / numItemsPerThread;
-		}
-		else
+			numItemsPerThread = minNumberItemsPerThread;
+			numThreads = distance / numItemsPerThread;
+		} else
 		{
-			numThreads= maxNumberThreads;
-			numItemsPerThread= distance / numThreads;
+			numThreads = maxNumberThreads;
+			numItemsPerThread = distance / numThreads;
 		}
 
-		std::cout << "num items: " << numItemsPerThread << " numThreads: " << numThreads << std::endl;
+		std::cout << "num items: " << numItemsPerThread << " numThreads: "
+				<< numThreads << std::endl;
 
-
-		int results[maxNumberThreads] = { 0 };
+		int results[maxNumberThreads] =
+		{ 0 };
 
 		{
-			Iterator block_start= first;
+			Iterator block_start = first;
 			std::vector<scoped_thread> threads;
 
 			for (auto i = 0U; i < numThreads; ++i)
 			{
-				Iterator block_end= block_start;
+				Iterator block_end = block_start;
 
 				if (i == numThreads - 1)
-					std::advance(block_end, numItemsPerThread + (distance % numItemsPerThread));
+					std::advance(block_end,
+							numItemsPerThread + (distance % numItemsPerThread));
 				else
 					std::advance(block_end, numItemsPerThread);
 
-				std::cout << "start  is " << *block_start <<  " end is " << *(block_end - 1) << std::endl ;
+				std::cout << "start  is " << *block_start << " end is "
+						<< *(block_end - 1) << std::endl;
 
-				scoped_thread sk(std::thread(accumulate_block<Iterator, T> (),
-						block_start, block_end, std::ref(results[i])));
-				block_start= block_end;
+				scoped_thread sk(
+						std::thread(accumulate_block<Iterator, T> (),
+								block_start, block_end, std::ref(results[i])));
+				block_start = block_end;
 
 				threads.push_back(std::move(sk));
 			}
@@ -186,6 +191,103 @@ struct parallel_accumulate
 
 		return std::accumulate(results, results + numThreads, 0);
 	}
+};
+
+template<typename T>
+struct sorter
+{
+	typedef struct _chunk_to_sort
+	{
+		std::list<T> data;
+		std::promise<std::list<T> > promise;
+	} chunk_to_sort;
+
+	thread_safe_stack<chunk_to_sort> chunks;
+	std::vector<std::thread> threads;
+	unsigned const max_thread_count;
+	std::atomic<bool> end_of_data;
+
+	sorter() :
+		max_thread_count(std::thread::hardware_concurrency() - 1),
+				end_of_data(false)
+	{
+	}
+
+	~sorter()
+	{
+		end_of_data = true;
+
+		for (unsigned i = 0; i < threads.size(); ++i)
+		{
+			threads[i].join();
+		}
+
+	}
+
+	void try_sort_chunk()
+	{
+
+		boost::shared_ptr<chunk_to_sort> chunk = chunks.pop();
+		if (chunk)
+		{
+
+			sort_chunk(chunk);
+		}
+
+	}
+
+	std::list<T> do_sort(std::list<T>& chunk_data)
+	{
+		if (chunk_data.empty())
+		{
+			return chunk_data;
+		}
+
+		std::list<T> result;
+		result.splice(result.begin(), chunk_data, chunk_data.begin());
+		T const& partition_val = *result.begin();
+
+		typename std::list<T>::iterator divide_point=
+		std::partition(chunk_data.begin(),chunk_data.end(),
+				[&](T const& val)
+				{	return val<partition_val;});
+
+		chunk_to_sort new_lower_chunk;
+		new_lower_chunk.data.splice(new_lower_chunk.data.end(), chunk_data, chunk_data.begin(), divide_point);
+
+		std::future<std::list<T> > new_lower= new_lower_chunk.promise.get_future();
+		chunks.push(std::move(new_lower_chunk));
+
+		if (threads.size() < max_thread_count)
+		{
+			threads.push_back(std::thread(&sorter<T>::sort_thread, this));
+		}
+
+		std::list<T> new_higher(do_sort(chunk_data));
+		result.splice(result.end(), new_higher);
+		while (new_lower.wait_for(std::chrono::seconds(0))
+				!= std::future_status::ready)
+		{
+			try_sort_chunk();
+		}
+
+		result.splice(result.begin(), new_lower.get());
+		return result;
+	}
+	void sort_chunk(boost::shared_ptr<chunk_to_sort> const& chunk)
+	{
+		chunk->promise.set_value(do_sort(chunk->data));
+	}
+
+	void sort_thread()
+	{
+		while (!end_of_data)
+		{
+			try_sort_chunk();
+			std::this_thread::yield();
+		}
+	}
+
 };
 
 #endif /* MANAGINGTHREADS_H_ */

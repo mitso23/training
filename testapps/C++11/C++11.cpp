@@ -1,12 +1,23 @@
 #include <utils/Noisy.h>
 #include <utility>
+#include <ostream>
 #include "Cpp11Notes.h"
 #include "SmartPointers.h"
 #include <vector>
+#include <set>
 #include "Move.h"
+#include "enums.h"
 
 int main(int argc, char* argv[])
 {
+	if (Opcode(100) == GetDevId())
+	{
+		std::cout << "Hurray" << std::endl;
+	}
+
+	std::set<Opcode> set;
+	set.insert(Opcode(100));
+	set.insert(Opcode(200));
 	//DO a swap without copying data
 #if 0
 	Noisy n1;
@@ -32,8 +43,6 @@ int main(int argc, char* argv[])
 	std::cout << result;
 #endif
 
-	std::vector<int> v1 = { 1, 2, 3 };
-	std::copy(v1.begin(), v1.end(), std::ostream_iterator<int>(cout, ""));
 
 }
 
