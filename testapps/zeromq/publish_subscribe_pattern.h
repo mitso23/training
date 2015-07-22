@@ -1,7 +1,8 @@
 #ifndef PUBLISH_SUBSCRIBE_PATTERN_H_
 #define PUBLISH_SUBSCRIBE_PATTERN_H_
 
-#include "zhelpers.h"
+#include <zhelpers.h>
+#include <zmq.hpp>
 
 int publisher()
 {

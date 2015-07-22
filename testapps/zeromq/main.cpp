@@ -1,5 +1,6 @@
 #include "request_reply_pattern.h"
 #include "publish_subscribe_pattern.h"
+#include "pull_push_pattern.h"
 
 #include <iostream>
 #include <functional>
@@ -35,8 +36,22 @@ void testPublishSubscribePatter()
 	std::cout << "Finished " << std::endl;
 }
 
+void testPushPullPattern()
+{
+	std::thread _ventilator { ventilator };
+	std::thread _worker1 { worker, 1 };
+	std::thread _worker2 { worker, 2 };
+	std::thread _sink { sink };
+
+	_ventilator.join();
+	_worker1.join();
+	_worker2.join();
+	_sink.join();
+}
+
 int main(int argc, char* argv[])
 {
 	//testRequestReplyPattern();
-	testPublishSubscribePatter();
+	//testPublishSubscribePatter();
+	testPushPullPattern();
 }

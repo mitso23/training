@@ -1,7 +1,8 @@
 #ifndef REQUEST_REPLY_PATTERN_H
 #define REQUEST_REPLY_PATTERN_H
 
-#include "zmq.hpp"
+#include <zhelpers.h>
+#include <zmq.hpp>
 #include <unistd.h>
 #include <iostream>
 
