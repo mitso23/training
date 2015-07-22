@@ -193,8 +193,8 @@ int main()
 #endif
 
 	std::vector<int> vec;
+
 	unsigned const int size= 2000000;
-	vec.reserve(size);
 	RandomGenerator gen(size);
 
 	for (unsigned int i=0; i< size; ++i)

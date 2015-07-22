@@ -65,12 +65,12 @@ void insertVector()
 
 void readFromFile()
 {
-	std::ifstream f("/home/mitso23/training/resources/testFile.txt");
-
+	std::ifstream f("/home/mitso/training/resources/test.txt");
 	if (!f)
 	{
 		std::cerr << "Error opening file " << strerror(errno) << std::endl;
 	}
+
 
 	// stream iterator is using << for reading from file which skips white spaces
 	//std::string str{istream_iterator<char>(f), istream_iterator<char>()};

@@ -147,13 +147,12 @@ struct parallel_accumulate
 		{
 			numThreads = 1;
 			numItemsPerThread = distance;
-		}
-		else if (distance < (minNumberItemsPerThread * maxNumberThreads))
+
+		} else if (distance < (minNumberItemsPerThread * maxNumberThreads))
 		{
 			numItemsPerThread = minNumberItemsPerThread;
 			numThreads = distance / numItemsPerThread;
-		}
-		else
+		} else
 		{
 			numThreads = maxNumberThreads;
 			numItemsPerThread = distance / numThreads;
@@ -254,6 +253,7 @@ struct sorter
 				{	return val<partition_val;});
 
 		chunk_to_sort new_lower_chunk;
+
 		new_lower_chunk.data.splice(new_lower_chunk.data.end(), chunk_data,
 				chunk_data.begin(), divide_point);
 
@@ -261,7 +261,8 @@ struct sorter
 				new_lower_chunk.promise.get_future();
 
 		chunks.push(std::move(new_lower_chunk));
-		if (threads.size() < max_thread_count)
+
+			if (threads.size() < max_thread_count)
 		{
 			threads.push_back(std::thread(&sorter<T>::sort_thread, this));
 		}
@@ -293,6 +294,7 @@ struct sorter
 	}
 
 };
+
 
 template<typename T>
 std::list<T> parallel_quick_sort(std::list<T> input)

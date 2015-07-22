@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
 	//mapUpperLowerBounds();
 	//convertConstToNonConstIter();
 	//reverseIterator();
+
 	//insertVector();
 	//readFromFile();
 	//transform();
@@ -38,5 +39,4 @@ int main(int argc, char* argv[])
 	//medianLevel();
 	//removeExample();
 	memFnTest();
-
 }

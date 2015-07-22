@@ -47,7 +47,9 @@ unsigned  partition(std::vector<int>& vec, unsigned start, unsigned end)
 		}
 	}
 
-	//std::cout << "partition finished " << start << " " << end << " id: " << std::this_thread::get_id() << std::endl;
+
+	std::cout << "partition finished " << start << " " << end << " id: " << std::this_thread::get_id() << std::endl;
+
 	return pivotPos;
 }
 
@@ -107,7 +109,10 @@ void quickSort(std::vector<int>& vec, unsigned start, unsigned end)
 			//std::cout << "waiting for the thread to stop " << std::endl;
 			t.join();
 			--numThreads;
+
 			std::cout << "thread has stopped" << std::endl;
+
+			//std::cout << "thread has stopped" << std::endl;
 		}
 
 		return;
