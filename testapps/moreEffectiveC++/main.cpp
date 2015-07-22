@@ -47,9 +47,12 @@ int main(int argc, char* argv[])
 	if (number->isOnHeap())
 		std::cout << "On the heap" << std::endl;
 #endif
-
+#if 0
 	auto_ptr<Base> ptr1(new Derived);
 	if (!(ptr1 == nullptr))
 		(*ptr1).getData();
 	return 0;
+#endif
+
+	remove_if_example();
 }

@@ -192,25 +192,24 @@ int main()
 	std::cout << "Result is " << result << std::endl;
 #endif
 
-	std::vector<int> vec = { 1 , 4 , 7 , 3 , 2 , 8 , 4, 5, 6 ,9 };
-	unsigned const int size= 10;
+	std::vector<int> vec;
+	unsigned const int size= 2000000;
 	vec.reserve(size);
 	RandomGenerator gen(size);
 
-#if 0
 	for (unsigned int i=0; i< size; ++i)
 	{
-		auto randomValue= gen.generate();
+		//auto randomValue= gen.generate();
+		int randomValue= i%100;
 		vec.push_back(randomValue);
 	}
-#endif
 
-	//quickSortWrapper(vec, 0, vec.size() - 1);
-	quickSortWrapper1(vec, 0 , vec.size() - 1);
-	//std::sort(vec.begin(), vec.end());
-
-	sleep(5);
-	print_cont(vec);
+	//print_cont(vec);
+	quickSort(vec, 0, vec.size() - 1);
+	//print_cont(vec);
+	//std::list<int> list(vec.begin(), vec.end());
+	//auto sortedList= parallel_quick_sort<int>(list);
+	//print_cont(sortedList);
 
 }
 

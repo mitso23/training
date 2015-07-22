@@ -97,7 +97,7 @@ public:
 
 	Noisy& operator=(Noisy&& rv)
 	{
-		std::cout << "mov: (" << id << ")=[" << rv.id << "]";
+		std::cout << "mov: [" << id << "]=[" << rv.id << "] " << std::endl;
 		id = rv.id;
 		data= rv.data;
 		rv.id= 0;
@@ -106,9 +106,10 @@ public:
 		return *this;
 	}
 
-	friend const Noisy& operator + (const Noisy&& lhs, const Noisy&& rhs)
+	//return const Noisy to avoid code like this Noisy() + Noisy() = Noisy();
+	friend const Noisy operator + (const Noisy& lhs, const Noisy& rhs)
 	{
-		return lhs;
+		return Noisy();
 	}
 
 	friend bool operator<(const Noisy& lv, const Noisy& rv)

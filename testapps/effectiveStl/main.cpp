@@ -1,8 +1,9 @@
 #include "Containers.h"
+#include "Iterators.h"
+#include "Algorithms.h"
 
 #include <string>
 #include <vector>
-
 
 int main(int argc, char* argv[])
 {
@@ -21,5 +22,21 @@ int main(int argc, char* argv[])
 	vectorOfBools();
 #endif
 	//setComparatorTest();
-	setOfPointers();
+	//setOfPointers();
+	//manual_remove_example();
+	//modifyElementAssociativeContainer();
+	//sortedVector();
+	//mapOperators();
+	//mapUpperLowerBounds();
+	//convertConstToNonConstIter();
+	//reverseIterator();
+	//insertVector();
+	//readFromFile();
+	//transform();
+	//partialSort();
+	//nthElement();
+	//medianLevel();
+	//removeExample();
+	memFnTest();
+
 }

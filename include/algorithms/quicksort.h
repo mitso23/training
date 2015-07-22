@@ -24,7 +24,7 @@ unsigned  partition(std::vector<int>& vec, unsigned start, unsigned end)
 	std::swap(vec[end], vec[pivotPos]);
 	pivotPos= end;
 
-	std::cout << "pivot pos: " << pivotPos <<  " pivot value " << vec[pivotPos] <<  " start: " << start << " end: " << end << std::endl << std::endl;;
+	//std::cout << "pivot pos: " << pivotPos <<  " pivot value " << vec[pivotPos] <<  " start: " << start << " end: " << end << std::endl << std::endl;;
 	//print_cont(vec);
 	//usleep(1000 * 1000 * 2);
 
@@ -47,78 +47,72 @@ unsigned  partition(std::vector<int>& vec, unsigned start, unsigned end)
 		}
 	}
 
+	//std::cout << "partition finished " << start << " " << end << " id: " << std::this_thread::get_id() << std::endl;
 	return pivotPos;
 }
-class SortData
+
+//Original vector:
+    //0 1 2 3 4 5 6 7 8 9
+//Partitioned vector:
+    //0 8 2 6 4  *  5 3 7 1 9
+template<class BidirIt, class UnaryPredicate>
+BidirIt partition2(BidirIt first, BidirIt last, UnaryPredicate p)
 {
 
-public:
-	SortData() : m_vec(nullptr), m_start(0), m_end(0)
-	{
+}
 
-	}
-
-	SortData(std::vector<int>* vec, int start, int end) : m_vec(vec), m_start(start), m_end(end)
-	{
-
-	}
-
-public:
-	std::vector<int>* m_vec;
-	unsigned m_start;
-	unsigned m_end;
-};
-
-FineGrainLockQueue<SortData> queue;
-
-
-void quickSort(std::vector<int>& vec, unsigned start, unsigned end, std::vector<scoped_thread>* threads= nullptr)
+int numThreads= 0;
+const int maxNumberThreads= 4;
+void quickSort(std::vector<int>& vec, unsigned start, unsigned end)
 {
+	std::thread t;
 	if (start < end)
 	{
 		auto pivot= partition(vec, start, end);
 
 		if (pivot != 0)
 		{
-			//queue.push(SortData(&vec, start, pivot - 1));
-			std::thread t { quickSort, std::ref(vec), start, pivot - 1, nullptr, };
-			threads->push_back(scoped_thread(std::move(t)));
-			//quickSort(vec, start, pivot - 1);
+			if (numThreads < maxNumberThreads)
+			{
+				t= std::thread(quickSort, std::ref(vec), start, pivot - 1);
+				++numThreads;
+				std::cout << "Creating a new thread num: " << numThreads  << "id: " << t.get_id() << std::endl;
+			}
+			else
+			{
+				//std::cout << "Not Creating a new thread " << std::endl;
+				quickSort(vec, start, pivot - 1);
+			}
 		}
 
 		if (pivot != end)
 		{
-			std::thread t { quickSort, std::ref(vec), pivot + 1, end, nullptr};
-			threads->push_back(scoped_thread(std::move(t)));
-			//queue.push(SortData(&vec, pivot + 1, end));
-			//quickSort(vec, pivot + 1, end);
+			//std::cout << "Main thread " << std::endl;
+			quickSort(vec, pivot + 1, end);
+		}
+
+		if (t.joinable())
+		{
+			//std::cout << "Waiting for thread num: " << t.get_id() << std::endl;
+			t.join();
+			std::cout << "Stopping a new thread num: " << numThreads << std::endl;
+			--numThreads;
+
 		}
 	}
 	else
 	{
+		if (t.joinable())
+		{
+			//std::cout << "waiting for the thread to stop " << std::endl;
+			t.join();
+			--numThreads;
+			std::cout << "thread has stopped" << std::endl;
+		}
+
 		return;
 	}
 }
 
-void quickSortWrapper1(std::vector<int>& vec, unsigned start, unsigned end)
-{
-	std::vector<scoped_thread> threads;
-	quickSort(vec, start, end, &threads);
-	std::cout << "done:" << std::endl;
-}
-
-
-void quickSortWrapper(std::vector<int>& vec, unsigned start, unsigned end)
-{
-	std::thread t{quickSort, std::ref(vec), start, end, nullptr};
-
-	while(1)
-	{
-		SortData data;
-		queue.wait_pop(data);
-
-		std::thread t{quickSort, std::ref(*data.m_vec), data.m_start, data.m_end, nullptr };
-	}
-}
 
 #endif
