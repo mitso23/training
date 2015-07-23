@@ -37,6 +37,9 @@ int ventilator()
 	// The first message is "0" and signals start of batch
 	//s_send(sink, (char*)"0");
 
+	//NOTE we could possibly sit and wait here waiting for some workers to connect before proceeding
+	//If we start straight away then the first worker will get all the traffic
+
 	char string[10];
 	for (unsigned task_nbr = 0; task_nbr < numberTasks; task_nbr++)
 	{
@@ -105,6 +108,7 @@ int sink()
 		//printf("SINK: received value %d\n", value);
 
 	}
+
 	// Calculate and report duration of batch
 	printf("Total elapsed time: %d msec\n", (int) (s_clock() - start_time));
 	printf("Total sum is %llu expected is %llu\n", sum, verifySum(numberTasks));
