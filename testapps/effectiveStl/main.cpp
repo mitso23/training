@@ -38,5 +38,6 @@ int main(int argc, char* argv[])
 	//nthElement();
 	//medianLevel();
 	//removeExample();
-	memFnTest();
+	//memFnTest();
+	std::cout << ciStringCompare("Hello", "Hellz") << std::endl;
 }

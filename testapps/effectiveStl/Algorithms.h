@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 
+//NOTE most algorithms that expect a container to be sorted expect ascending order like binary_search
 
 template <typename T>
 class MemFun
@@ -109,5 +110,67 @@ void removeExample()
 	print_cont(vec);
 }
 
+int ciCharCompare(char c1, char c2)
+{
+	int upper1= std::tolower(c1);
+	int upper2= std::tolower(c2);
+
+	if (upper1 == upper2)
+	{
+		return 0;
+	}
+	else if (upper1 < upper2)
+	{
+		return -1;
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+int ciStringCompareImpl(const string& s1, const string& s2);
+
+//see below for
+// implementation
+int ciStringCompare(const string& s1, const string& s2)
+{
+	if (s1.size() <= s2.size())
+		return ciStringCompareImpl(s1, s2);
+	else
+		return -ciStringCompareImpl(s2, s1);
+}
+
+int ciStringCompareImpl(const string& s1, const string& s2)
+{
+	//we could use the mismatch STL algorithm in this case
+	auto it1= s1.begin();
+	for (auto it2= s2.begin(); it2 != s2.end(); ++it2)
+	{
+		auto ret= ciCharCompare(*it1, *it2);
+		++it1;
+		if (ret == 0)
+		{
+			continue;
+		}
+		else
+		{
+			return ret;
+		}
+	}
+
+	if (s1.size() < s2.size())
+	{
+		return -1;
+	}
+	else if (s1.size() > s2.size())
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
 
 #endif
