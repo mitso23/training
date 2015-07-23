@@ -147,6 +147,7 @@ struct parallel_accumulate
 		{
 			numThreads = 1;
 			numItemsPerThread = distance;
+
 		} else if (distance < (minNumberItemsPerThread * maxNumberThreads))
 		{
 			numItemsPerThread = minNumberItemsPerThread;
@@ -227,10 +228,9 @@ struct sorter
 	void try_sort_chunk()
 	{
 
-		boost::shared_ptr<chunk_to_sort> chunk = chunks.pop();
+		auto chunk = chunks.pop();
 		if (chunk)
 		{
-
 			sort_chunk(chunk);
 		}
 
@@ -253,12 +253,16 @@ struct sorter
 				{	return val<partition_val;});
 
 		chunk_to_sort new_lower_chunk;
-		new_lower_chunk.data.splice(new_lower_chunk.data.end(), chunk_data, chunk_data.begin(), divide_point);
 
-		std::future<std::list<T> > new_lower= new_lower_chunk.promise.get_future();
+		new_lower_chunk.data.splice(new_lower_chunk.data.end(), chunk_data,
+				chunk_data.begin(), divide_point);
+
+		std::future<std::list<T> > new_lower =
+				new_lower_chunk.promise.get_future();
+
 		chunks.push(std::move(new_lower_chunk));
 
-		if (threads.size() < max_thread_count)
+			if (threads.size() < max_thread_count)
 		{
 			threads.push_back(std::thread(&sorter<T>::sort_thread, this));
 		}
@@ -274,6 +278,7 @@ struct sorter
 		result.splice(result.begin(), new_lower.get());
 		return result;
 	}
+
 	void sort_chunk(boost::shared_ptr<chunk_to_sort> const& chunk)
 	{
 		chunk->promise.set_value(do_sort(chunk->data));
@@ -289,5 +294,18 @@ struct sorter
 	}
 
 };
+
+
+template<typename T>
+std::list<T> parallel_quick_sort(std::list<T> input)
+{
+	if (input.empty())
+	{
+		return input;
+	}
+	sorter<T> s;
+	return s.do_sort(input);
+
+}
 
 #endif /* MANAGINGTHREADS_H_ */

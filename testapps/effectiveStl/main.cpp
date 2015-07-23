@@ -1,9 +1,9 @@
 #include "Containers.h"
 #include "Iterators.h"
+#include "Algorithms.h"
 
 #include <string>
 #include <vector>
-
 
 int main(int argc, char* argv[])
 {
@@ -30,6 +30,13 @@ int main(int argc, char* argv[])
 	//mapUpperLowerBounds();
 	//convertConstToNonConstIter();
 	//reverseIterator();
-	insertVector();
 
+	//insertVector();
+	//readFromFile();
+	//transform();
+	//partialSort();
+	//nthElement();
+	//medianLevel();
+	//removeExample();
+	memFnTest();
 }

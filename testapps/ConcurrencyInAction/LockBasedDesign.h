@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <libbase/rwlock.h>
 #include <libbase/random_generator.h>
+#include <boost/shared_ptr.hpp>
 
 #include <containers/thread_safe_list.h>
 #include <containers/thread_safe_hash.h>
@@ -32,6 +33,11 @@ class thread_safe_stack
 {
 
 public:
+	thread_safe_stack()
+	{
+
+	}
+
 	thread_safe_stack(const thread_safe_stack& other)
 	{
 		std::lock_guard < std::mutex > lock(m_mutex);
@@ -46,15 +52,16 @@ public:
 		m_data.push(std::move(newValue));
 	}
 
-	std::shared_ptr<T> pop()
+	boost::shared_ptr<T> pop()
 	{
 		std::lock_guard < std::mutex > lock(m_mutex);
 
 		if (m_data.empty())
-			throw empty_stack();
+		{
+			return boost::shared_ptr<T>();
+		}
 
-		std::shared_ptr<T> const res(
-				std::make_shared < T > (std::move(m_data.top())));
+		boost::shared_ptr<T> res(new T(std::move(m_data.top())));
 
 		m_data.pop();
 

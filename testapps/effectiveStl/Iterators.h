@@ -3,7 +3,7 @@
 
 #include <string.h>
 #include <fstream>
-#include <istream_iterator>
+#include <iterator>
 
 //There is implicit convertion from iterator to const_iterator in most cases
 //Do not use explicit casts to convert from const_iterator to iterator (it might work only for vector and string as they are plain pointers)
@@ -71,7 +71,13 @@ void readFromFile()
 		std::cerr << "Error opening file " << strerror(errno) << std::endl;
 	}
 
-	std::string str(istream_iterator<)
+
+	// stream iterator is using << for reading from file which skips white spaces
+	//std::string str{istream_iterator<char>(f), istream_iterator<char>()};
+
+	// this is more efficient way of reading a file
+	std::string str { istreambuf_iterator<char>(f), istreambuf_iterator<char>() };
+	std::cout << str << std::endl;
 }
 
 #endif

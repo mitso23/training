@@ -193,19 +193,24 @@ int main()
 #endif
 
 	std::vector<int> vec;
-	unsigned const int size= 500000;
-	vec.reserve(size);
+
+	unsigned const int size= 2000000;
 	RandomGenerator gen(size);
 
 	for (unsigned int i=0; i< size; ++i)
 	{
 		//auto randomValue= gen.generate();
-		vec.push_back((i % 100));
+		int randomValue= i%100;
+		vec.push_back(randomValue);
 	}
 
 	//print_cont(vec);
 	quickSort(vec, 0, vec.size() - 1);
 	//print_cont(vec);
+	//std::list<int> list(vec.begin(), vec.end());
+	//auto sortedList= parallel_quick_sort<int>(list);
+	//print_cont(sortedList);
+
 }
 
 
