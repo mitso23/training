@@ -13,6 +13,7 @@ error_handling()
 	exit 1
 }
 
+[ -d zguide ] || git clone https://github.com/imatix/zguide.git
 tar -zxvf zeromq-3.2.5.tar.gz
 pushd ./
 cd zeromq-3.2.5 
