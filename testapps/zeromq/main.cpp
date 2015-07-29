@@ -1,6 +1,10 @@
 #include "request_reply_pattern.h"
 #include "publish_subscribe_pattern.h"
 #include "pull_push_pattern.h"
+#include "simple_req_router.h"
+#include "router_to_req.h"
+#include "router_to_dealer.h"
+#include "request_broker_reply.h"
 
 #include <iostream>
 #include <functional>
@@ -49,9 +53,24 @@ void testPushPullPattern()
 	_sink.join();
 }
 
+void requestBrokerReplyPatter()
+{
+	std::thread _request { request_to_router };
+	std::thread _broker  { broker_proxy };
+	std::thread _reply   { reply_to_dealer };
+
+	_request.join();
+	_broker.join();
+	_reply.join();
+}
+
 int main(int argc, char* argv[])
 {
 	//testRequestReplyPattern();
 	//testPublishSubscribePatter();
-	testPushPullPattern();
+	//testPushPullPattern();
+	//simple_req_router();
+	//router_to_req();
+	//router_to_dealer();
+	requestBrokerReplyPatter();
 }
