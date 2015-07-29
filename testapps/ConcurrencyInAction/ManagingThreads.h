@@ -57,9 +57,9 @@ public:
 
 		if (m_thread.joinable())
 		{
-			std::cout << "waiting for thread to exit " << std::endl;
+			//std::cout << "waiting for thread to exit " << std::endl;
 			m_thread.join();
-			std::cout << "thread exited" << std::endl;
+			//std::cout << "thread exited" << std::endl;
 		}
 	}
 };
@@ -125,8 +125,9 @@ struct accumulate_block
 {
 	void operator()(Iterator first, Iterator last, T& result)
 	{
-		result = accumulate(first, last, 0);
-		std::cout << "result is " << result << std::endl;
+		for(int i=0; i< 1000; ++i)
+			result+= accumulate(first, last, 0);
+		//std::cout << "result is " << result << std::endl;
 	}
 };
 
@@ -158,8 +159,8 @@ struct parallel_accumulate
 			numItemsPerThread = distance / numThreads;
 		}
 
-		std::cout << "num items: " << numItemsPerThread << " numThreads: "
-				<< numThreads << std::endl;
+		//std::cout << "num items: " << numItemsPerThread << " numThreads: "
+			//	<< numThreads << std::endl;
 
 		int results[maxNumberThreads] =
 		{ 0 };
@@ -178,8 +179,8 @@ struct parallel_accumulate
 				else
 					std::advance(block_end, numItemsPerThread);
 
-				std::cout << "start  is " << *block_start << " end is "
-						<< *(block_end - 1) << std::endl;
+				//std::cout << "start  is " << *block_start << " end is "
+					//	<< *(block_end - 1) << std::endl;
 
 				scoped_thread sk(
 						std::thread(accumulate_block<Iterator, T> (),

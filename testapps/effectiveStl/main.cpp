@@ -1,9 +1,11 @@
 #include "Containers.h"
 #include "Iterators.h"
 #include "Algorithms.h"
+#include "Functors.h"
 
 #include <string>
 #include <vector>
+
 
 int main(int argc, char* argv[])
 {
@@ -21,6 +23,9 @@ int main(int argc, char* argv[])
 	std::cout << "size of vector is " << sizeof(std::vector<int>) << std::endl;
 	vectorOfBools();
 #endif
+
+	//Algorithms and Iterators
+#if 0
 	//setComparatorTest();
 	//setOfPointers();
 	//manual_remove_example();
@@ -39,5 +44,21 @@ int main(int argc, char* argv[])
 	//medianLevel();
 	//removeExample();
 	//memFnTest();
-	std::cout << ciStringCompare("Hello", "Hellz") << std::endl;
+	//std::cout << ciStringCompare("Hello", "Hellz") << std::endl;
+	//accumulate();
+#endif
+
+#if 0
+	int x=0;
+	auto y= RefWrapper<int>(x);
+	proxy(y);
+	std::cout << "X is " << x << std::endl;
+	std::cout << "Y is " << y << std::endl;
+	std::cout << "bool is " << bool(true) << std::endl;
+#endifs
+
+
+
+
+
 }

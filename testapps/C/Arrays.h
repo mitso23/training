@@ -13,6 +13,8 @@ int add(int a, int b);
 
 int sub(int a, int b);
 
+void increment(int* arr);
+
 //The arrays has been defined in the Arrays.h here it is being declared
 extern unsigned int test_arr[2][3];
 

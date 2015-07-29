@@ -110,6 +110,36 @@ void removeExample()
 	print_cont(vec);
 }
 
+class Accumulator
+{
+
+public:
+	Accumulator() : m_sum(0)
+	{
+
+	}
+
+	void operator()(int data)
+	{
+		m_sum+= data;
+	}
+
+	int getSum() const
+	{
+		return m_sum;
+	}
+
+private:
+	int m_sum;
+};
+
+void accumulate()
+{
+	std::vector<int> vec= { 1, 2 ,3 ,4 };
+	std::cout << std::accumulate(vec.begin(), vec.end(), 1, std::multiplies<int>()) << std::endl;
+	std::cout << std::for_each(vec.begin(), vec.end(), Accumulator()).getSum() << std::endl;
+}
+
 int ciCharCompare(char c1, char c2)
 {
 	int upper1= std::tolower(c1);

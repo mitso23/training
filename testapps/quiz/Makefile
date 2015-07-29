@@ -12,7 +12,7 @@ include ../../common.mk
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
 export LIBS=
-export NAME= algorithms.out
+export NAME= quiz.out
 
 .PHONY: depend clean
 

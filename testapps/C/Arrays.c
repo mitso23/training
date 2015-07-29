@@ -16,6 +16,11 @@ int sub(int a, int b)
 	return a - b;
 }
 
+void increment(int* arr)
+{
+	*arr= 10;
+}
+
 //An array of integers
 unsigned int test_arr[2][3] = { { 1, 2, 3 }, { 4, 5, 6 } };
 

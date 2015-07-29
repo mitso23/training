@@ -14,6 +14,10 @@ int main(int argc, char* argv[])
 	enterStrings(strings, 10);
 #endif
 
+	//this will not work as there is no implicit cast from const int* to int*
+	//const int arr[]= { 1, 2 ,3 ,4 ,5 };
+	//increment(arr);
+
 }
 
 

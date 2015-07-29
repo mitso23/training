@@ -2,10 +2,4 @@
 #define SORTING_H_
 
 
-void quickSortTesting()
-{
-
-}
-
-
 #endif /* SORTING_H_ */
