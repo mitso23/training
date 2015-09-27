@@ -10,9 +10,9 @@
 template<typename C>
 void print_cont(const C& c)
 {
-	for(auto item: c)
+	for(auto& item: c)
 		std::cout << item << " ";
 
 	std::cout << std::endl;
 }
-#endif /* UTILS_H_ */
+#endif /* UTIL&S_H_ */

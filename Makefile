@@ -2,8 +2,8 @@ LIBS_DIR := ${shell find src -type d ! -iname src ! -iname libcontainers  ! -ina
 TESTAPPS_DIR := ${shell find testapps -type d ! -iname datastructures ! -iname testapps}
 
 all: 
-	$(foreach LIB_DIR, $(LIBS_DIR), make --no-print-directory -C $(LIB_DIR);)
-	$(foreach DIR, $(TESTAPPS_DIR), make --no-print-directory -C $(DIR);)
+	$(foreach LIB_DIR, $(LIBS_DIR), make --no-print-directory -C $(LIB_DIR) -s ;)
+	$(foreach DIR, $(TESTAPPS_DIR), make --no-print-directory -C $(DIR) -s ;)
 
 clean:
 	$(foreach LIB_DIR, $(LIBS_DIR), make clean -C $(LIB_DIR);)

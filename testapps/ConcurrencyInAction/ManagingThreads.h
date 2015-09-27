@@ -162,8 +162,7 @@ struct parallel_accumulate
 		//std::cout << "num items: " << numItemsPerThread << " numThreads: "
 			//	<< numThreads << std::endl;
 
-		int results[maxNumberThreads] =
-		{ 0 };
+		int results[maxNumberThreads]= { 0 };
 
 		{
 			Iterator block_start = first;
