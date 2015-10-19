@@ -10,7 +10,6 @@ void referenceToRValue()
 	const Noisy& n= Noisy();
 }
 
-<<<<<<< HEAD
 Noisy returnReferenceToTemp()
 {
 	int x=1;
@@ -50,7 +49,8 @@ template<typename T>
 class A
 {
 	 void describe(T) { std::cout << sizeof(T) << std::endl; }
-=======
+}
+
 //This is equivalent of doing n % 7. will return 0,1,2,3,4,5,6,7
 unsigned int fun0(unsigned int n)
 {
@@ -148,7 +148,6 @@ public:
 
 private:
 	Noisy ns;
->>>>>>> 2726e206283f4280df70166911d3511b74d08db2
 };
 
 
