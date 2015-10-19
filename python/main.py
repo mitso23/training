@@ -4,11 +4,12 @@ from basictraining.printing import testPrinting
 from basictraining.controlFlow import *
 from basictraining.functions import *
 
+
 def main() :
     #testNumbers()
-    #testLists()
+    testLists()
     #testIterations()
-    testArguments()
+    #testArguments()
 
 
 if __name__ == '__main__':
