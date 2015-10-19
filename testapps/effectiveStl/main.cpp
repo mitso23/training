@@ -2,6 +2,7 @@
 #include "Iterators.h"
 #include "Algorithms.h"
 #include "Functors.h"
+#include "ProgrammingStl.h"
 
 #include <string>
 #include <vector>
@@ -55,10 +56,12 @@ int main(int argc, char* argv[])
 	std::cout << "X is " << x << std::endl;
 	std::cout << "Y is " << y << std::endl;
 	std::cout << "bool is " << bool(true) << std::endl;
-#endifs
+#endif
 
-
-
-
+	//efficientStringAddition();
+	//readArrayAddsDequeue();
+	//assignTest();
+	//findSet();
+	keepListSorted();
 
 }
