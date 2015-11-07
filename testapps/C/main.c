@@ -1,11 +1,15 @@
-#include "Arrays.h"
-#include <libdatastructures/c_vector.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-DECLARE_VECTOR_FUNCTIONS(int, int)
-DEFINE_VECTOR(int, myVector)
+typedef struct _Node
+{
+	int data;
+	struct _Node* pnext;
 
-//this is much slower version
+}Node;
+
+//this is much slower version as the recursion ends up in a deep tree structure
 unsigned long long paragontiko_rec(unsigned n)
 {
 	if(n == 1)
@@ -30,6 +34,58 @@ unsigned long long paragontiko(unsigned int n)
 	return sum;
 }
 
+static Node x[] =
+{
+		{ 0, &x[1] },
+
+		{ 1, &x[2] },
+
+		{ 2, &x[3] },
+
+		{ 3, &x[4] },
+
+		{ 4, &x[5] },
+
+		{ 5, NULL }
+};
+
+void init_list(Node** pphead)
+{
+	*pphead= malloc(sizeof(x));
+	Node* phead= *pphead;
+
+	memcpy(phead, x, sizeof(x) );
+}
+
+
+// 1 -> 2 -> 3 -> 4 -> 5null
+void reverse_list(Node** head)
+{
+	Node* current= head ? *head : NULL;
+	Node* previous= NULL;
+	Node* next= NULL;
+
+	while(current)
+	{
+		*head = current;
+		next= current->pnext;
+
+		current->pnext= previous;
+
+		previous= current;
+		current= next;
+	}
+}
+
+void print_list(Node* head)
+{
+	while(head)
+	{
+		printf("%d\n", head->data);
+		head= head->pnext;
+	}
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -46,6 +102,12 @@ int main(int argc, char* argv[])
 	for(int i=0; i< 100000; ++i)
 		paragontiko_rec(200);
 #endif
+
+	Node* head;
+	init_list(&head);
+	print_list(head);
+	reverse_list(&head);
+	print_list(head);
 
 }
 

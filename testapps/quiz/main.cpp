@@ -35,4 +35,5 @@ int main(int argc, char* argv[])
 	std::cout << "aa: " << sizeof(*aa) << " a: " << sizeof(*a) << std::endl;
 #endif
 
+	reverseBits(5);
 }

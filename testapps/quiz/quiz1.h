@@ -2,6 +2,7 @@
 #define QUIZ1_H_
 
 #include <utils/Noisy.h>
+#include <utils/utils.h>
 #include <iostream>
 
 void referenceToRValue()
@@ -108,6 +109,36 @@ public:
 private:
 	Noisy ns;
 };
+
+//101010
+void reverseBits(unsigned int x)
+{
+	dumpValue(x);
+	auto length= sizeof(x) * 8;
+
+	for(auto i=0U; i< length / 2; ++i)
+	{
+		auto l= (x >> (length - i - 1)) & 1;
+		auto r= (x >> i) & 1;
+
+		if (l != r)
+		{
+			if (l)
+			{
+				x= x | (1 <<i );
+				x= x & (~(1 <<  (length - i - 1)));
+			}
+			else
+			{
+				x= x & (~(1 <<  i));
+				x= x | (1 << (length - i - 1));
+			}
+		}
+	}
+
+	dumpValue(x);
+}
+
 
 
 #endif /* QUIZ1_H_ */

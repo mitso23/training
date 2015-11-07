@@ -13,7 +13,7 @@ typedef std::iterator<std::random_access_iterator_tag, line_t> iterator;
 bool operator < (const line_t& lhs, const line_t& rhs)
 {
 	bool less= lhs.first < rhs.first;
-
+	//std::cout << lhs.first << " : " << rhs.first << std::endl;
 	return less;
 }
 
@@ -52,9 +52,9 @@ public:
 
 	friend FileIter operator - (size_t, const FileIter&);
 
-	FileIter& operator+=(int);
+	FileIter operator+=(int);
 
-	FileIter& operator-=(int);
+	FileIter operator-=(int);
 
 	bool operator == (const FileIter& rhs);
 
@@ -99,16 +99,46 @@ public:
 
 	friend class FileIter;
 
-	void setLine(std::string&& str, size_t lineNumber)
+	void setLine(const std::string& str, size_t lineNumber)
 	{
 		m_data.push_back(std::make_pair(str, lineNumber));
 		++m_end;
 	}
 
-	void setLine(const std::string& str, size_t lineNumber)
+
+	//The purpose of the bubble sort algorithm is to get the largest element in the end of the array
+	// 1, 8 , 2 , 9 , 4
+	// first iteration:  1, 2, 8, 4, 9
+	// second iteration: 1, 2, 4, 8, 9
+	// third iteration:  not swapping so we are done
+	void sort()
 	{
-		m_data.push_back(std::make_pair(str, lineNumber));
-		++m_end;
+		bool swaped= false;
+		auto endFile= end();
+		for(auto it= begin(); it!= end(); ++it)
+		{
+			for(auto it2= begin(); it2 != endFile - 1; ++it2)
+			{
+				auto firstIt= it2;
+				auto secondIt= it2 + 1;
+
+				if (*firstIt > *secondIt )
+				{
+					auto temp = *firstIt;
+					*firstIt = *secondIt;
+					*secondIt= temp;
+					swaped= true;
+				}
+			}
+
+			if(!swaped)
+				return;
+			else
+				swaped= false;
+
+			--endFile;
+
+		}
 	}
 
 	struct compare
@@ -127,27 +157,14 @@ private:
 
 FileIter FileIter::operator ++()
 {
-	if (m_pos <  m_file->m_end)
-	{
-		return FileIter(m_file, ++m_pos);
-	}
-	else
-	{
-		return m_file->end();
-	}
+	//std::cout << "operator ++ " << m_pos << std::endl;
+	return FileIter(m_file, ++m_pos);
 }
 
 FileIter FileIter::operator --()
 {
-
-	if (m_pos != m_file->m_end)
-	{
-		return FileIter(m_file, --m_pos);
-	}
-	else
-	{
-		return m_file->end();
-	}
+	//std::cout << "operator -- " << m_pos << std::endl;
+	return FileIter(m_file, --m_pos);
 }
 
 line_t& FileIter::operator*()
@@ -157,17 +174,10 @@ line_t& FileIter::operator*()
 
 const line_t& FileIter::operator*() const
 {
-	if (m_pos == m_file->m_end)
+	if (m_pos >= m_file->m_end)
 	{
-		if (m_file->m_data.size() == m_file->m_end)
-		{
-			m_file->m_data.push_back(line_t("", 0));
-		} else if (m_file->m_data.size() < m_file->m_end)
-		{
-			std::cerr << "impossible" << std::endl;
-		}
+		std::cerr << "out of bound: operator *" << " pos: " << m_pos << std::endl;
 	}
-
 	return m_file->m_data[m_pos];
 }
 
@@ -178,38 +188,45 @@ bool FileIter::operator !=(const FileIter& rhs)
 
 FileIter operator + (const FileIter& lhs, size_t n)
 {
+	//std::cout << "operator + (const FileIter& lhs, size_t n) " << lhs.m_pos << " + " << n << " content " << *lhs << std::endl;
 	return FileIter(lhs.m_file, lhs.m_pos + n);
 }
 
 FileIter operator - (const FileIter& lhs, size_t n)
 {
+	//std::cout << " operator - (const FileIter& lhs, size_t n) " << lhs.m_pos << " - " << n << std::endl;
 	return FileIter(lhs.m_file, lhs.m_pos - n);
 }
 
 FileIter operator + (size_t n, const FileIter& rhs)
 {
+	//std::cout << "operator+ " << rhs.m_pos << " + " << n << std::endl;
 	return FileIter(rhs.m_file, rhs.m_pos + n);
 }
 
 FileIter operator -(size_t n, const FileIter& rhs)
 {
+	//std::cout << "operator -(size_t n, const FileIter& rhs) " << rhs.m_pos << " - " << n << std::endl;
 	return FileIter(rhs.m_file, rhs.m_pos - n);
 }
 
-FileIter& FileIter::operator+=(int n)
+FileIter FileIter::operator+=(int n)
 {
+	//std::cout << "FileIter::operator+=(int n) " << m_pos << " + " << n << std::endl;
 	m_pos += n;
 	return *this;
 }
 
-FileIter& FileIter::operator-=(int n)
+FileIter FileIter::operator-=(int n)
 {
+	//std::cout << "FileIter::operator-= " << m_pos << " - " << n << std::endl;
 	m_pos -= n;
 	return *this;
 }
 
 size_t FileIter::operator - (const FileIter& rhs)
 {
+	//std::cout << "FileIter::operator - (const FileIter& rhs) " << m_pos << " - " <<  rhs.m_pos << std::endl;
 	return m_pos - rhs.m_pos;
 }
 
@@ -227,6 +244,7 @@ bool FileIter::operator > (const FileIter& rhs)
 {
 	return m_pos > rhs.m_pos;
 }
+
 
 FileIter::FileIter(File* file, size_t pos) :
 	m_file(file), m_pos(pos)

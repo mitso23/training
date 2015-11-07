@@ -122,6 +122,15 @@ BOOST_AUTO_TEST_CASE(FileAlgorithms)
 	BOOST_CHECK(*file.begin()  == line_t("A", 1));
 	BOOST_CHECK(*(file.begin() + 1) == line_t("B", 2));
 	BOOST_CHECK(*(file.begin() + 2)== line_t("C", 0));
+
+	*file.begin()= line_t("C", 0);
+	*(file.begin() + 1) = line_t("A", 1);
+	*(file.begin() + 2) = line_t("B", 2);
+	file.sort();
+
+	BOOST_CHECK(*file.begin() == line_t("A", 1));
+	BOOST_CHECK(*(file.begin() + 1) == line_t("B", 2));
+	BOOST_CHECK(*(file.begin() + 2)== line_t("C", 0));
 }
 
 struct comparator

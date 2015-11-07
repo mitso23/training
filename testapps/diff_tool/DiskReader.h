@@ -24,6 +24,7 @@ public:
 		size_t lineNumber= 0;
 		while(std::getline(stream, line))
 		{
+			std::cout << "adding " << line << std::endl;
 			file.setLine(std::move(line), ++lineNumber);
 		}
 

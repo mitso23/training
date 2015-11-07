@@ -65,6 +65,7 @@ BidirIt partition2(BidirIt first, BidirIt last, UnaryPredicate p)
 
 int numThreads= 0;
 const int maxNumberThreads= 4;
+
 void quickSort(std::vector<int>& vec, unsigned start, unsigned end)
 {
 	std::thread t;

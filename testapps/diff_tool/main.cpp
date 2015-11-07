@@ -6,6 +6,6 @@
 
 int main(int argc, char* argv[])
 {
-	FileDiff diff("/home/mitso23/training/resources/text1_diff.c", "/home/mitso23/training/resources/text2_diff.c");
-	diff.outputDiffToDisk();
+	FileDiff diff("/home/mitso23/training/resources/text3.diff", "/home/mitso23/training/resources/text3.diff");
+	diff.findCommonLines();
 }
