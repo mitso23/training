@@ -33,12 +33,12 @@ def testLists():
     # That will change the variable in all of the shallow copy instances
     foo.val = 5
 
-    #print("original: %r\n slice: %r\n list(): %r\n copy: %r\n deepcopy: %r" \
-    #       % (a, b, c, d, e))
+    print("original: %r\n slice: %r\n list(): %r\n copy: %r\n deepcopy: %r" \
+           % (a, b, c, d, e))
 
     #print("Original is,  deep copy is ",  a, b);
-    print(nested)
-    print(nested[0])
+    #print(nested)
+    #print(nested[0])
 
     if [1, 2, 3] in nested:
         print("Success")
