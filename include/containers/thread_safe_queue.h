@@ -20,7 +20,7 @@ private:
 		std::mutex m_mutex;
 
 		Node(T _data) :
-				data(_data), next(NULL)
+		data(std::move(_data)), next(NULL)
 		{
 
 		}
@@ -33,7 +33,7 @@ private:
 
 public:
 	FineGrainLockQueue() :
-			m_dummyNode(new Node(T())), m_head(m_dummyNode), m_tail(m_dummyNode)
+			m_dummyNode(new Node(std::move(T()))), m_head(m_dummyNode), m_tail(m_dummyNode)
 	{
 
 	}

@@ -183,7 +183,7 @@ int main()
 
 
 	//A parallel accumulate function
-#if 1
+#if 0
 	std::vector<int> vec;
 	vec.resize(1000000, 1);
 	typedef struct parallel_accumulate<typename std::vector<int>::iterator, int> parallel_int;
@@ -215,8 +215,11 @@ int main()
 	//std::list<int> list(vec.begin(), vec.end());
 	//auto sortedList= parallel_quick_sort<int>(list);
 	//print_cont(sortedList);
-
 #endif
+
+	Sorter sorter;
+	std::list<int> list= { 8, 2, 3 , 1 , 10 , 16};
+	sorter.do_sort(list);
 }
 
 

@@ -76,6 +76,7 @@ void testArgumentByReference(int i, int& ref)
 
 void scopeTest()
 {
+	//this is a naive approach as the ns will go out of scope and the thread function will crash
 	Noisy ns;
 	std::thread thread(ns);
 	thread.detach();
@@ -233,7 +234,6 @@ struct sorter
 		{
 			sort_chunk(chunk);
 		}
-
 	}
 
 	std::list<T> do_sort(std::list<T>& chunk_data)
@@ -262,7 +262,7 @@ struct sorter
 
 		chunks.push(std::move(new_lower_chunk));
 
-			if (threads.size() < max_thread_count)
+		if (threads.size() < max_thread_count)
 		{
 			threads.push_back(std::thread(&sorter<T>::sort_thread, this));
 		}

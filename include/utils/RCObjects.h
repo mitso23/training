@@ -148,8 +148,6 @@ public:
 	}
 private:
 	T* m_pointee;
-
-	void init();
 };
 
 

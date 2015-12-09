@@ -5,12 +5,11 @@
 #include "algorithms.h"
 #include <libdatastructures/c_vector.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 
-DECLARE_VECTOR_FUNCTIONS(int, int)
-DEFINE_VECTOR(int, myVector)
-
-//this is much slower version
+//this is much slower version as the recursion ends up in a deep tree structure
 unsigned long long paragontiko_rec(unsigned n)
 {
 	if(n == 1)
@@ -66,7 +65,6 @@ int main(int argc, char* argv[])
 	//increment(arr);
 	for(int i=0; i< 100000; ++i)
 		paragontiko_rec(200);
-
 #endif
 
 #if 0

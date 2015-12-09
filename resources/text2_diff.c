@@ -2,7 +2,6 @@
 4
 4
 4
-skata
 1 2 3 4
 is dim the great
 hello
@@ -21,6 +20,6 @@ similar2
 same same same
 same same same
 different
-add
-add
-add
+addX
+addY
+addZ

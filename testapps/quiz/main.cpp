@@ -2,14 +2,13 @@
 
 int main(int argc, char* argv[])
 {
-<<<<<<< HEAD
 	//referenceToRValue();
 	//std::cout << "After RValue to reference " << std::endl;
 	//const Noisy& n2= returnReferenceToTemp();
 	//std::cout << "Got a reference to Rvalue" << std::endl;
 
 	postincrementTest();
-=======
+
 #if 0
 	referenceToRValue();
 	std::cout << "After RValue to reference " << std::endl;
@@ -43,5 +42,5 @@ int main(int argc, char* argv[])
 	std::cout << "aa: " << sizeof(*aa) << " a: " << sizeof(*a) << std::endl;
 #endif
 
->>>>>>> 2726e206283f4280df70166911d3511b74d08db2
+	reverseBits(5);
 }

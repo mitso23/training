@@ -7,9 +7,16 @@
 #include <utils/utils.h>
 #include <list>
 
+/**
+ * Algorithm. We start from Document one and fine the first common line between the file 1 and file 2
+ * if line1_end - line1_start > 1 && line2_end - line2_start > 0 then mark the lines as DIFFERENT
+ * if line1_end - line1_start > 1 && line2_end - line2_start = 0 then mark it as ADDED
+ * if line1_end - line1_start = 1 && line2_end - line2_start > 0 then mark it as REMOVED
+ * if line1_end - line1_start = 1 && line2_end - line2_start = 0 then mark it as COMMON
+ */
+
 class FileDiff
 {
-	//This needs to be removed as more state need to be added use state machine classes
 	typedef enum
 	{
 		COMMON, DIFF, REMOVED, ADDED
@@ -59,46 +66,60 @@ public:
 		}
 	}
 
+	void addStateA(size_t startA, size_t endA, line_state_t state)
+	{
+		for(size_t i=startA; i <= endA; ++i)
+		{
+			m_file1_state[i]= state;
+		}
+
+	}
+
+	void addStateB(size_t startB, size_t endB, line_state_t state)
+	{
+		for(size_t i=startB; i <= endB; ++i)
+		{
+			m_file2_state[i]= state;
+		}
+	}
+
 	void findCommonLines()
 	{
-		std::sort(m_file2.begin(), m_file2.end() - 1, File::compare());
-
-		//print_cont(m_file1);
-		//print_cont(m_file2);
-#if 1
-		line_t previousCommonLineA;
-		line_t previousCommonLineB;
+		line_t previousCommonLineA = line_t("", -1);
+		line_t previousCommonLineB = line_t("", -1);
 		line_t currentCommonLineA;
 		line_t currentCommonLineB;
 
 		for(auto it=m_file1.begin(); it!= m_file1.end(); ++it)
 		{
-			std::pair<FileIter, FileIter> pair= std::equal_range(m_file2.begin(), m_file2.end() - 1, *it, File::compare());
-			if (pair.first != pair.second)
+			for(auto it2= m_file2.begin(); it2 != m_file2.end(); ++it2)
 			{
-				currentCommonLineA= *it;
-				currentCommonLineB=*(pair.first);
-
-				std::cout << *it << std::endl;
-				std::cout << *(pair.first) << std::endl;
-
-				if((currentCommonLineA.second - previousCommonLineA.second) > 1 && (currentCommonLineB.second - previousCommonLineB.second) > 1)
+				if(*it == *it2)
 				{
-					print(previousCommonLineA, currentCommonLineA, previousCommonLineB, currentCommonLineB, line_state_t::DIFF);
+					currentCommonLineA = *it;
+					currentCommonLineB= *it2;
+
+					addStateA(currentCommonLineA, currentCommonLineA, COMMON);
+					addStateB(currentCommonLineB, currentCommonLineB, COMMON);
+
 				}
 
-				previousCommonLineA= currentCommonLineA;
-				previousCommonLineB= currentCommonLineB;
+				if((currentCommonLineA - previousCommonLineA) > 1 && (currentCommonLineB - previousCommonLineB) > 1)
+				{
+					addStateA(previousCommonLineA + 1, currentCommonLineA - 1, DIFF);
+					addStateB(previousCommonLineB + 1, currentCommonLineB - 1, DIFF);
+				}
+				else if((currentCommonLineA - previousCommonLineA > 1) && (currentCommonLineB - previousCommonLineB) == 1)
+				{
+					addStateA(previousCommonLineA + 1, currentCommonLineA - 1, REMOVED);
+				}
+				else if ((currentCommonLineA - previousCommonLineA == 1) && (currentCommonLineB - previousCommonLineB) > 1)
+				{
+					addStateA(previousCommonLineB + 1, currentCommonLineB - 1, ADDED);
+				}
 
-				break;
 			}
 		}
-#endif
-	}
-
-	void outputDiffToDisk()
-	{
-		findCommonLines();
 	}
 
 private:
@@ -107,7 +128,8 @@ private:
 	std::string m_path2;
 	File m_file1;
 	File m_file2;
-	std::list<std::pair<size_t, size_t> > m_commonLines;
+	std::map<line_t, line_state_t> m_file1_state;
+	std::map<line_t, line_state_t> m_file2_state;
 };
 
 #endif /* FILEDIFF_H_ */

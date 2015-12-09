@@ -33,7 +33,7 @@ int isNegative(int x)
 
 	//return (x > 0) - ( x < 0);
 
-	//return (x > 0) l
+	//return (x > 0)
 }
 
 int calculateAbs(int number)
