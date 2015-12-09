@@ -44,7 +44,6 @@ int main(int argc, char* argv[])
 	enterStrings(strings, 10);
 #endif
 
-<<<<<<< HEAD
 	//sscanfTest();
 	//sprintfTest();
 	//readFile();
@@ -59,20 +58,37 @@ int main(int argc, char* argv[])
 	printf("%x, %d\n", xx, xx);
 	x= x << 1;
 	printf("%x, %d \n", xx, xx);
-=======
+#endif
+
 #if 0
 	//this will not work as there is no implicit cast from const int* to int*
 	//const int arr[]= { 1, 2 ,3 ,4 ,5 };
 	//increment(arr);
 	for(int i=0; i< 100000; ++i)
 		paragontiko_rec(200);
->>>>>>> 2726e206283f4280df70166911d3511b74d08db2
+
 #endif
 
+#if 0
 	for(int i=0; i<= 5; ++i)
 	{
 		printf("%d:%d\n", i, fibonacciRec(i));
 	}
+#endif
+#if 0
+	int x = 123;
+	reverseInt(&x);
+#endif
+
+	//reverseSentence("Hello World Dimitrios");
+	//reverseSentence2("Hello        He is THE  ENENMY \n\n HELP GOD");
+	//find_longest_non_repeative_str("abcdafdqwert");
+
+	const char* arr[2] = { "Hello", "World"};
+	char arr2[2][10] = {"Hello", "World"};
+
+	sort_array_string(arr, 2);
+	sort_array_string_2(arr2, 2);
 }
 
 

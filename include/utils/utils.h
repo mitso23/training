@@ -31,3 +31,4 @@ static inline void hexdump(void* data, size_t sizeBytes)
 	printf("\n");
 }
 
+#endif
