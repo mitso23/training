@@ -14,6 +14,27 @@ typedef enum
 
 #include <algorithm>
 #include <iterator>
+<<<<<<< HEAD
+=======
+#include <string>
+#include <utils/Noisy.h>
+#include <sstream>
+
+void reverseSentence(const std::string& str)
+{
+	std::stringstream data(str);
+	std::string word;
+
+	while(data >> word)
+	{
+		std::string reversedWord;
+		std::copy(word.rbegin(), word.rend(), std::back_inserter(reversedWord));
+		std::cout << reversedWord << " ";
+	}
+
+	std::cout << std::endl;
+}
+>>>>>>> e01479f144cb4ab7b9f04c2a40a7ef44ca277116
 
 int solution(vector<int> &A) {
 
@@ -94,6 +115,7 @@ int solution2(vector<int> &A)
 
 int solution(int X, int Y, int D)
 {
+<<<<<<< HEAD
     int count=0;
 
     if ((Y-D) == X)
@@ -120,4 +142,9 @@ int solution(int X, int Y, int D)
     {
         return count;
     }
+=======
+	std::string temp("Hello world");
+
+	reverseSentence(temp);
+>>>>>>> e01479f144cb4ab7b9f04c2a40a7ef44ca277116
 }

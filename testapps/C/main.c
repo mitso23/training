@@ -62,7 +62,6 @@ int main(int argc, char* argv[])
 	printf("%x, %d\n", xx, xx);
 	x= x << 1;
 	printf("%x, %d \n", xx, xx);
-
 #endif
 
 #if 0
@@ -74,6 +73,7 @@ int main(int argc, char* argv[])
 #endif
 
 #if 0
+<<<<<<< HEAD
 	int x[4][4]= { { 1, 2 ,3, 4 } , { 5, 6, 7, 8 },  { 9, 10, 11, 12,} , { 13, 14, 15, 16 } };
 
 	printMatrix(x, 4);
@@ -136,6 +136,27 @@ int main(int argc, char* argv[])
 	pop(&myStack, &data);
 	printStack(&myStack);
 #endif
+=======
+	for(int i=0; i<= 5; ++i)
+	{
+		printf("%d:%d\n", i, fibonacciRec(i));
+	}
+#endif
+#if 0
+	int x = 123;
+	reverseInt(&x);
+#endif
+
+	//reverseSentence("Hello World Dimitrios");
+	//reverseSentence2("Hello        He is THE  ENENMY \n\n HELP GOD");
+	//find_longest_non_repeative_str("abcdafdqwert");
+
+	const char* arr[2] = { "Hello", "World"};
+	char arr2[2][10] = {"Hello", "World"};
+
+	sort_array_string(arr, 2);
+	sort_array_string_2(arr2, 2);
+>>>>>>> e01479f144cb4ab7b9f04c2a40a7ef44ca277116
 }
 
 
