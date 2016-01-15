@@ -32,8 +32,9 @@ private:
 	Node* m_tail;
 
 public:
-	FineGrainLockQueue() :
-			m_dummyNode(new Node(std::move(T()))), m_head(m_dummyNode), m_tail(m_dummyNode)
+	template<typename ...Args>
+	FineGrainLockQueue(Args... args) :
+				m_dummyNode(new Node(std::move(T(args...)))), m_head(m_dummyNode), m_tail(m_dummyNode)
 	{
 
 	}
@@ -84,7 +85,6 @@ public:
 			m_head = m_dummyNode;
 			m_tail = m_dummyNode;
 		}
-
 	}
 };
 

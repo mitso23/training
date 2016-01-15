@@ -23,14 +23,19 @@ public:
 	{
 		std::cout << "copy[" << id << "]" << std::endl;
 		copycons++;
+
+		//If this throws an exception then the state of the object shouldn't change
+		auto new_data= new long int(0);
+
+		data= new_data;
+		if (rv.data)
+			*data= *rv.data;
 	}
 
-	Noisy(Noisy&& rv) : id(create++), data(rv.data)
+	Noisy(Noisy&& rv) : id(create++), data(nullptr)
 	{
 		std::cout << "mov[" << id << "] = " << "[" << rv.id << "]" << std::endl;
-
-		rv.data= nullptr;
-		rv.id= -1;
+		swap(rv);
 		move++;
 	}
 
@@ -72,6 +77,8 @@ public:
 
 	Noisy& operator = (const Noisy& rv)
 	{
+		//This is the traditional way of doing it
+#if 0
 		if (&rv != this)
 		{
 			long int* newData= nullptr;
@@ -99,6 +106,13 @@ public:
 			data= newData;
 			assign++;
 		}
+#endif
+
+		//This will copy the data to tmp (new memory will be allocated)
+		std::cout << "(" << id << ")=[" << rv.id << "]" << std::endl;
+		assign++;
+		Noisy tmp(rv);
+		swap(tmp);
 
 		return *this;
 	}
@@ -106,6 +120,9 @@ public:
 	Noisy& operator=(Noisy&& rv)
 	{
 		std::cout << "mov: [" << id << "]=[" << rv.id << "] " << std::endl;
+
+		//The old way of doing stuff
+#if 0
 		delete data;
 
 		id = rv.id;
@@ -113,6 +130,13 @@ public:
 		rv.id= -1;
 		rv.data= nullptr;
 		move++;
+#endif
+
+		delete data;
+		data= nullptr;
+
+		swap(rv);
+
 		return *this;
 	}
 
@@ -184,13 +208,17 @@ public:
 		usleep(1);
 		std::cout << "Thread execution is being terminated" << std::endl;
 	}
+
+	void swap(Noisy& lhs)
+	{
+		using std::swap;
+		swap(lhs.data, this->data);
+	}
 };
 
 void swap(Noisy& lhs, Noisy& rhs)
 {
-	Noisy tmp= std::move(lhs);
-	lhs= std::move(rhs);
-	rhs= std::move(tmp);
+	lhs.swap(rhs);
 }
 
 struct NoisyGen
@@ -225,21 +253,12 @@ public:
 				<< Noisy::destroy << " Move opeartions: " << Noisy::move <<  std::endl;
 	}
 
-	static NoisyReport* getInstance()
+	static const NoisyReport& getInstance()
 	{
-		if (nr == NULL)
-		{
-			nr = new NoisyReport();
-			return nr;
-		}
-		else
-		{
-			return nr;
-		}
-
+		return nr;
 	}
 private:
-	static NoisyReport* nr;
+	static NoisyReport nr;
 };
 
 template<class T>
@@ -285,4 +304,5 @@ private:
 	Y m_value;
 };
 
-NoisyReport* NoisyReport::nr = NULL;
+//This needs to go a .cpp file
+NoisyReport NoisyReport::nr;

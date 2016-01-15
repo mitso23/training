@@ -41,7 +41,7 @@ class scoped_thread
 	std::thread m_thread;
 
 public:
-	explicit scoped_thread(std::thread&& t) :
+	explicit scoped_thread(std::thread t) :
 	m_thread(std::move(t))
 	{
 

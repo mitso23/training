@@ -1,5 +1,6 @@
-#ifndef SORTING_H_
-#define SORTING_H_
+#ifndef SORTING_H
+#define SORTING_H
+
 
 
 #endif /* SORTING_H_ */

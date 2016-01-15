@@ -27,4 +27,12 @@ extern funct_ptr test_arr2[2];
 // In C we loose the array size when passing an array to a function it becomes a pointer
 void enterStrings(char**strings, unsigned size);
 
+//The compiler will still pass a pointer to the function. A pointer to an array of size 4
+//this means that ++ptr will increment sizeof(int)*4
+void printMatrix(int matrix[][4], size_t);
+
+void rotateMatrix90(int matrix[][4], size_t);
+
+void findMinElement(int* arr, unsigned int size);
+
 #endif /* ARRAYS_H_ */

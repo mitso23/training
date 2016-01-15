@@ -4,12 +4,18 @@
 #include "MemoryModel.h"
 #include "LockBasedDesign.h"
 #include "DesigningConcurrentCode.h"
+#include "ThreadPools.h"
 
 #include <algorithms/quicksort.h>
 #include <libbase/random_generator.h>
 
 #include <map>
 #include <utils/utils.h>
+
+void foo()
+{
+	std::cout << "Skata" << std::endl;
+}
 
 int main()
 {
@@ -181,7 +187,6 @@ int main()
 	scoped_thread t3(std::move(std::thread(hash_lookup_thread)));
 #endif
 
-
 	//A parallel accumulate function
 #if 0
 	std::vector<int> vec;
@@ -217,9 +222,41 @@ int main()
 	//print_cont(sortedList);
 #endif
 
+#if 0
 	Sorter sorter;
 	std::list<int> list= { 8, 2, 3 , 1 , 10 , 16};
 	sorter.do_sort(list);
+#endif
+
+#if 0
+	std::vector<scoped_thread> thread_pool;
+
+	for(int i=0; i< 4; ++i)
+	{
+		thread_pool.push_back(scoped_thread(std::thread(processData2)));
+	}
+#endif
+
+
+#if 0
+	// 1 2 3  			1 1 1 			14 6 6
+	// 3 4 6    * 		2 1 1   = 		29 13 13
+	// 7 8 9			3 1 1			50 24 24
+	std::vector<std::vector<int> > matrix1 = { { 1, 2 ,3 }, { 3, 4, 6 }, { 7,8,9} };
+	std::vector<std::vector<int>> matrix2= { { 1, 1, 1 } , { 2, 1, 1 }, { 3, 1, 1 } };
+	std::vector<std::vector<int>> result = { { 0, 0, 0 } , { 0, 0, 0 }, { 0, 0, 0 } };
+
+	matrixMultiplication2(matrix1, matrix2, result);
+
+	for(auto it= result.begin(); it != result.end(); ++it)
+	{
+		print_cont(*it);
+	}
+#endif
+	thread_pool pool;
+	Noisy ns;
+	std::function<void()> l= [ns]() { std::cout << "I am running " << std::endl;};
+	//pool.postWork(std::move(l));
 }
 
 

@@ -147,15 +147,18 @@ int main(int argc, char* argv[])
 #endif
 
 	//MULTIPLE INHERITANCE
-#if 0
 	MI* b= new MI();
 	b->who();
 
+#if 1
 	MI2 mi;
 
 	out << "sizeof(mi) = "
 	<< hex << sizeof(mi) << " hex" << endl;
 	mi.printthis();
+
+#endif
+#if 0
 	// A second demonstration: AMBIGIUS WILL NOT WORK
 	Base1* b1 = &mi;// Upcast
 	Base2* b2 = &mi;// Upcast

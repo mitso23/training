@@ -16,6 +16,7 @@ export NAME= moreEffectiveC++.out
 .PHONY: depend clean
 
 all:
+	@echo "JIM " $(PRJ_ROOT) 
 	make -C ../../ -f rules.mk depend 	
 	make -C ../../ -f rules.mk $(NAME)
 

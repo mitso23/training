@@ -3,10 +3,15 @@
 #include "bithacks.h"
 #include "strings.h"
 #include "algorithms.h"
+#include "trees.h"
+#include "sorting.h"
+#include "stack.h"
+
 #include <libdatastructures/c_vector.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 
 //this is much slower version as the recursion ends up in a deep tree structure
@@ -68,7 +73,69 @@ int main(int argc, char* argv[])
 		paragontiko_rec(200);
 #endif
 
+#if 0
+	int x[4][4]= { { 1, 2 ,3, 4 } , { 5, 6, 7, 8 },  { 9, 10, 11, 12,} , { 13, 14, 15, 16 } };
 
+	printMatrix(x, 4);
+	rotateMatrix90(x, 4);
+	printf("\n");
+	printMatrix(x, 4);
+#endif
+
+#if 0
+	Tree_Node* root= NULL;
+	addNode(&root, 20);
+	addNode(&root, 25);
+	addNode(&root, 15);
+	addNode(&root, 30);
+	addNode(&root, 22);
+	addNode(&root, 17);
+
+	//printPreorder(root);
+	printPostOrder(root);
+	//findCommonAnchestorTwoNodes(root, root->leftChild, root->leftChild->leftChild);
+#endif
+
+
+
+#if 0
+	int arr[]= { 3, 4 , 5, 6 , 7, 8, 9 , 10, 11, 12, 1 , 2 };
+	findMinElement(arr, sizeof(arr)/ sizeof(arr[0]));
+#endif
+
+	//printAllPermutation("ab");
+#if 0
+	char str[] = "hello";
+	reverseString(str);
+	printf("%s\n", str);
+#endif
+
+#if 0
+	char str[] = "Dimitrios";
+	removeDuplicatesNoStorage1(str);
+	printf("%s\n", str);
+#endif
+	//int arr[] = { 1 , 8, 2 , 3 , 7 , 4 };
+	//bubblesort(arr, 6);
+	//selectionsort(arr, 6);
+	//insertionSort(arr, 6);
+	//for(unsigned int i=0; i< 6; ++i)
+		//		printf("%d ",arr[i]);
+		//printf("\n");
+	//char arr[] = "Dimitrios Symonidis\0          ";
+	//replaceSpaceWithPercent20(arr);
+
+#if 0
+	stack myStack;
+	unsigned data;
+
+	createStack(&myStack, 10);
+	push(&myStack, 1);
+	push(&myStack, 2);
+	push(&myStack, 3);
+	pop(&myStack, &data);
+	printStack(&myStack);
+#endif
 }
 
 

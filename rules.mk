@@ -34,3 +34,7 @@ else
 endif
 # DO NOT DELETE
 
+/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/testapps/Interview/Basic.h
+/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/include/utils/utils.h
+/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/testapps/Interview/Medium.h
+/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/include/utils/Noisy.h
