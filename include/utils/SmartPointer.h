@@ -31,20 +31,21 @@ template<class T>
 class SmartPtr
 {
 public:
-	SmartPtr(T* realPtr = 0)
+
+	SmartPtr(T* realPtr = 0) : m_pointee(realPtr)
 	{
-		m_pointee= realPtr;
-		m_rcObject= new RefCount();
-		m_rcObject->incRefCount();
+		if (m_pointee)
+		{
+			m_rcObject= new RefCount();
+			m_rcObject->incRefCount();
+		}
 	}
 
 	SmartPtr(const SmartPtr& rhs) : m_pointee(nullptr), m_rcObject(nullptr)
 	{
 		if(rhs.m_pointee)
 		{
-			m_pointee= rhs.m_pointee;
-			m_rcObject= rhs.m_rcObject;
-			m_rcObject->incRefCount();
+			copy(rhs);
 		}
 	};
 
@@ -56,29 +57,33 @@ public:
 		}
 	}
 
+	void copy(const SmartPtr& rhs)
+	{
+		m_pointee = rhs.m_pointee;
+		m_rcObject = rhs.m_rcObject;
+		m_rcObject->incRefCount();
+	}
+
 	~SmartPtr()
 	{
 		free();
 	};
 
-	// make an assignment to a smart ptr
 	SmartPtr& operator = (const SmartPtr& rhs)
 	{
-		if (!rhs.m_pointee)
+		// They both point to the same thing
+		if (rhs.m_pointee == m_pointee)
 		{
-			//nothing to do
+
 		}
-		else if (rhs.m_pointee != m_pointee)
+		else if (!m_pointee)
 		{
-			//free the current resource
-			free();
-			m_pointee = rhs.m_pointee;
-			m_rcObject = rhs.m_rcObject;
-			m_rcObject->incRefCount();
+			copy(rhs);
 		}
 		else
 		{
-			m_rcObject->incRefCount();
+			free();
+			copy(rhs);
 		}
 
 		return *this;

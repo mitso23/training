@@ -281,5 +281,18 @@ void downCastringTest()
 	std::cout << typeid(ptr).name() << std::endl;
 }
 
+template<typename T>
+class RefObject
+{
+	RefObject(T* pointer) : m_pointer(pointer), m_counter(1)
+	{
+
+	}
+
+private:
+	T* m_pointer;
+	uint32_t m_counter;
+};
+
 
 #endif /* MEDIUM_H_ */
