@@ -1,150 +1,34 @@
-// you can use includes, for example:
-// #include <algorithm>
+#include <stdio.h>
+#include <stdlib.h>
 
-// you can write to stdout for debugging purposes, e.g.
-// cout << "this is a debug message" << endl;
 
-typedef enum
+//Two convert a two dimensional array into single one we use this formula Y*10 + X
+//where X,Y is the pixel coordinates
+
+unsigned pImage[100];
+
+//We assume that each square box is a single pixel of one byte size
+unsigned calculateArea(unsigned char *pImage, unsigned int size)
 {
-    START,
-    SIMILAR,
-    DIFFERENT
-
-}parsing_state_t;
-
-#include <algorithm>
-#include <iterator>
-<<<<<<< HEAD
-=======
-#include <string>
-#include <utils/Noisy.h>
-#include <sstream>
-
-void reverseSentence(const std::string& str)
-{
-	std::stringstream data(str);
-	std::string word;
-
-	while(data >> word)
+	unsigned counter= 0;
+	for(unsigned int i=0; i< 100; ++i)
 	{
-		std::string reversedWord;
-		std::copy(word.rbegin(), word.rend(), std::back_inserter(reversedWord));
-		std::cout << reversedWord << " ";
+		if (pImage[i] != 0)
+		{
+			++counter;
+		}
 	}
 
-	std::cout << std::endl;
-}
->>>>>>> e01479f144cb4ab7b9f04c2a40a7ef44ca277116
-
-int solution(vector<int> &A) {
-
-    if (A.size() == 0)
-    {
-        return 0;
-    }
-    else if (A.size() == 1)
-    {
-        return A[0];
-    }
-
-    std::sort(A.begin(), A.end());
-    //std::copy(A.begin(), A.end(), std::ostream_iterator<int>(std::cout));
-
-    parsing_state_t state= START;
-
-    unsigned int i=1;
-
-    for(; i< A.size();++i)
-    {
-        if (state == START)
-        {
-            if (A[i] == A[i-1])
-            {
-                state = SIMILAR;
-                continue;
-            }
-            else
-            {
-                //std::cout << "found it at " << i << " value: " << A[i] << std::endl;
-                return A[i-1];
-            }
-        }
-        else if (state == SIMILAR)
-        {
-            if (A[i] == A[i-1])
-            {
-                continue;
-            }
-            else
-            {
-                state = START;
-                continue;
-            }
-        }
-    }
-
-    if (state == START)
-    {
-        //std::cout << "END: found it at " << i << " value: " << A[i] << std::endl;
-        return A[i-1];
-    }
-
-    return -1;
-
+	return counter;
 }
 
-#include <unordered_set>
-
-int solution2(vector<int> &A)
+int main(int argc, char* argv[])
 {
-    std::unordered_set<int> s;
+	//The selected coordinates are random and don't correspond to the image provided
+    pImage[12]= 1;
+    pImage[13]= 2;
+    pImage[17]= 4;
 
-    for(auto it=A.begin(); it!= A.end(); ++it)
-    {
-        s.insert(*it);
-    }
+    calculateArea((unsigned char*)pImage, 100);
 
-    for(auto it=s.begin(); it!= s.end(); ++it)
-    {
-        if(s.count(*it) == 1)
-        {
-            return *it;
-        }
-    }
-}
-
-int solution(int X, int Y, int D)
-{
-<<<<<<< HEAD
-    int count=0;
-
-    if ((Y-D) == X)
-    {
-    	return 0;
-    }
-    else if ((Y - D) < X)
-    {
-        return 1;
-    }
-
-    auto distance= Y - X;
-    count = distance / D;
-
-    if (count == 0)
-    {
-        return 1;
-    }
-    else if (distance % D)
-    {
-        return ++count;
-    }
-    else
-    {
-        return count;
-    }
-=======
-	std::string temp("Hello world");
-
-	reverseSentence(temp);
->>>>>>> e01479f144cb4ab7b9f04c2a40a7ef44ca277116
 }

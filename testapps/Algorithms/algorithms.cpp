@@ -1,11 +1,10 @@
-#include "Sorting.h"
 #include "various.h"
 #include "strings.h"
-#include "containers.h"
-#include "FinanceStuff.h"
 
 #include <vector>
 #include <utils/utils.h>
+#include "sorting.h"
+#include "stl.h"
 
 int main(int argc, char* argv[])
 {
@@ -27,5 +26,37 @@ int main(int argc, char* argv[])
 	//std::vector<unsigned> x= { 1, 2 ,3 ,4 ,5, 1 ,1 ,1 ,1 ,1 ,1 , 1, 1 , 2, 2, 2, 3, 4, 5, 5};
 	//knapsack(x, 9);
 	//combinationStrings("abcde");
-	checkIfRotated("abcde", "eabcd");
+	//checkIfRotated("abcde", "eabcd");
+	//std::vector <int> x = { 1, 1, 2, 2 , 3};
+	//removeDuplicateFromSortedArray(x);
+	//print_cont(x);
+
+#if 0
+	std::vector<int> x1= { 1, 2 , 3 };
+	std::vector<int> x2= { 4, 5, 6 };
+	std::vector<int> result;
+
+	mergeSortedArrays(x1, x2, result);
+	print_cont(result);
+#endif
+#if 0
+	std::vector<unsigned> x1= { 1, 3, 7, 2 , 1, 5 , 6, 2, 9 };
+	pairOfNumbersSumToGivenN(x1, 10);
+#endif
+
+	//auto result= checkPattern("/home/mitso23/skatttas", "/home/mitso23/skat*a");
+	auto result= checkPattern2("abkkjkjcdefg", "ab*cdefg");
+	//auto result= checkPattern2("ab", "ab*");
+	//auto result= checkPattern2("abcccccc", "ab*c");
+	//auto result= checkPattern2("abccccccccd", "ab*c");
+	//auto result= checkPattern2("a", "*a");
+	//auto result= checkPattern2("abc", "ab*c");
+	//auto result= checkPattern2("a", "*a");
+	//auto result= checkPattern2("a", "*");
+	//auto result= checkPattern2("abcdefg", "a*cd*fg");
+	//auto result= checkPattern2("abcdefg", "a*cd*fg*");
+	//auto result= checkPattern2("abcdefg", "a*cd*fkg");
+	//auto result= checkPattern2("abcdefg", "a*cd*fgl");
+
+	std::cout << result << std::endl;
 }

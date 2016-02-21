@@ -2,9 +2,36 @@
 #include "Medium.h"
 
 
+std::vector<std::vector<char>> lab= {
+	     { ' ' , '#' ,'#'},
+		 { ' ' , '#' ,'#'},
+		 { ' ' , '#' ,'#'},
+		 { ' ' , '#' ,'#'},
+		 { ' ' , '#' ,'#'},
+		 { ' ' , '#' ,'#'},
+		 { ' ' , '#' ,'#'},
+		 { ' ' , ' ' ,' '},
+};
+
+template <int> class skata;
+
+template<>
+class skata<1>
+{
+
+public:
+	skata()
+	{
+
+	}
+};
+
+
+
+
 int main(int argc, char* argv[])
 {
-	//testConstructionDestructionOrder();
+	testConstructionDestructionOrder();
 	//testCopyAssignementOperators();
 	//testPolymorphism();
 

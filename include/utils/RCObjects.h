@@ -84,23 +84,32 @@ public:
 			m_pointee->addReference();
 	}
 
+	void incrementReference(const RCPtr& rhs)
+	{
+		m_pointee = rhs.m_pointee;
+		m_pointee->addReference();
+	}
+
+	void performDeepCopy(const RCPtr& rhs)
+	{
+		m_pointee= new T(*rhs.m_pointee);
+		m_pointee->addReference();
+	}
+
 	RCPtr(const RCPtr& rhs) : m_pointee(nullptr)
 	{
-		if(rhs.m_pointee && rhs.m_pointee->isShareable())
+		if (!rhs.m_pointee)
 		{
-			m_pointee= rhs.m_pointee;
-			m_pointee->addReference();
+			return;
+		}
+
+		if(rhs.m_pointee->isShareable())
+		{
+			incrementReference(rhs);
 		}
 		else if (rhs.m_pointee)
 		{
-			//We need to perform a deep copy in this case
-			m_pointee= new T();
-
-			//NOTE: by default the new pointee will be sharable
-			*m_pointee= *rhs.m_pointee;
-
-			//increment the reference count showing that we point to a valid object
-			m_pointee->addReference();
+			performDeepCopy(rhs);
 		}
 	}
 
@@ -111,41 +120,50 @@ public:
 
 	RCPtr& operator = (const RCPtr& rhs)
 	{
-		if (&rhs == this)
+		if (!rhs.m_pointee)
 		{
 			return *this;
 		}
-
-		if (rhs.m_pointee && rhs.m_pointee->isShareable())
+		else if (&rhs == this)
 		{
-			m_pointee= rhs.m_pointee;
-			m_pointee->addReference();
+			return *this;
+		}
+		else if (rhs.m_pointee->isShareable())
+		{
+			incrementReference(rhs);
 		}
 		else if (rhs.m_pointee)
 		{
-			//We need to perform a deep copy in this case
-			m_pointee = new T(*rhs.m_pointee);
-
-			//increment the reference count showing that we point to a valid object
-			m_pointee->addReference();
-		}
-		else
-		{
-			m_pointee= nullptr;
+			performDeepCopy(rhs);
 		}
 
 		return *this;
 	}
 
-	T* operator->() const
+	const T* operator->() const
 	{
 		return m_pointee;
 	}
+
+	T* operator->()
+	{
+		auto origPtr= m_pointee;
+
+		//we need to get a full copy of the object
+		performDeepCopy(m_pointee);
+
+		//Remove the old counter
+		origPtr->removeReference();
+
+		return m_pointee;
+	}
+
 
 	T& operator*() const
 	{
 		return *m_pointee;
 	}
+
 private:
 	T* m_pointee;
 };

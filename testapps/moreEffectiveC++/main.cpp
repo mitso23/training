@@ -37,12 +37,18 @@ public:
 int main(int argc, char* argv[])
 {
 #if 0
-	auto fsa= FSA::makeFSA();
-	auto fsa2= FSA2::makeFSA2();
+	Printer printer= getPrinter("alison");
+	Printer printer2= getPrinter("johnson");
 #endif
+
 #if 0
+	auto fsa= FSA::makeFSA();
+	auto fsa2= FSA::makeFSA();
+#endif
+
+#if 1
 	//NOTE: this is not possible as destructor is protected
-	//ObjectCreateOnlyOnHeap stack;
+	ObjectCreateOnlyOnHeap stack;
 	UPNumber* number= new UPNumber(1);
 	if (number->isOnHeap())
 		std::cout << "On the heap" << std::endl;

@@ -9,6 +9,8 @@ class B
 public:
 	virtual void who()= 0;
 
+
+
 	B()
 	{
 		std::cout << "B constructor called " << std::endl;

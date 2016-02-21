@@ -146,15 +146,12 @@ int main(int argc, char* argv[])
 	countExample();
 #endif
 
-	//MULTIPLE INHERITANCE
-	MI* b= new MI();
-	b->who();
+	B* b= new MI();
 
-#if 1
+#if 0
 	MI2 mi;
 
-	out << "sizeof(mi) = "
-	<< hex << sizeof(mi) << " hex" << endl;
+	out << "sizeof(mi) = " << hex << sizeof(mi) << " hex" << endl;
 	mi.printthis();
 
 #endif

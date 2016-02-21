@@ -7,6 +7,86 @@
 #include <functional>
 #include <boost/bind.hpp>
 #include <utils/Noisy.h>
+#include <iostream>
+#include <mutex>
+#include <memory>
+#include <list>
+#include <vector>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+#include <functional>
+
+template<typename T, typename Key, typename H>
+class Hash
+{
+public:
+	Hash(unsigned int size, H f) : h(f)
+	{
+		m_vector.resize(size);
+	}
+
+	void addItem(const T& data, const Key& key)
+	{
+		auto item= getBacket(key);
+
+		if (item)
+		{
+			auto new_data= std::make_shared<T>(data);
+
+			std::lock_guard < std::mutex > lock(item->m_mutex);
+			item->m_list.push_back(new_data);
+		}
+		else
+		{
+			std::shared_ptr<Bucket> bucket= std::make_shared<Bucket>();
+
+			bucket->m_list.push_back(std::make_shared<T>(data));
+			addBacket(key, bucket);
+		}
+	}
+
+	void printItems()
+	{
+		for(auto& item : m_vector)
+		{
+			for(auto& data : item->m_list)
+			{
+				if (data.get())
+					std::cout << *data << std::endl;
+			}
+		}
+	}
+
+private:
+	struct Bucket
+	{
+		std::mutex m_mutex;
+		std::list<std::shared_ptr<T>> m_list;
+	};
+
+	std::mutex m_vectorMutex;
+	std::vector<std::shared_ptr<Bucket>> m_vector;
+
+private:
+	std::shared_ptr<Bucket> getBacket(Key key)
+	{
+		std::lock_guard < std::mutex > lock(m_vectorMutex);
+		return m_vector[h(key)];
+	}
+
+	void addBacket(Key key, std::shared_ptr<Bucket> bucket)
+	{
+		std::lock_guard < std::mutex > lock(m_vectorMutex);
+		m_vector[h(key)]= bucket;
+	}
+
+	H h;
+};
+
+int hash(unsigned int key, unsigned int size)
+{
+	return key % size;
+}
 
 class Bb1
 {

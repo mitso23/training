@@ -50,15 +50,15 @@ private:
 			++constructorCounter;
 		}
 
-#if 0
-		Value(const Value& rhs)
-		{
-			m_value= rhs.m_value;
-		}
-#endif
 		Value (int value ) : m_value(value)
 		{
 			std::cout << "constructor called" << std::endl;
+			++constructorCounter;
+		}
+
+		Value(const Value& rhs) : m_value(rhs.m_value)
+		{
+			std::cout << "copy constructor called" << std::endl;
 			++constructorCounter;
 		}
 

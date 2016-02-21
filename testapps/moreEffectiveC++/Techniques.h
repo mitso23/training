@@ -12,6 +12,8 @@
 	m_string= rhs.m_string; \
 	m_refCount= rhs.m_refCount; \
 
+
+//A very naive implementation
 class ReferenceCountingString
 {
 
@@ -172,7 +174,8 @@ private:
 // forward declaration
 class PrintJob;
 
-class Printer {
+class Printer
+{
 public:
 	void submitJob(const PrintJob& job) {
 	}
@@ -181,26 +184,22 @@ public:
 
 	}
 
-	void performSelfTest() {
+	void performSelfTest()
+	{
 	}
 
-	friend Printer& getPrinter();
+	friend Printer& getPrinter(const std::string& name)
+	{
+		static Printer p(name);
+		return p;
+	}
 
 private:
-	Printer() {
-	}
-
-	Printer(const Printer& rhs) {
-
+	Printer(const std::string& name)
+	{
+		std::cout << "Printer constructor called ";
 	}
 };
-
-//THE major drawback is that we would have only one global printer
-// we couldn't do something like that getPrinter(), deletePrinter, get new printer
-Printer& getPrinter() {
-	static Printer p;
-	return p;
-}
 
 //Base class for ensuring that only one object can be created at a time
 template<typename T>
@@ -546,25 +545,4 @@ private:
 	std::string m_string;
 };
 
-class Ship;
-class SpaceCraft;
-
-class GameObject
-{
-public:
-	virtual void processCollision(GameObject* ship)
-	{
-		ship->handleCollision(this);
-	}
-
-	void handleCollision(Ship* ship)
-	{
-		//Do Something here
-	}
-
-	void handleCollision(SpaceCraft* spacecraft)
-	{
-		//do something elese here
-	}
-};
 

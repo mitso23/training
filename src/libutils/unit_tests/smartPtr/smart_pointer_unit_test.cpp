@@ -7,6 +7,17 @@
 #include <utils/SmartPointer.h>
 #include <utils/Noisy.h>
 
+#include <memory>
+
+class NoisyDerived : public Noisy
+{
+public:
+	NoisyDerived()
+	{
+
+	}
+};
+
 BOOST_AUTO_TEST_SUITE (UtilsTestSuite)
 
 BOOST_AUTO_TEST_CASE(SimpleCreation)
@@ -33,6 +44,18 @@ BOOST_AUTO_TEST_CASE(SimpleAssignment)
 	ns2 = ns1;
 
 	BOOST_CHECK(ns2->getId() == 2);
+}
+
+BOOST_AUTO_TEST_CASE(BasicOperatos)
+{
+	SmartPtr<Noisy> ns1(new NoisyDerived());
+	SmartPtr<Noisy> n2= ns1;
+
+	ns1= n2;
+
+	SmartPtr<Noisy> ns3= my_make_shared<Noisy>();
+
+	BOOST_CHECK(!ns1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
