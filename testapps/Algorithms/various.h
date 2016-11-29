@@ -113,7 +113,7 @@ void removeDuplicateFromSortedArray(std::vector<int>& v)
 	v.erase(start, v.end());
 }
 
-void findBestMatch(std::vector<unsigned>& arr, unsigned position, unsigned target)
+void findBestMatch(const std::vector<unsigned>& arr, unsigned position, unsigned target)
 {
 	if(arr[position] == target)
 	{

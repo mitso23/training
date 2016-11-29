@@ -1,16 +1,4 @@
-#include "Arrays.h"
-#include "Io.h"
-#include "bithacks.h"
-#include "strings.h"
-#include "algorithms.h"
-#include "trees.h"
-#include "sorting.h"
-#include "stack.h"
-
-#include <libdatastructures/c_vector.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "dynamic_programming.h"
 
 
 
@@ -136,12 +124,7 @@ int main(int argc, char* argv[])
 	pop(&myStack, &data);
 	printStack(&myStack);
 #endif
-=======
-	for(int i=0; i<= 5; ++i)
-	{
-		printf("%d:%d\n", i, fibonacciRec(i));
-	}
-#endif
+
 #if 0
 	int x = 123;
 	reverseInt(&x);
@@ -151,12 +134,8 @@ int main(int argc, char* argv[])
 	//reverseSentence2("Hello        He is THE  ENENMY \n\n HELP GOD");
 	//find_longest_non_repeative_str("abcdafdqwert");
 
-	const char* arr[2] = { "Hello", "World"};
-	char arr2[2][10] = {"Hello", "World"};
-
-	sort_array_string(arr, 2);
-	sort_array_string_2(arr2, 2);
->>>>>>> e01479f144cb4ab7b9f04c2a40a7ef44ca277116
+	int arr[] = { 1, 2, 3, 4, 5};
+	knapsack(arr, sizeof(arr)/sizeof(arr[0]), 7);
 }
 
 

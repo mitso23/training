@@ -24,7 +24,7 @@ $(DIR)/%.o: $(DIR)/%.c
 	$(CC) -c $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 depend: $(SRCS)
-	makedepend -f ${PRJ_ROOT}/rules.mk -- $(SRCS) -I ${PRJ_ROOT}/include  -Y > /dev/null 2>&1  
+	makedepend -f ${PRJ_ROOT}/rules.mk -- $(SRCS) -I ${PRJ_ROOT}/include -Y > /dev/null 2>&1  
 
 clean:
 ifeq (,$(findstring .so,$(NAME)))
@@ -33,8 +33,3 @@ else
 	$(RM) $(DIR)/*.o $(DIR)/*.so $(PRJ_ROOT)/lib/$(NAME)
 endif
 # DO NOT DELETE
-
-/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/testapps/Interview/Basic.h
-/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/include/utils/utils.h
-/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/testapps/Interview/Medium.h
-/home/mitso23/training//testapps/Interview/interview.o: /home/mitso23/training/include/utils/Noisy.h

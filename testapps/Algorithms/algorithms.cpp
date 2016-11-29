@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 #endif
 
 	//auto result= checkPattern("/home/mitso23/skatttas", "/home/mitso23/skat*a");
-	auto result= checkPattern2("abkkjkjcdefg", "ab*cdefg");
+	//auto result= checkPattern2("abkkjkjcdefg", "ab*cdefg");
 	//auto result= checkPattern2("ab", "ab*");
 	//auto result= checkPattern2("abcccccc", "ab*c");
 	//auto result= checkPattern2("abccccccccd", "ab*c");
@@ -57,6 +57,4 @@ int main(int argc, char* argv[])
 	//auto result= checkPattern2("abcdefg", "a*cd*fg*");
 	//auto result= checkPattern2("abcdefg", "a*cd*fkg");
 	//auto result= checkPattern2("abcdefg", "a*cd*fgl");
-
-	std::cout << result << std::endl;
 }
