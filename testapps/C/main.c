@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 	//reverseSentence2("Hello        He is THE  ENENMY \n\n HELP GOD");
 	//find_longest_non_repeative_str("abcdafdqwert");
 
-	int arr[] = { 1, 2, 3, 4, 5};
+	int arr[] = { 1, 2, 3, 4, 6};
 	knapsack(arr, sizeof(arr)/sizeof(arr[0]), 7);
 }
 

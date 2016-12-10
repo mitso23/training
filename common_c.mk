@@ -1,3 +1,5 @@
+export PRJ_ROOT=/home/mitso23/training
+
 export CC=gcc-5
 export CFLAGS= -Wall -g -std=c99 
 export INCLUDES= -I${PRJ_ROOT}/include

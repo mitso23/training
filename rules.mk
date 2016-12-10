@@ -33,3 +33,7 @@ else
 	$(RM) $(DIR)/*.o $(DIR)/*.so $(PRJ_ROOT)/lib/$(NAME)
 endif
 # DO NOT DELETE
+
+/home/mitso23/training//testapps/C/Arrays.o: /home/mitso23/training/testapps/C/Arrays.h
+/home/mitso23/training//testapps/C/main.o: /home/mitso23/training/testapps/C/dynamic_programming.h
+/home/mitso23/training//testapps/C/bithacks.o: /home/mitso23/training/testapps/C/bithacks.h

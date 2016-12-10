@@ -17,7 +17,7 @@ void knapsack(const int* arr, int size, int sum)
 			return;
 		}
 
-		sum = sum + arr[-1];
+		sum = sum - arr[0];
 		knapsack(arr + 1, --size, sum);
 		printf("arr %d\n", arr[0]);
 	}
