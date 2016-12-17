@@ -2,6 +2,7 @@
 #define SMARTPOINTERS_H_
 
 #include <memory>
+#include <iostream>
 
 
 class Investment
@@ -28,6 +29,17 @@ private:
 
 	}
 };
+
+void MoveSharedPtr()
+{
+	std::shared_ptr<int> x(new int(1));
+	std::shared_ptr<int> y= std::move(x);
+	std::shared_ptr<int> z(std::move(y));
+
+	std::cout << "y:" << *y << std::endl;
+
+
+}
 
 
 

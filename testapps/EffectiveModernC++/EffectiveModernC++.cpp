@@ -9,4 +9,7 @@ int main(int argc, char* argv[])
 #endif
 
 	auto investment = Stock::makeInvestment(1);
+	std::shared_ptr<Investment> sharedInvestment = std::move(investment);
+
+	MoveSharedPtr();
 }
