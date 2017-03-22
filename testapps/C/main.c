@@ -1,4 +1,4 @@
-#include "dynamic_programming.h"
+#include "knapsack_problem.h"
 
 
 
@@ -134,9 +134,9 @@ int main(int argc, char* argv[])
 	//reverseSentence2("Hello        He is THE  ENENMY \n\n HELP GOD");
 	//find_longest_non_repeative_str("abcdafdqwert");
 
-	int arr[] = { 1, 2, 3, 4, 5, 6};
+	int arr[30] = { 1, 7, 3, 4, 5, 6 , 2};
 
-	knapsack(7, arr, 6);
+	knapsack(7, arr, sizeof(arr)/sizeof(arr[0]));
 }
 
 

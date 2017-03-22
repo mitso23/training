@@ -7,13 +7,18 @@ using namespace std;
 class B
 {
 public:
+	// who is implemented by all the subclasses
 	virtual void who()= 0;
 
+	// foo is implemented by D1
+	virtual void foo() = 0;
 
+	// goo is implemented by D2
+	virtual void goo() =0;
 
 	B()
 	{
-		std::cout << "B constructor called " << std::endl;
+		std::cout << "B constructor called " << this << std::endl;
 	}
 
 };
@@ -21,14 +26,19 @@ public:
 class D1 : virtual public B
 {
 public:
-	virtual void who()
+	void who()
 	{
 		std::cout << "D1" << std::endl;
 	}
 
+	void foo()
+	{
+		std::cout << "foo" << std::endl;
+	}
+
 	D1()
 	{
-		std::cout << "D1 constructor called " << std::endl;
+		std::cout << "D1 constructor called " << this << std::endl;
 	}
 };
 
@@ -36,27 +46,36 @@ class D2 : virtual public B
 {
 
 public:
-	virtual void who()
+	void who()
 	{
 		std::cout << "D2" << std::endl;
 	}
 
+	void goo()
+	{
+		std::cout << "goo" << std::endl;
+	}
+
 	D2()
 	{
-		std::cout << "D2 constructor called " << std::endl;
+		std::cout << "D2 constructor called " << this << std::endl;
 	}
 };
 
 class MI: public D1, public D2
 {
 public:
-	virtual void who()
+	void who()
 	{
 		std::cout << "D1 + D2" << std::endl;
-
 	}
 
-	MI() : B()
+	void goo()
+	{
+		std::cout << "M1" << std::endl;
+	}
+
+	MI()
 	{
 		std::cout << "MI constructor" << std::endl;
 	}

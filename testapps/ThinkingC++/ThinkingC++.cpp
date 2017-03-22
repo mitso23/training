@@ -146,15 +146,17 @@ int main(int argc, char* argv[])
 	countExample();
 #endif
 
-	B* b= new MI();
-
 #if 0
+	B* b= new MI();
+	b->goo();
+	std::cout << "sizeof b = " << sizeof(*b) << std::endl;
+#endif
+
 	MI2 mi;
 
 	out << "sizeof(mi) = " << hex << sizeof(mi) << " hex" << endl;
 	mi.printthis();
 
-#endif
 #if 0
 	// A second demonstration: AMBIGIUS WILL NOT WORK
 	Base1* b1 = &mi;// Upcast

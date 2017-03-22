@@ -5,6 +5,8 @@
 #include <utils/utils.h>
 #include "sorting.h"
 #include "stl.h"
+#include "coin_changing_problem.h"
+#include "mergeSort.h"
 
 int main(int argc, char* argv[])
 {
@@ -57,4 +59,16 @@ int main(int argc, char* argv[])
 	//auto result= checkPattern2("abcdefg", "a*cd*fg*");
 	//auto result= checkPattern2("abcdefg", "a*cd*fkg");
 	//auto result= checkPattern2("abcdefg", "a*cd*fgl");
+
+	//unsigned x[] = { 4, 3, 1};
+	//std::cout << calculateMinNumberCoins(x, sizeof(x)/sizeof(x[0]), 10);
+	//std::cout << count2({1,3,4}, 6) << std::endl;;
+
+	unsigned x[] = { 2, 1, 4, 3, 9, 4 , 8 , 1, 11 , 12 , 15 };
+	mergeSort(x, 0, sizeof(x)/sizeof(unsigned));
+
+	for (unsigned int i=0; i<  sizeof(x)/sizeof(unsigned); ++i)
+	{
+		std::cout << x[i] << std::endl;
+	}
 }

@@ -1,0 +1,6 @@
+sizeof(mi) = 40 hex
+MI this = 0x7fffcabc8ba0
+Base1 this = 0x7fffcabc8ba0
+Base2 this = 0x7fffcabc8bb0
+Member1 this = 0x7fffcabc8bc0
+Member2 this = 0x7fffcabc8bd0
