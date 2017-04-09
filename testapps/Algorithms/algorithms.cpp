@@ -7,6 +7,8 @@
 #include "stl.h"
 #include "coin_changing_problem.h"
 #include "mergeSort.h"
+#include "labyrinth.h"
+#include "permutation.h"
 
 int main(int argc, char* argv[])
 {
@@ -64,6 +66,7 @@ int main(int argc, char* argv[])
 	//std::cout << calculateMinNumberCoins(x, sizeof(x)/sizeof(x[0]), 10);
 	//std::cout << count2({1,3,4}, 6) << std::endl;;
 
+#if 0
 	unsigned x[] = { 2, 1, 4, 3, 9, 4 , 8 , 1, 11 , 12 , 15 };
 	mergeSort(x, 0, sizeof(x)/sizeof(unsigned));
 
@@ -71,4 +74,22 @@ int main(int argc, char* argv[])
 	{
 		std::cout << x[i] << std::endl;
 	}
+#endif
+
+	const unsigned lab[][10] = {
+							{ '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+							{ '#', '*', '#', '#', ' ', ' ', ' ', ' ', '#', '#'},
+							{ '#', ' ', ' ', '#', ' ', '#', '#', ' ', ' ', '#'},
+							{ '#', ' ', ' ', ' ', ' ', '#', ' ', ' ', '#', '#'},
+							{ '#', '#', ' ', ' ', '#', '#', ' ', ' ', ' ', '#'},
+							{ ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', '#'},
+							{ ' ', '#', '#', ' ', ' ', '#', '#', '#', ' ', '#'},
+							{ ' ', ' ', ' ', '#', '#', ' ', ' ', ' ', ' ', '#'},
+							{ '#', ' ', '#', '#', '#', '#', '#', '#', ' ', ' '},
+						  };
+	//findExit(lab, 9, {8, 9}, { 8, 1 });
+	//Solve(0, 0);
+	char str[] = "abcdefghklm";
+	permutate(str, strlen(str));
+	//printf("%s", rotate(str, ));
 }

@@ -17,7 +17,6 @@ Base::~Base()
 {
 	std::cout << "Deleting Base " << std::endl;
 }
-
 class Derived: public Base
 {
 
