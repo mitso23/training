@@ -38,10 +38,29 @@ bool checkIfLocalUsbPathAndGetAbsolutePath(const std::string& path, std::string&
 	return false;
 }
 
+#include <memory>
+
 int main()
 {
-	std::string absolute;
-	checkIfLocalUsbPathAndGetAbsolutePath("usb://Skata1/Xese/ocm", absolute);
-	std::cout << absolute << std::endl;
+	int* ptr = nullptr;
+
+	std::function<void (void)> l = []() { };
+
+	std::unique_ptr<int, std::function<void (int*)> > p(new int(1), [&ptr](int* wrappPtr)
+	{
+		if (ptr)
+		{
+			std::cout << "ptr is not null: " << std::endl;
+		}
+		else
+		{
+			std::cout << "ptr is null: " << std::endl;
+		}
+
+		delete wrappPtr;
+	});
+
+	ptr= new int(1);
+
 	return 0;
 }

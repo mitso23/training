@@ -1,5 +1,6 @@
 #include "SmartPointers.h"
 #include "TypeDeduction.h"
+#include "ModernC++.h"
 
 int main(int argc, char* argv[])
 {
@@ -32,5 +33,8 @@ int main(int argc, char* argv[])
 
 	//testMakeUniquePtr();
 	//testInitializerListMakeSharedPtr();
-	MoveAutoPtrInContainer();
+	//MoveAutoPtrInContainer();
+	//iterateOverUnorderMap();
+	//AutoToProxyClass();
+	differentTypeInitialization();
 }

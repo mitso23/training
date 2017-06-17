@@ -67,12 +67,12 @@ public:
 
 	Noisy(const std::string& str) : id(create++), data(nullptr)
 	{
-		std::cout << "d[" << id << "]";
+		std::cout << "str[" << id << "]";
 	}
 
 	Noisy(const int& value) : id(create++), data(nullptr)
 	{
-		std::cout << "d[" << id << "]";
+		std::cout << "int[" << id << "]";
 	}
 
 	Noisy& operator = (const Noisy& rv)

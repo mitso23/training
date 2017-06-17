@@ -5,9 +5,23 @@ cmake \
 libboost-test-dev \
 xutils-dev \
 eclipse \
-eclipse-cdt  
+eclipse-cdt \
+libboost-dev \ 
+libboost-program-options-dev \
+libboost-system-dev \ 
+libboost-filesystem-dev \
+libevent-dev \
+automake \
+libtool \
+flex \
+bison \
+pkg-config \
+g++ \
+libssl-dev \
+curl \
+sudo 
 
-RUN useradd -ms /bin/bash mitso23
+RUN useradd -ms /bin/bash mitso23 && adduser mitso23 sudo
 WORKDIR /home/mitso23/
 RUN chown -R mitso23:mitso23 /usr/local/lib/
 RUN chown -R mitso23:mitso23 /usr/local/include/
@@ -23,4 +37,15 @@ RUN cd /home/mitso23/training/packages/googletest/googletest/ && cmake ./ && mak
 
 RUN mkdir /home/mitso23/training/bin
 ENV PRJ_ROOT=/home/mitso23/training
+
+
+RUN cd /tmp && curl http://www-eu.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz | tar zx 
+RUN cd /tmp/thrift-0.10.0/ && ./configure --without-ruby && make -j4
+
+USER root
+RUN cd /tmp/thrift-0.10.0 && make install
+
+USER mitso23
+
+
 
