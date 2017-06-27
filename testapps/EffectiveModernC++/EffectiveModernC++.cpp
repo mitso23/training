@@ -1,11 +1,12 @@
 #include "SmartPointers.h"
 #include "TypeDeduction.h"
 #include "ModernC++.h"
+#include "RValueReferences.h"
 
 int main(int argc, char* argv[])
 {
 #if 0
-	std::vector<int> x = { 1, 2 };
+	std::vector<int> x = { 1, 2};
 	std::cout << getValue(x, 0) << std::endl;
 #endif
 
@@ -36,5 +37,6 @@ int main(int argc, char* argv[])
 	//MoveAutoPtrInContainer();
 	//iterateOverUnorderMap();
 	//AutoToProxyClass();
-	differentTypeInitialization();
+	//differentTypeInitialization();
+	testRemoveReference();
 }

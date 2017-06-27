@@ -10,32 +10,34 @@
 
 #include <unistd.h>
 
-const int MazeHeight = 3;
-const int MazeWidth = 3;
+const int MazeHeight = 9;
+const int MazeWidth = 9;
 
-#if 0
+#if 1
 char Maze[MazeHeight][MazeWidth + 1] =
 {
 //   012345678
     "# #######", //0
-    "#x #   # ", //1
-    "# ###x# #", //2
+    "#x # x # ", //1
+    "# ## x# #", //2
     "# #   # #", //3
     "# # #x###", //4
-    "#x  # #  ", //5
+    "#x  #x#  ", //5
     "#x ##x x#", //6
     "#    x  #", //7
     "#########", //8
 };
 #endif
 
+#if 0
 char Maze[MazeHeight][MazeWidth + 1] =
 {
 //   012
-    "   ", //0
+    "  x", //0
     " xx", //1
     "# #", //2
 };
+#endif
 
 const char Wall = '#';
 const char Free = ' ';
@@ -52,7 +54,7 @@ public:
 };
 
 COORD StartingPoint(1, 0);
-COORD EndingPoint(2, 1);
+COORD EndingPoint(4, 1);
 
 void PrintDaMaze()
 {
@@ -65,14 +67,14 @@ void PrintDaMaze()
 
 bool Solve(int X, int Y)
 {
-	//std::cout << "Y: " << Y << " X: " << X << std::endl;
+	std::cout << "Y: " << Y << " X: " << X << std::endl;
 
     // Make the move (if it's wrong, we will backtrack later.
     Maze[Y][X] = SomeDude;
 
     // If you want progressive update, uncomment these lines...
     PrintDaMaze();
-    usleep(1000 * 1000);
+    usleep(1000);
 
     // Check if we have reached our goal.
     if (X == EndingPoint.X && Y == EndingPoint.Y)
@@ -86,35 +88,63 @@ bool Solve(int X, int Y)
     {
 	  return true;
     }
+
     if (X > 0 && Maze[Y][X - 1] == Free && Solve(X - 1, Y))
     {
 	   return true;
     }
+
     if (Y > 0 && Maze[Y - 1][X] == Free && Solve(X, Y - 1))
     {
 	   return true;
    	}
-
 
     if (X < MazeWidth && Maze[Y][X + 1] == Free && Solve(X + 1, Y))
     {
         return true;
     }
 
-
-    if (X > 0 && Maze[Y][X - 1] == MoveWall)
+    for(unsigned int count = 0; count < 4; ++count)
     {
-    	//std::cout << "Move wall at Y: " << Y << " X: " << X - 1 << std::endl;
+    	int MoveWallY = -1;
+    	int MoveWallX = -1;
 
-		int MoveWallY = Y;
-		int MoveWallX = X - 1;
+    	if (count == 0)
+    	{
+    		if (X > 0 && Maze[Y][X - 1] == MoveWall)
+    		{
+    			MoveWallY = Y;
+    			MoveWallX = X - 1;
+    		}
+    	}
+    	else if (count == 1)
+    	{
+    		if (X < MazeWidth && Maze[Y][X + 1] == MoveWall)
+    		{
+    			MoveWallY = Y;
+    			MoveWallX = X + 1;
+    		}
+    	}
+    	else if (count == 2)
+    	{
+    		if (Y > 0 && Maze[Y - 1][X] == MoveWall)
+    		{
+    			MoveWallY = Y - 1;
+    			MoveWallX = X;
+    		}
+    	}
+    	else if (count == 3)
+    	{
+    		MoveWallY = Y + 1;
+    		MoveWallX = X;
+    	}
 
-		if (MoveWallX > 0 && Maze[MoveWallY][MoveWallX -1] == Free)
+    	if (MoveWallX > 0 && Maze[MoveWallY][MoveWallX -1] == Free)
 		{
 			Maze[MoveWallY][MoveWallX -1] = MoveWall;
 			Maze[MoveWallY][MoveWallX] = Free;
 
-			if (Solve(X-1, Y))
+			if (Solve(MoveWallX, MoveWallY))
 			{
 				return true;
 			}
@@ -123,13 +153,12 @@ bool Solve(int X, int Y)
 			Maze[MoveWallY][MoveWallX] = MoveWall;
 		}
 
-		if (MoveWallX < MazeHeight && Maze[MoveWallY][MoveWallX+1] == Free)
+		if (MoveWallX < MazeHeight && MoveWallX > 0 && Maze[MoveWallY][MoveWallX+1] == Free)
 		{
 			Maze[MoveWallY][MoveWallX+1] = MoveWall;
 			Maze[MoveWallY][MoveWallX] = Free;
 
-
-			if (Solve(X-1, Y))
+			if (Solve(MoveWallX, MoveWallY))
 			{
 				return true;
 			}
@@ -143,8 +172,7 @@ bool Solve(int X, int Y)
 			Maze[MoveWallY - 1][MoveWallX] = MoveWall;
 			Maze[MoveWallY][MoveWallX] = Free;
 
-
-			if (Solve(X-1, Y))
+			if (Solve(MoveWallX, MoveWallY))
 			{
 				return true;
 			}
@@ -153,12 +181,12 @@ bool Solve(int X, int Y)
 			Maze[MoveWallY][MoveWallX] = MoveWall;
 		}
 
-		if (MoveWallY < MazeHeight && Maze[MoveWallY + 1][MoveWallX] == Free)
+		if (MoveWallY < MazeHeight && MoveWallY > 0 && Maze[MoveWallY + 1][MoveWallX] == Free)
 		{
 			Maze[MoveWallY + 1][MoveWallX] = MoveWall;
 			Maze[MoveWallY][MoveWallX] = Free;
 
-			if (Solve(X-1, Y))
+			if (Solve(MoveWallX, MoveWallY))
 			{
 				return true;
 			}
@@ -166,208 +194,14 @@ bool Solve(int X, int Y)
 			Maze[MoveWallY + 1][MoveWallX] = Free;
 			Maze[MoveWallY][MoveWallX] = MoveWall;
 		}
+    }
 
-
-	}
-
-	if (X < MazeWidth && Maze[Y][X + 1] == MoveWall)
-	{
-		//std::cout << "Move wall at Y: " << Y << " X: " << X + 1 << std::endl;
-
-		int MoveWallY = Y;
-		int MoveWallX = X + 1;
-
-		if (MoveWallX > 0 && Maze[MoveWallY][MoveWallX - 1] == Free)
-		{
-			Maze[MoveWallY][MoveWallX - 1] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X+1, Y))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY][MoveWallX - 1 ] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallX < MazeHeight && Maze[MoveWallY][MoveWallX+1] == Free)
-		{
-			Maze[MoveWallY][MoveWallX+1] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X+1, Y))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY][MoveWallX+1] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallY > 0 && Maze[MoveWallY - 1][MoveWallX] == Free)
-		{
-			Maze[MoveWallY - 1][MoveWallX] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X+1, Y))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY - 1][MoveWallX] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallY < MazeHeight && Maze[MoveWallY + 1][MoveWallX] == Free)
-		{
-			Maze[MoveWallY + 1][MoveWallX] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X+1, Y))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY + 1][MoveWallX] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-	}
-
-	if (Y > 0 && Maze[Y - 1][X] == MoveWall)
-	{
-		int MoveWallY = Y - 1;
-		int MoveWallX = X;
-
-		if (MoveWallX > 0 && Maze[MoveWallY][MoveWallX -1] == Free)
-		{
-			Maze[MoveWallY][MoveWallX -1] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y - 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY][MoveWallX -1] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallX < MazeHeight && Maze[MoveWallY][MoveWallX+1] == Free)
-		{
-			Maze[MoveWallY][MoveWallX+1] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y - 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY][MoveWallX+1] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallY > 0 && Maze[MoveWallY - 1][MoveWallX] == Free)
-		{
-			Maze[MoveWallY - 1][MoveWallX] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y - 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY - 1][MoveWallX] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallY < MazeHeight && Maze[MoveWallY + 1][MoveWallX] == Free)
-		{
-			Maze[MoveWallY + 1][MoveWallX] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y - 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY + 1][MoveWallX] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-	}
-
-	if (Y < MazeHeight && Maze[Y + 1][X] == MoveWall)
-	{
-		int MoveWallY = Y + 1;
-		int MoveWallX = X;
-
-		//std::cout << "Move wall at Y: " << Y + 1 << " X: " << X << std::endl;
-
-		if (MoveWallX > 0 && Maze[MoveWallY][MoveWallX -1] == Free)
-		{
-			Maze[MoveWallY][MoveWallX -1] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y + 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY][MoveWallX -1] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallX < MazeHeight && Maze[MoveWallY][MoveWallX+1] == Free)
-		{
-			Maze[MoveWallY][MoveWallX+1] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y + 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY][MoveWallX+1] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallY > 0 && Maze[MoveWallY - 1][MoveWallX] == Free)
-		{
-			Maze[MoveWallY - 1][MoveWallX] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y + 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY - 1][MoveWallX] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-
-		if (MoveWallY < MazeHeight && Maze[MoveWallY + 1][MoveWallX] == Free)
-		{
-			Maze[MoveWallY + 1][MoveWallX] = MoveWall;
-			Maze[MoveWallY][MoveWallX] = Free;
-
-			if (Solve(X, Y + 1))
-			{
-				return true;
-			}
-
-			Maze[MoveWallY + 1][MoveWallX] = Free;
-			Maze[MoveWallY][MoveWallX] = MoveWall;
-		}
-	}
-
-
-    // Otherwise we need to backtrack and find another solution.
+	// Otherwise we need to backtrack and find another solution.
     Maze[Y][X] = Free;
 
     // If you want progressive update, uncomment these lines...
     PrintDaMaze();
-    usleep(1000*1000);
+    usleep(1000);
     return false;
 }
 

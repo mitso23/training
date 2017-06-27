@@ -229,5 +229,14 @@ int main(int argc, char* argv[])
 	//int arrr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	//combination_sum(arrr, 9, 9);
 
-	Solve(0, 0);
+	//Solve(0, 0);
+
+	unsigned int data[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+	unsigned int sum = 0;
+	//knapsack(data, 0, sizeof(data) / sizeof(data[0]), sum, 32, 0, true);
+	//std::cout << "min number of coins: " << minNumCoins << std::endl;
+	std::cout << count3({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}, 27000);
+
+
 }
