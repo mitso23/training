@@ -1,12 +1,12 @@
 #ifndef MIN_COST_IN_MATRIX_H_
 #define MIN_COST_IN_MATRIX_H_
 
-#define MAX_MATRIX_SIZE 3
+#define MAX_MATRIX_SIZE 2
 #include <algorithm>
 
-unsigned minCostMatrix(unsigned costMatrix[MAX_MATRIX_SIZE][MAX_MATRIX_SIZE], int x, int y)
+unsigned minCostMatrix(unsigned costMatrix[MAX_MATRIX_SIZE][MAX_MATRIX_SIZE], int x, int y, int level)
 {
-	std::cout << "X: " << x << " Y: " << y << std::endl;
+	std::cout << "X: " << x << " Y: " << y << " level: " << level << std::endl;
 
 	if (x == 0 && y == 0)
 	{
@@ -17,10 +17,13 @@ unsigned minCostMatrix(unsigned costMatrix[MAX_MATRIX_SIZE][MAX_MATRIX_SIZE], in
 		return 0xFFFFFFFF;
 	}
 
+	auto result = costMatrix[y][x] + std::min(minCostMatrix(costMatrix, x - 1, y - 1, level + 1) ,
+			   	   	   std::min(minCostMatrix(costMatrix, x - 1, y, level + 1),
+					   minCostMatrix(costMatrix, x, y - 1, level + 1)));
 
-	return costMatrix[x][y] + std::min(minCostMatrix(costMatrix, x - 1, y - 1) ,
-			   	   	   std::min(minCostMatrix(costMatrix, x - 1, y),
-					   minCostMatrix(costMatrix, x, y - 1)));
+	std::cout << "min cost x: " << x << " y: " << y << " = " <<  result << " level: " << level << std::endl;
+
+	return result;
 
 }
 

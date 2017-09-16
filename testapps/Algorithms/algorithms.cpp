@@ -24,6 +24,26 @@
 #include "N-Queen-Problem.h"
 #include "HourGlassBacktracking.h"
 #include "combination.h"
+#include "binominal_coefficents.h"
+#include "paintfence_algorithm.h"
+#include "Knapsack.h"
+#include "fillCanvas.h"
+#include "WordBreaking.h"
+#include "longest_path_hurdels.h"
+#include "numberofPossibleScores.h"
+#include "find_path_magic_triangle.h"
+#include "escape_from_room.h"
+#include "pattern_matching.h"
+#include "longest_common_subsequence.h"
+#include "max_non_parallel_lines.h"
+#include "max_bins_2d_array.h"
+#include "numers_have_four_digit.h"
+#include "longest_path_graph.h"
+#include "find_edge_picture.h"
+#include "shortest_path_warmhole.h"
+#include "warmhole_contest.h"
+#include "k_means_algorithm.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -187,13 +207,22 @@ int main(int argc, char* argv[])
 	std::cout << stepDynamicProg(100) << std::endl;
 	std::cout << stepNaive(100) << std::endl;
 #endif
+
 #if 0
 	unsigned int costMatrix[3][3] = { { 1, 1, 8 },
 									  { 2, 3 ,1 },
 									  { 4, 5, 1 }
 								  };
 
-	std::cout << minCostMatrix(costMatrix, 2, 2) << std::endl;
+	std::cout << minCostMatrix(costMatrix, 2, 2, 0) << std::endl;
+#endif
+
+#if 0
+	unsigned int costMatrix[2][2] = { { 1, 2},
+									  { 3, 4},
+									};
+	std::cout << minCostMatrix(costMatrix, 1, 1, 0) << std::endl;
+
 #endif
 
 #if 0
@@ -231,12 +260,260 @@ int main(int argc, char* argv[])
 
 	//Solve(0, 0);
 
+#if 0
 	unsigned int data[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
 	unsigned int sum = 0;
 	//knapsack(data, 0, sizeof(data) / sizeof(data[0]), sum, 32, 0, true);
 	//std::cout << "min number of coins: " << minNumCoins << std::endl;
 	std::cout << count3({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}, 27000);
+#endif
+
+#if 0
+	//std::cout << binomialCoeffBottomUp(5, 2) << std::endl;
+	int result[2];
+	int data[] = { 1, 2, 3, 4,5};
+	for(unsigned int i=0; i< 1; ++i)
+	{
+		printCombination_rec_2(result, data + i, 0, (sizeof(data)/sizeof(data[0])) - i, 3, 0);
+	}
+#endif
+
+#if 0
+	long unsigned int count = 0;
+	int sameColourCount = 0;
+	int numberColours = 3;
+	int numberPosts = 4;
+	countWays(numberColours, 0, numberPosts, sameColourCount, 0, count);
+	std::cout << count << std::endl;
+	std::cout << countWays(numberPosts, numberColours) << std::endl;
+	//std::cout << countWays2(numberPosts, numberColours) << std::endl;
+#endif
+#if 0
+	int data[][4] ={ {  0, 0,  0,  0 },
+					 {  0, 0,  1,  0 },
+					 {  0, 0,  0,  0 },
+					 {  0, 1,  1,  1 },
+					 {  0, 0,  1,  0 },
+					 {  1, 0,  0,  0 },
+					 {  0, 1,  1,  0 },
+				   };
+
+	fillCanvas(data, 7, 1, 0, 0);
+	printCanvas(data, 7);
+#endif
+#if 0
+	const char sentence[] = "IamGreek";
+	char* dict[100000];
+
+	ifstream f("/usr/share/dict/words");
+	unsigned int i=0;
+	while(f)
+	{
+		std::string skata;
+		f >> skata;
+		dict[i] = static_cast<char*>(malloc(sizeof(char)*(skata.size() + 1)));
+		strcpy(dict[i++], skata.c_str());
+	}
+
+	printAllWords_rec(sentence, (const char**)dict, i, 0, 0, 0);
+#endif
+
+#if 0
+	int path[Y_MAX][X_MAX] = { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+							   { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+							   { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+							 };
+#endif
+
+#if 1
+	int path[Y_MAX][X_MAX] = { { 1, 1, 1 },
+							   { 1, 1, 1 },
+							   { 1, 1, 1 }
+							 };
+#endif
+#if 0
+	int currentLength = 0;
+	memset(visitedPath, false, sizeof(visitedPath));
+	findLongestPath(path, 0, 0, 0, currentLength, 2, 2);
+
+	std::cout << "num time called: " << numberRecursionCalled << std::endl;
+	std::cout << "length: " << maxLength << std::endl;
+#endif
+
+#if 0
+	unsigned int scores[] = {1, 1, 1, 1, 2};
+	std::cout << calculatePossibilities(5, scores);
+#endif
+
+#if 0
+	unsigned steps;
+	NumberSteps(100, 1, 1, steps);
+
+	std::cout << minSteps << std::endl;
+#endif
+
+#if 0
+	srcDstVisited[0].srcDst.src = 1;
+	srcDstVisited[0].srcDst.dst = 6;
+
+	srcDstVisited[1].srcDst.src = 3;
+	srcDstVisited[1].srcDst.dst = 4;
+
+	srcDstVisited[2].srcDst.src = 5;
+	srcDstVisited[2].srcDst.dst = 2;
+
+	unsigned count = 1;
+	FindMinTimeEscape(0, 0, count, 0, 3);
+
+	std::cout << "total count: " << maxCount << std::endl;
+#endif
+
+#if 0
+	char str[] = "KKaaabbbaaaccaaaddccddaaabbbaaaccaaaddccddaaabbbaaaccaaaddccddaaabbbaaaccaaaddccddKS";
+	char pattern[] = "KabacadcdabacadcdabacadcdabacadcdK";
+	bool result = pattern_match(str, 0, pattern, 0);
+	std::cout << "result: " << std::boolalpha << result << std::endl;
+#endif
+
+#if 0
+	char str1[] = "ABCDGH";
+	char str2[] = "AEDFHR";
+
+	std::cout << longestCommonSubSequence(str1, str2) << std::endl;
+#endif
+
+#if 0
+	arrLines[0].x = -2;
+	arrLines[0].y = -3;
+
+	arrLines[1].x = -2;
+	arrLines[1].y = 3;
+
+	arrLines[2].x = 2;
+	arrLines[2].y = 3;
+
+	arrLines[3].x = 2;
+	arrLines[3].y = -3;
+
+	findMaxNumberLines();
+
+	std::cout << arrAnglesPos << std::endl;
+#endif
+#if 0
+	memset(binCoordinates, 0, sizeof(binCoordinates));
+	memset(BinArray, 0, sizeof(BinArray));
+
+	maxBinsArray(0, 0, 9, 3, 0, 0);
+
+	std::cout << "max bin count: " << maxBinCount << std::endl;
+#endif
+
+#if 0
+	std::cout << numbers_contain_digits(183781273, 100000000) << std::endl;
+	//std::cout << countNumbersWith4(183781273) << std::endl;
+#endif
+
+#if 0
+	fillGraph();
+	auto currentDistance = 0;
+	for(unsigned int src= 0; src < 4; ++src)
+	{
+		for(unsigned int dst=0; dst < 4; ++dst)
+		{
+			FindShortestDestination(src, dst, 4, currentDistance);
+			std::cout << "min distance from: " << src << " to: " << dst << " is: " << MinDistancePath << std::endl;
+			MinDistancePath = 0xFFFF;
+		}
+	}
+#endif
+
+#if 0
+	int startY = -1;
+	int startX = -1;
+	int count = 0;
+
+	findFirstEdge(startY, startX, MAX_PICTURE_SIZE);
+	std::cout << "startY: " << startY << " startX: " << startX << std::endl;
+	findEdge(startY, startX, MAX_PICTURE_SIZE, count, startY, startX);
+#endif
+
+#if 0
+	Coordinate a;
+	a.x = 1;
+	a.y = 1;
+
+	Coordinate b;
+	b.x = 2;
+	b.y = 2;
+
+	Coordinate c;
+	c.x = 3;
+	c.y = 3;
+
+	Coordinate d;
+	d.x = 4;
+	d.y = 4;
+
+	Coordinates[0] = a;
+	Coordinates[1] = b;
+	Coordinates[2] = c;
+	Coordinates[3] = d;
+
+	// a->b
+	wormHoldeMap[0][1] = 1;
+	wormHoldeMap[1][0] = 1;
+
+	// b->c
+	wormHoldeMap[1][2] = 1;
+	wormHoldeMap[2][1] = 1;
+
+	// b->d
+	wormHoldeMap[1][3] = 1;
+	wormHoldeMap[3][1] = 1;
+
+	// c->d
+	wormHoldeMap[2][3] = 1;
+	wormHoldeMap[3][2] = 1;
+
+	// a->d
+	wormHoldeMap[0][3] = 1;
+	wormHoldeMap[3][0] = 1;
+
+	findMinDistance(0, 3, 0);
+
+	std::cout << "min distance: " << minPathDistance << std::endl;
+#endif
+
+#if 0
+	//std::cout << shortestDuration() << std::endl;
+	std::vector<int> v = { 1, 4, 4, 4, 5 ,12};
+	auto start = ::lower_bound(v.begin(), v.end(), 4);
+	auto end = ::upper_bound(v.begin(), v.end(), 4);
+
+	v.erase(remove_duplicates(v.begin(), v.end()), v.end());
+
+	for(auto item: v)
+		std::cout << item << std::endl;
+#endif
+
+	KMeansCoordinate groups[2];
+	groups[0].data = 9;
+	groups[0].x = 0;
+	groups[0].y = 0;
+
+	groups[1].data = 10;
+	groups[1].x = 1;
+	groups[1].y = 3;
+
+	groups[2].data = 12;
+	groups[2].x = 0;
+	groups[2].y = 4;
+
+	partition(groups, 3);
+	printGroups(3);
+
 
 
 }
+

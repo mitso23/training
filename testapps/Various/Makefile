@@ -10,7 +10,7 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= -lpthread -ldbus-1 -lglib-2.0 -lgio-2.0
+export LIBS= -lgio-2.0 -lgobject-2.0 -ldbus-1  -lglib-2.0 -lpthread 
 export NAME= various++.out
 
 .PHONY: depend clean

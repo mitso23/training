@@ -40,7 +40,28 @@ void printCombination_rec(const std::vector<int>& data, int index, int level)
 	}
 }
 
+// 1 2 3 4
+void printCombination_rec_2(int* result, int* data, int index, int n, int k, int level)
+{
+	//std::cout << "index: " << index << " n: " << n << " k: " << k << " level: " << level << std::endl;
+	result[level] = data[index];
 
+	if (level == (k - 1))
+	{
+		for(unsigned int i=0; i<k; ++i)
+		{
+			std::cout << result[i];
+		}
+
+		std::cout << std::endl;
+		return;
+	}
+
+	for(unsigned int i=index; i< n -1 ; ++i)
+	{
+		printCombination_rec_2(result, data, i + 1, n, k, level+1);
+	}
+}
 
 void printAllCombinations(int* data, int size, int index, int level)
 {
@@ -62,6 +83,7 @@ void printAllCombinations(int* data, int size, int index, int level)
 	}
 }
 
+//This prints all the possible combinations like using binary count
 void printCombinations2(int* data, int size)
 {
 	for(unsigned level= 1; level<= size; ++level)
@@ -82,21 +104,5 @@ void printCombination(const std::vector<int>& data, int index, int level)
 		printCombination_rec(std::vector<int>(data.begin() + i, data.end()), 0, level);
 	}
 }
-
-int mapa[1024];
-
-void printCombinationBinaryCount(int* data, int size)
-{
-	for(int i=0; i< size; ++i)
-	{
-		mapa[1 << i] = data[i];
-	}
-
-	for(unsigned int i=0; i< 8; ++i)
-	{
-
-	}
-}
-
 
 #endif /* COMBINATION_K_OUT_OF_N_ITEMS_H_ */

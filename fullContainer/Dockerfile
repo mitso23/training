@@ -45,7 +45,6 @@ RUN cd /tmp/thrift-0.10.0/ && ./configure --without-ruby && make -j4
 USER root
 RUN cd /tmp/thrift-0.10.0 && make install
 
-USER mitso23
 
 
 
