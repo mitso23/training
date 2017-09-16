@@ -8,6 +8,7 @@
 #ifndef MERGESORT_H_
 #define MERGESORT_H_
 
+#include <string.h>
 #include <iostream>
 
 void merge(unsigned int* arr, unsigned startLeft, unsigned endLeft, unsigned startRight, unsigned endRight, unsigned int size)

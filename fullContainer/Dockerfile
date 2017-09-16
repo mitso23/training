@@ -27,7 +27,7 @@ RUN chown -R mitso23:mitso23 /usr/local/lib/
 RUN chown -R mitso23:mitso23 /usr/local/include/
 
 USER mitso23
-RUN cd /home/mitso23 && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes 
+RUN cd /home/mitso23 && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes #redo 
 
 RUN cd /home/mitso23/training/packages/googletest/ &&  rm CMakeCache.txt && cmake -DBUILD_SHARED_LIBS=ON && make && cp googlemock/libgmock.so /usr/local/lib/  && cp -r googlemock/include/* /usr/local/include/
 RUN cd /home/mitso23/training/packages/googletest/googletest/ && cmake ./ && make && cp libgtest.a /usr/local/lib && cp -r include/* /usr/local/include/

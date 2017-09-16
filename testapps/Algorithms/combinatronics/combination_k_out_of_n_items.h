@@ -4,7 +4,7 @@
 #include <vector>
 #include <deque>
 
-#include "list.h"
+#include "../linklist/list.h"
 
 std::deque<int> cont;
 
