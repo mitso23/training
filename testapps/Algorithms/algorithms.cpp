@@ -1,7 +1,7 @@
 #include "strings.h"
 
 #include <vector>
-#include <utils/utils.h>
+
 #include "Stl/stl.h"
 
 #include "dynamic_programming/coin_changing_problem.h"
@@ -35,12 +35,23 @@
 #include "backtracking/max_non_parallel_lines.h"
 #include "backtracking/max_bins_2d_array.h"
 #include "recursion/numers_have_four_digit.h"
-#include "graphs/longest_path_graph.h"
+#include "graphs/shortest_path_graph_naive.h"
 #include "backtracking/find_edge_picture.h"
 #include "graphs/shortest_path_warmhole.h"
 #include "sorting/warmhole_contest.h"
 #include "image_processing/k_means_algorithm.h"
-
+#include "graphs/shortest_path_floyd.h"
+#include "trees/tree.h"
+#include "trees/check_tree_balanced.h"
+#include "graphs/union_find_detect_circle.h"
+#include "graphs/graph_mst_prime.h"
+#include "graphs/topological_sort.h"
+#include "trees/convert_bst_sum_tree.h"
+#include "graphs/boggle.h"
+#include "graphs/find_articulation_point.h"
+#include "trees/find_minimum_height_binary_tree.h"
+#include "trees/find_common_anchestor.h"
+#include "trees/find_distance_between_two_nodes.h"
 
 int main(int argc, char* argv[])
 {
@@ -494,6 +505,7 @@ int main(int argc, char* argv[])
 		std::cout << item << std::endl;
 #endif
 
+#if 0
 	KMeansCoordinate groups[2];
 	groups[0].data = 9;
 	groups[0].x = 0;
@@ -509,8 +521,261 @@ int main(int argc, char* argv[])
 
 	partition(groups, 3);
 	printGroups(3);
+#endif
+
+#if 0
+	Graph graph(9);
+	graph.AddEdge(0, std::make_pair(1, 4));
+	graph.AddEdge(1, std::make_pair(0, 4));
+
+	graph.AddEdge(0, std::make_pair(7, 8));
+	graph.AddEdge(7, std::make_pair(0, 8));
+
+	graph.AddEdge(1, std::make_pair(7, 11));
+	graph.AddEdge(7, std::make_pair(1, 11));
+
+	graph.AddEdge(1, std::make_pair(2, 8));
+	graph.AddEdge(2, std::make_pair(1, 8));
+
+	graph.AddEdge(2, std::make_pair(8, 2));
+	graph.AddEdge(8, std::make_pair(2, 2));
+
+	graph.AddEdge(2, std::make_pair(5, 4));
+	graph.AddEdge(5, std::make_pair(2, 4));
+
+	graph.AddEdge(2, std::make_pair(3, 7));
+	graph.AddEdge(3, std::make_pair(2, 7));
+
+	graph.AddEdge(8, std::make_pair(7, 7));
+	graph.AddEdge(7, std::make_pair(8, 7));
+
+	graph.AddEdge(7, std::make_pair(6, 1));
+	graph.AddEdge(6, std::make_pair(7, 1));
 
 
+	graph.AddEdge(5, std::make_pair(6, 2));
+	graph.AddEdge(6, std::make_pair(5, 2));
+
+	graph.AddEdge(8, std::make_pair(6, 6));
+	graph.AddEdge(6, std::make_pair(8, 6));
+
+	graph.AddEdge(3, std::make_pair(4, 9));
+	graph.AddEdge(4, std::make_pair(3, 9));
+
+	graph.AddEdge(3, std::make_pair(5, 14));
+	graph.AddEdge(5, std::make_pair(3, 14));
+
+	graph.AddEdge(4, std::make_pair(5, 10));
+	graph.AddEdge(5, std::make_pair(4, 10));
+
+	graph.calculateMinDistanceDijkta();
+#endif
+
+#if 0
+	auto min = std::numeric_limits<int>::max();
+
+	for(unsigned int src= 0; src< 4; ++src)
+	{
+		for(unsigned int dst=0; dst< 4; ++dst)
+		{
+			for(unsigned int k=0; k< 4; ++k)
+			{
+				auto value = calculateMinDistance(src, dst, k);
+
+				if (value < min)
+				{
+					min = value;
+				}
+			}
+
+			std::cout << "src: " << src << " dst: " << dst << " min: " << min << std::endl;
+			min = std::numeric_limits<int>::max();
+		}
+	}
+
+	std::cout << min << std::endl;
+#endif
+
+#if 0
+	Tree tree;
+	tree.AddData(30);
+
+	tree.AddData(15);
+	tree.AddData(41);
+
+	tree.AddData(16);
+	tree.AddData(17);
+
+	tree.AddData(40);
+	tree.AddData(42);
+
+	std::cout << CheckTreeBalanced(tree.m_root);
+#endif
+
+
+#if 0
+	tree.AddData(40);
+	tree.AddData(50);
+	tree.AddData(51);
+	tree.AddData(52);
+	tree.AddData(53);
+
+	tree.AddData(13);
+	tree.AddData(21);
+	tree.AddData(12);
+	tree.AddData(11);
+	tree.AddData(10);
+
+
+#endif
+
+#if 0
+	Graph graph(3);
+	graph.AddEdge(0, std::make_pair(1, 1));
+	graph.AddEdge(1, std::make_pair(2, 1));
+	graph.AddEdge(2, std::make_pair(0, 1));
+
+	std::cout << CheckIfLoopGraph(&graph) << std::endl;
+#endif
+
+#if 0
+	Graph graph(4);
+
+	graph.AddEdge(0, std::make_pair(1, 4));
+	graph.AddEdge(1, std::make_pair(0, 4));
+
+	graph.AddEdge(1, std::make_pair(2, 2));
+	graph.AddEdge(2, std::make_pair(1, 2));
+
+
+	graph.AddEdge(2, std::make_pair(0, 1));
+	graph.AddEdge(0, std::make_pair(2, 1));
+
+	graph.AddEdge(1, std::make_pair(3, 5));
+	graph.AddEdge(3, std::make_pair(1, 5));
+
+	graph.AddEdge(0, std::make_pair(3, 7));
+	graph.AddEdge(3, std::make_pair(0, 7));
+
+	calculateMstTree(&graph);
+#endif
+
+#if 0
+	  int __graph[5][5] = {{0, 2, 0, 6, 0},
+	                      {2, 0, 3, 8, 5},
+	                      {0, 3, 0, 0, 7},
+	                      {6, 8, 0, 0, 9},
+	                      {0, 5, 7, 9, 0},
+	                     };
+
+	  Graph graph(&__graph[0][0], 5, 5);
+	  //graph.traverseGraphDfs(0);
+	  calculateMstTree(&graph);
+#endif
+
+#if 0
+	 Graph graph(6);
+
+	 graph.AddEdge(0, std::make_pair(1, 4));
+	 graph.AddEdge(1, std::make_pair(2, 4));
+	 graph.AddEdge(1, std::make_pair(3, 4));
+	 graph.AddEdge(0, std::make_pair(4, 4));
+	 graph.AddEdge(5, std::make_pair(4, 4));
+
+	 topological_sort(&graph, 0);
+#endif
+
+#if 0
+
+	 Tree tree;
+	 tree.AddData(10);
+
+	 tree.AddData(5);
+	 tree.AddData(4);
+	 tree.AddData(6);
+
+	 tree.AddData(15);
+	 tree.AddData(14);
+	 tree.AddData(16);
+
+	 tree.PrintData();
+
+	 convert_bst_sum_tree(tree.m_root);
+	 tree.iterateItems([](int data){ std::cout << data << std::endl;});
+
+#endif
+#if 0
+	 char* dictionary[100000];
+
+	 ifstream f("/usr/share/dict/words");
+	 unsigned int i = 0;
+
+	 while(f >> (dictionary[i++] = (char*)malloc(sizeof(char)*100)));
+	 std::sort(dictionary, dictionary + i);
+
+	 //for(unsigned int j=0; j< i; ++j)
+		 //std::cout << dictionary[j] << std::endl;
+
+	 char boggle[3][3]   = {{'g','i','z'},
+	                        {'u','e','k'},
+	                        {'q','s','e'}};
+
+	 std::string str;
+	 boggleTreeRoot = new BoggleTree();
+	dictionaryToBoggleTree(dictionary, i);
+
+#if 0
+	 std::cout << "slow" <<std::endl;
+	 find_all_possible_words_boggle(dictionary, 99000, boggle, 0, 0, str, true);
+#endif
+	 std::cout << "fast" <<std::endl;
+	 find_all_possible_words_boggle(dictionary, 99000, boggle, 0, 0, str, false);
+
+
+	 //std::cout << checkWordExists("beautiful", boggleTreeRoot);
+	 //std::deque<char> d;
+	 //printBoggleDictionary(boggleTreeRoot, d);
+	 //my_binary_search("quiz", dictionary, i, true);
+#endif
+
+#if 0
+	 MyGraph2 graph;
+	 graph.AddEdge(0, 1);
+	 graph.AddEdge(1, 0);
+
+	 graph.AddEdge(1, 2);
+	 graph.AddEdge(2, 1);
+
+	 graph.AddEdge(0, 2);
+	 graph.AddEdge(2, 0);
+
+	 graph.AddEdge(2, 4);
+	 graph.AddEdge(4, 2);
+
+	 graph.AddEdge(1, 3);
+	 graph.AddEdge(3, 1);
+
+	 graph.AddEdge(0, 3);
+	 graph.AddEdge(3, 0);
+
+	 graph.AddEdge(4, 1);
+	 graph.AddEdge(1, 4);
+
+	 graph.Dfs(0);
+#endif
+
+	 Tree tree;
+	 tree.AddData(50);
+	 tree.AddData(30);
+	 tree.AddData(60);
+	 tree.AddData(20);
+	 tree.AddData(40);
+	 tree.AddData(1);
+	 tree.AddData(70);
+
+	 tree.PrintData();
+	 auto res = findCommonAnchestor(tree.m_root, 20, 30);
+
+	 std::cout << "distance: " << res->m_data <<  std::endl;
 
 }
-

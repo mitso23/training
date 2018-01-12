@@ -70,7 +70,6 @@ public:
 
 private:
     Turtle& m_turtle;
-
 };
 
 TEST(PainterTest, CanDrawSomething)

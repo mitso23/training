@@ -10,8 +10,8 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= -lpthread
-export NAME= EffectiveModernC++.out
+export LIBS= 
+export NAME= optimization.out
 
 .PHONY: depend clean
 
@@ -22,4 +22,3 @@ all:
 clean:
 	make -C ../../ -f rules.mk clean
 
-# DO NOT DELETE

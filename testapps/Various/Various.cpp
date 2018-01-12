@@ -311,11 +311,70 @@ void find_min_max_meets_conditions(unsigned* arr, unsigned size, unsigned value)
 	}
 }
 
+#include "utils/Noisy.h"
+#include <memory>
+
+class SharedPtrSingleton
+{
+
+public:
+	static std::shared_ptr<Noisy> Get()
+	{
+		if (!n)
+		{
+			n = std::shared_ptr<Noisy>(new Noisy());
+		}
+
+		return n;
+	}
+private:
+	static std::shared_ptr<Noisy> n;
+};
+
+std::shared_ptr<Noisy> SharedPtrSingleton::n;
+
+class B
+{
+public:
+	B()
+	{
+		m_n = SharedPtrSingleton::Get();
+	}
+
+	~B()
+	{
+		std::cout << "B is dying" << std::endl;
+		m_n->getData();
+	}
+
+private:
+	std::shared_ptr<Noisy> m_n;
+};
+
+class A
+{
+public:
+	A()
+	{
+		m_n = SharedPtrSingleton::Get();
+	}
+	~A()
+	{
+		std::cout << "A is dying" << std::endl;
+		m_n->getData();
+	}
+
+private:
+	std::shared_ptr<Noisy> m_n;
+};
+
+static B b;
+static A a;
+
 int main (int argc, char *argv[])
 {
-	unsigned int arr[] = { 1, 2, 3, 4};
-	find_min_max_meets_conditions(arr, 4, 6);
 
+	SharedPtrSingleton::Get();
 
 #if 0
   gint ret;

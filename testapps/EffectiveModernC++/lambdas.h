@@ -28,4 +28,25 @@ private:
 	std::vector<int> m_v = { 1, 2, 3, 4 };
 };
 
+
+void test2()
+{
+	std::vector<int> data = { 1, 2, 3};
+
+	auto l = [](const std::vector<int>& data)
+	{
+		std::cout << data[0] << std::endl;
+	};
+
+	auto f = std::bind(l, std::move(data));
+	f();
+
+	std::cout << "vector size is: " << data.size();
+}
+
+void test3(Noisy&& ns)
+{
+
+}
+
 #endif /* LAMBDAS_H_ */

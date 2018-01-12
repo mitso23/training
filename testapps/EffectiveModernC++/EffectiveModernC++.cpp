@@ -3,6 +3,7 @@
 #include "ModernC++.h"
 #include "RValueReferences.h"
 #include "lambdas.h"
+#include "Concurrency.h"
 
 namespace CustomInteger
 {
@@ -58,6 +59,19 @@ enum class Fruits : int
 {
 	APPLE
 };
+
+int gSem = 1;
+
+void dummyThread()
+{
+	while(gSem)
+	{
+		std::cout << "running: " << std::endl;
+		sleep(1);
+	}
+
+	std::cout << "finished: " << std::endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -117,7 +131,22 @@ int main(int argc, char* argv[])
 	addTwoNumbers(a, b);
 #endif
 
+#if 0
 	TestLambdas t;
-	t.test1();
+	//t.test1();
+	//test2();
+	Noisy n;
+	test3(std::move(n));
+#endif
 
+#if 0
+	//scheduleTask();
+	std::vector<unsigned> v(100000000, 1);
+	std::cout << "sum: " << parallelAccumulate(v.begin(), v.end());
+#endif
+
+#if 0
+	auto l =  [&gSem](){ gSem = 0;};
+	ThreadRAII t(std::thread(&dummyThread), l, true);
+#endif
 }
