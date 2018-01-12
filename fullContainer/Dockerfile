@@ -1,5 +1,21 @@
-FROM mitso23/ubuntu:basic
+FROM ubuntu:16.04
 RUN apt-get update && apt-get install -y \
+build-essential \
+vim \
+tar \
+wget \
+net-tools \
+iputils-ping \
+ssh
+FROM ubuntu:16.04
+RUN apt-get update && apt-get install -y \
+build-essential \
+vim \
+tar \
+wget \
+net-tools \
+iputils-ping \
+ssh \
 git \
 cmake \
 libboost-test-dev \
@@ -37,14 +53,6 @@ RUN cd /home/mitso23/training/packages/googletest/googletest/ && cmake ./ && mak
 
 RUN mkdir /home/mitso23/training/bin
 ENV PRJ_ROOT=/home/mitso23/training
-
-
-RUN cd /tmp && curl http://www-eu.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz | tar zx 
-RUN cd /tmp/thrift-0.10.0/ && ./configure --without-ruby && make -j4
-
-USER root
-RUN cd /tmp/thrift-0.10.0 && make install
-
 
 
 
