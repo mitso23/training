@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-
 class TestLambdas
 {
 
