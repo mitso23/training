@@ -86,3 +86,6 @@ endif
 /home/mitso23/training//testapps/Algorithms/algorithms.o: /home/mitso23/training/testapps/Algorithms/trees/find_minimum_height_binary_tree.h
 /home/mitso23/training//testapps/Algorithms/algorithms.o: /home/mitso23/training/testapps/Algorithms/trees/find_common_anchestor.h
 /home/mitso23/training//testapps/Algorithms/algorithms.o: /home/mitso23/training/testapps/Algorithms/trees/find_distance_between_two_nodes.h
+/home/mitso23/training//testapps/Algorithms/algorithms.o: /home/mitso23/training/testapps/Algorithms/trees/bottom_view_tree.h
+/home/mitso23/training//testapps/Algorithms/algorithms.o: /home/mitso23/training/testapps/Algorithms/hash/hash.h
+/home/mitso23/training//testapps/Algorithms/algorithms.o: /home/mitso23/training/testapps/Algorithms/trees/check_binary_tree_subtree_another.h

@@ -52,6 +52,9 @@
 #include "trees/find_minimum_height_binary_tree.h"
 #include "trees/find_common_anchestor.h"
 #include "trees/find_distance_between_two_nodes.h"
+#include "trees/bottom_view_tree.h"
+#include "hash/hash.h"
+#include "trees/check_binary_tree_subtree_another.h"
 
 int main(int argc, char* argv[])
 {
@@ -764,6 +767,7 @@ int main(int argc, char* argv[])
 	 graph.Dfs(0);
 #endif
 
+#if 0
 	 Tree tree;
 	 tree.AddData(50);
 	 tree.AddData(30);
@@ -777,5 +781,46 @@ int main(int argc, char* argv[])
 	 auto res = findCommonAnchestor(tree.m_root, 20, 30);
 
 	 std::cout << "distance: " << res->m_data <<  std::endl;
+#endif
+#if 0
+	 Hash h(10);
+	 h.addItem(1, 123);
+	 int res = -1;
+	 h.findValue(1, res);
+	 std::cout << "value: " << res << std::endl;
+#endif
 
+#if 0
+	Tree tree;
+	tree.AddData(50);
+	tree.AddData(30);
+	tree.AddData(60);
+	tree.AddData(20);
+	tree.AddData(40);
+	tree.AddData(1);
+	tree.AddData(70);
+
+	tree.PrintData();
+
+	printBottomView(tree.m_root);
+#endif
+	Tree tree;
+	tree.AddData(50);
+	tree.AddData(30);
+	tree.AddData(60);
+	tree.AddData(20);
+	tree.AddData(40);
+	tree.AddData(1);
+	tree.AddData(70);
+
+	tree.PrintData();
+	TreeIterator treeIter(tree.m_root);
+	int result;
+	bool success = treeIter.getNext(result);
+
+	while(success)
+	{
+		std::cout << result << std::endl;
+		success = treeIter.getNext(result);
+	}
 }
