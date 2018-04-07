@@ -371,10 +371,147 @@ private:
 static B b;
 static A a;
 
+#include <map>
+
+class ICasProvider
+{
+
+public:
+	virtual void Activate() = 0;
+
+	virtual void Authorize() = 0;
+
+	virtual bool isCloud() const = 0;
+
+	virtual ~ICasProvider()
+	{
+
+	}
+};
+
+template <typename Communicator, typename Handler>
+class CasProvider : public ICasProvider
+{
+
+public:
+	CasProvider(Communicator& comm) :
+		m_comm(comm)
+	{
+
+	}
+
+	void Activate() override
+	{
+		static_cast<Handler*>(this)->Activate();
+	}
+
+	void Authorize() override
+	{
+		static_cast<Handler*>(this)->Authorize();
+	}
+
+	Communicator& GetCommunicator()
+	{
+		return m_comm;
+	}
+
+	Communicator& m_comm;
+};
+
+
+class DongleProvider : public CasProvider<DongleProvider, DongleProvider>
+{
+public:
+	DongleProvider() : CasProvider(*this)
+	{
+
+	};
+
+	bool isCloud() const override
+	{
+		return false;
+	}
+
+	void Activate() override
+	{
+		std::cout << "activating using the dongle provider: " << std::endl;
+	}
+
+	void Authorize() override
+	{
+		std::cout << "authorising using the dongle provider: " << std::endl;
+	}
+
+	///Information regarding the Communicator
+	int getDongleInfo()
+	{
+		std::cout << "getting dongle info " << std::endl;
+		return 1;
+	}
+};
+
+struct CloudCommunicator
+{
+	void Ping()
+	{
+		std::cout << "ping from the cloud" << std::endl;
+	}
+};
+
+class CloudProvider : public CasProvider<CloudCommunicator, CloudProvider>
+{
+public:
+	CloudProvider() : CasProvider(*(new CloudCommunicator()))
+	{
+
+	}
+
+	bool isCloud() const override
+	{
+	 return true;
+	}
+
+	void Activate()
+	{
+		std::cout << "activating using the cloud provider: " << std::endl;
+	}
+
+	void Authorize()
+	{
+		std::cout << "authorising using the dongle provider: " << std::endl;
+	}
+};
+
+#include "array_view.h"
+
+using namespace av;
 int main (int argc, char *argv[])
 {
 
-	SharedPtrSingleton::Get();
+#if 0
+	DongleProvider* dongleProvider = new DongleProvider();
+	CloudProvider* cloudProvider = new CloudProvider();
+
+	std::vector<ICasProvider*> providers;
+
+	providers.push_back(dongleProvider);
+	providers.push_back(cloudProvider);
+
+	// generic provider interface
+	for(auto& provider : providers)
+	{
+		provider->Activate();
+		provider->Authorize();
+	}
+
+	// dongle specific communicator
+	(static_cast<DongleProvider*>(providers[0]))->GetCommunicator().getDongleInfo();
+
+	// cloud specific communicator
+	(static_cast<CloudProvider*>(providers[1]))->GetCommunicator().Ping();
+#endif
+
+	array_view<int, 3> v;
 
 #if 0
   gint ret;

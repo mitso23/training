@@ -73,6 +73,11 @@ void dummyThread()
 	std::cout << "finished: " << std::endl;
 }
 
+int foo(int x)
+{
+
+}
+
 int main(int argc, char* argv[])
 {
 #if 0
@@ -145,8 +150,18 @@ int main(int argc, char* argv[])
 	std::cout << "sum: " << parallelAccumulate(v.begin(), v.end());
 #endif
 
+//NOTE: this will throw an exception
+#if 0
+	auto l= [](){ while(1);};
+
+	std::thread t(l);
+	sleep(1);
+#endif
+
 #if 0
 	auto l =  [&gSem](){ gSem = 0;};
 	ThreadRAII t(std::thread(&dummyThread), l, true);
 #endif
+
+	test_future();
 }

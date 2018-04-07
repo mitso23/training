@@ -1,99 +1,69 @@
 #ifndef TESTAPPS_ALGORITHMS_LIST_
 #define TESTAPPS_ALGORITHMS_LIST_
 
+#include <iostream>
 
 struct Node
 {
 	int data;
-	Node* next;
-	Node* previous;
+	Node* next = nullptr;
+	Node* previous = nullptr;
 };
 
-Node* m_head = NULL;
-Node* m_tail = NULL;
-
-
-/// tail 1 2 3 head
-void push_front(int data)
+/* Function to insert a node at the beginging of the linked list */
+void push_front(struct Node** head_ref, int new_data)
 {
-	if(m_head == NULL)
-	{
-		m_head = (Node*)malloc(sizeof(Node));
-		m_head->data = data;
-		m_head->next = NULL;
-		m_head->previous = NULL;
-		m_tail = m_head;
+  /* allocate node */
+  struct Node* new_node =
+            (struct Node*) malloc(sizeof(struct Node));
 
+  /* put in the data  */
+  new_node->data  = new_data;
+
+  /* link the old list off the new node */
+  new_node->next = (*head_ref);
+
+  /* move the head to point to the new node */
+  (*head_ref)    = new_node;
+}
+
+void push_back(struct Node** head_ref, int new_data)
+{
+	/* allocate node */
+	struct Node* new_node =
+	            (struct Node*) malloc(sizeof(struct Node));
+
+	new_node->data = new_data;
+
+	if (*head_ref == nullptr)
+	{
+		*head_ref = new_node;
 		return;
 	}
 
-	Node* newNode = (Node*)malloc(sizeof(Node));
+	auto current = *head_ref;
 
-	newNode->data = data;
-	newNode->next = NULL;
-	m_head->next = newNode;
-	newNode->previous = m_head;
-
-	m_head = newNode;
-}
-
-/// tail 1 2 3 head
-void push_back(int data)
-{
-	if(m_head == NULL)
+	while(current->next != nullptr)
 	{
-		m_head = (Node*)malloc(sizeof(Node));
-		m_head->data = data;
-		m_head->next = NULL;
-		m_tail = m_head;
-
-		return;
+		current = current->next;
 	}
 
-	Node* newNode = (Node*)malloc(sizeof(Node));
-
-	newNode->data = data;
-	newNode->next = m_tail;
-	m_tail->previous = newNode;
-
-	m_tail = newNode;
-	m_tail->previous = NULL;
+	current->next = new_node;
 }
 
-void remove_back()
+
+/* Function to print nodes in a given linked list */
+void printList(struct Node *node)
 {
-	if(m_tail == NULL)
+
+	std::cout << "printing list " << std::endl;
+
+	while (node != NULL)
 	{
-		return;
+		std::cout << node->data << std::endl;
+		node = node->next;
 	}
-
-	Node* temp = m_tail;
-	m_tail = m_tail->next;
-	m_tail->previous = NULL;
-
-	free(temp);
 }
-
-void printList()
-{
-	Node* current = m_head;
-	while (current != NULL)
-	{
-		std::cout << current->data;
-		current = current->previous;
-	}
-	std::cout << std::endl;
-
-}
-
-void clearList()
-{
-	m_head = NULL;
-	m_tail = NULL;
-}
-
-
-
 
 
 

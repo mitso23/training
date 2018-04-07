@@ -19,13 +19,18 @@ public:
 
 	}
 
+	void reset()
+	{
+		std::stack<Tree::Node*>().swap(m_stackNodes);
+	}
+
 	bool getNext(int& result)
 	{
 		if (m_stackNodes.empty())
 		{
 			m_stackNodes.push(m_root);
 			result = m_root->m_data;
-			//m_visited[m_root->m_data] = true;
+			m_visited[m_root->m_data] = true;
 			return true;
 		}
 		else
@@ -37,14 +42,14 @@ public:
 			{
 				m_stackNodes.push(node->m_left);
 				result =  node->m_left->m_data;
-				//m_visited[node->m_left->m_data] = true;
+				m_visited[node->m_left->m_data] = true;
 				return true;
 			}
 			else if (node->m_right)
 			{
 				m_stackNodes.push(node->m_right);
 				result =  node->m_right->m_data;
-				//m_visited[node->m_right->m_data] = true;
+				m_visited[node->m_right->m_data] = true;
 				return true;
 			}
 			else
@@ -56,13 +61,13 @@ public:
 				{
 					auto node = m_stackNodes.top();
 
-					if (node->m_right)
+					if (node->m_right && !m_visited[node->m_right->m_data])
 					{
 						m_stackNodes.pop();
 
 						m_stackNodes.push(node->m_right);
 						result =  node->m_right->m_data;
-						//m_visited[node->m_right->m_data] = true;
+						m_visited[node->m_right->m_data] = true;
 						return true;
 					}
 					else
@@ -80,7 +85,6 @@ public:
 private:
 	Tree::Node* m_root;
 	std::stack<Tree::Node*> m_stackNodes;
-	bool m_lastNode = false;
 	int m_visited[1000] = { false };
 };
 

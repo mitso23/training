@@ -25,6 +25,8 @@ public:
 		int m_data;
 		Node* m_left = nullptr;
 		Node* m_right = nullptr;
+		Node* m_parent = nullptr;
+		bool m_visited = false;
 	};
 
 	struct DisplayInfo
@@ -35,11 +37,156 @@ public:
 		int level = 0;
 	};
 
+	struct TreeIterator
+	{
+		TreeIterator(Node* node, Node* root, Node* minNode)
+		: m_current(node)
+		, m_root(root)
+		, m_minNode(minNode)
+		{
+			m_current->m_visited = true;
+		}
+
+		TreeIterator* getPrevious()
+		{
+			Node* returnNode = nullptr;
+
+			if (!m_current)
+			{
+
+			}
+			else if (m_current->m_right && !m_current->m_right->m_visited)
+			{
+				while(m_current && m_current->m_right)
+				{
+					m_current = m_current->m_right;
+				}
+
+				returnNode = m_current;
+			}
+			else if (m_current->m_left && !m_current->m_left->m_visited)
+			{
+				m_current = m_current->m_left;
+
+				while(m_current && m_current->m_right && !m_current->m_right->m_visited)
+				{
+					m_current = m_current->m_right;
+				}
+
+				returnNode = m_current;
+			}
+			else if (m_current->m_parent && !m_current->m_parent->m_visited)
+			{
+				returnNode = m_current->m_parent;
+			}
+			else if (m_current != m_minNode)
+			{
+				std::cout << "going back " << std::endl;
+				while(m_current!= m_minNode)
+				{
+					m_current = m_current->m_parent;
+					if (!m_current->m_visited)
+					{
+						break;
+					}
+				}
+
+				//std::cout << "grantparent: " << std::endl;
+				returnNode = m_current;
+			}
+
+			if (returnNode)
+			{
+				returnNode->m_visited = true;
+				return new TreeIterator(returnNode, m_root, m_minNode);
+			}
+			else
+			{
+				return nullptr;
+			}
+		}
+
+		TreeIterator*  getNext()
+		{
+			Node* returnNode = nullptr;
+
+			if (!m_current)
+			{
+				//std::cout << "current null " << std::endl;
+			}
+			else if (m_current == m_root && !m_current->m_right->m_visited)
+			{
+				m_current = m_current->m_right;
+
+				//Find the smallest element
+				while(m_current && m_current->m_left)
+				{
+					m_current = m_current->m_left;
+				}
+
+				returnNode = m_current;
+			}
+			else if (m_current->m_left && !m_current->m_left->m_visited)
+			{
+				//std::cout << "left" << std::endl;
+				returnNode = m_current->m_left;
+			}
+			else if (m_current->m_right && !m_current->m_right->m_visited)
+			{
+				//std::cout << "right" << std::endl;
+				returnNode = m_current->m_right;
+			}
+			else if (m_current->m_parent && !m_current->m_parent->m_visited)
+			{
+				//std::cout << "parent" << std::endl;
+				returnNode = m_current->m_parent;
+			}
+			else if (m_current->m_parent && m_current->m_parent->m_parent && !m_current->m_parent->m_parent->m_visited)
+			{
+				//std::cout << "grantparent: " << std::endl;
+				returnNode = m_current->m_parent->m_parent;
+			}
+
+			if (returnNode)
+			{
+				returnNode->m_visited = true;
+				return new TreeIterator(returnNode, m_root, m_minNode);
+			}
+			else
+			{
+				std::cout << "null node" << m_current->m_parent << std::endl;
+				return nullptr;
+			}
+		}
+
+		unsigned int getData()
+		{
+			return m_current->m_data;
+		}
+
+	private:
+		Node* m_current;
+		Node* m_root;
+		Node* m_minNode;
+	};
+
+	TreeIterator* GetMaxNode()
+	{
+		return new TreeIterator(m_maxNode, m_root, m_minNode);
+	}
+
+	TreeIterator* GetMinNode()
+	{
+		return new TreeIterator(m_minNode, m_root, m_minNode);
+	}
+
 	void AddData(int data)
 	{
 		if (!m_root)
 		{
 			m_root = new Node(data);
+			m_maxNode = m_root;
+			m_minNode = m_root;
 		}
 		else
 		{
@@ -51,6 +198,8 @@ public:
 					if (!start->m_left)
 					{
 						start->m_left = new Node(data);
+						start->m_left->m_parent = start;
+						m_minNode = start->m_left;
 						break;
 					}
 					else
@@ -61,6 +210,11 @@ public:
 					if (!start->m_right)
 					{
 						start->m_right = new Node(data);
+						start->m_right->m_parent = start;
+						if (start->m_right->m_data > m_maxNode->m_data)
+						{
+							m_maxNode = start->m_right;
+						}
 						break;
 					}
 					else
@@ -270,6 +424,9 @@ public:
 	};
 
 	Node* m_root = nullptr;
+	Node* m_maxNode = m_root;
+	Node* m_minNode = m_root;
+
 	std::queue<NodeInfo> m_queue;
 };
 
