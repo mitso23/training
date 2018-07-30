@@ -804,23 +804,43 @@ int main(int argc, char* argv[])
 
 	printBottomView(tree.m_root);
 #endif
-	Tree tree;
-	tree.AddData(50);
-	tree.AddData(30);
-	tree.AddData(60);
-	tree.AddData(20);
-	tree.AddData(40);
-	tree.AddData(1);
-	tree.AddData(70);
+	Tree tree1;
+	tree1.AddData(50);
+	tree1.AddData(30);
+	tree1.AddData(60);
+	tree1.AddData(20);
+	tree1.AddData(40);
+	tree1.AddData(1);
+	tree1.AddData(70);
 
-	tree.PrintData();
-	TreeIterator treeIter(tree.m_root);
-	int result;
-	bool success = treeIter.getNext(result);
 
-	while(success)
+	tree1.PrintData();
+	TreeIterator treeIter1(tree1.m_root);
+	int result1;
+	bool success1 = treeIter1.getNext(result1);
+
+	Tree tree2;
+	tree2.AddData(30);
+	tree2.AddData(20);
+	tree2.AddData(40);
+	tree2.AddData(1);
+
+	tree2.PrintData();
+	TreeIterator treeIter2(tree1.m_root);
+	int result2;
+	bool success2 = treeIter2.getNext(result2);
+
+	while(success1 && success2)
 	{
-		std::cout << result << std::endl;
-		success = treeIter.getNext(result);
+		if (result1 == result2)
+		{
+			std::cout << "found a match: " << result1 << std::endl;
+			success2 = treeIter2.getNext(result2);
+		}
+
+		success1 = treeIter1.getNext(result1);
+		success2 = treeIter2.getNext(result2);
 	}
+
+	std::cout << "Found a match: " << std::endl;
 }
