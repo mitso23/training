@@ -63,8 +63,6 @@ public:
 
 					if (node->m_right && !m_visited[node->m_right->m_data])
 					{
-						m_stackNodes.pop();
-
 						m_stackNodes.push(node->m_right);
 						result =  node->m_right->m_data;
 						m_visited[node->m_right->m_data] = true;

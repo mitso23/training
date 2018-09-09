@@ -829,7 +829,10 @@ int main(int argc, char* argv[])
 
 	printBottomView(tree.m_root);
 #endif
+<<<<<<< HEAD
 #if 0
+=======
+>>>>>>> 4fc7f41f0448ecc5260fa04fa70e6398eb6b455f
 	Tree tree1;
 	tree1.AddData(50);
 	tree1.AddData(30);
@@ -838,9 +841,15 @@ int main(int argc, char* argv[])
 	tree1.AddData(40);
 	tree1.AddData(1);
 	tree1.AddData(70);
+<<<<<<< HEAD
 	tree1.PrintData();
 
 
+=======
+
+
+	tree1.PrintData();
+>>>>>>> 4fc7f41f0448ecc5260fa04fa70e6398eb6b455f
 	TreeIterator treeIter1(tree1.m_root);
 	int result1;
 	bool success1 = treeIter1.getNext(result1);
@@ -850,6 +859,7 @@ int main(int argc, char* argv[])
 	tree2.AddData(20);
 	tree2.AddData(40);
 	tree2.AddData(1);
+<<<<<<< HEAD
 	tree2.PrintData();
 
 	int result2;
@@ -1258,4 +1268,22 @@ createSegmentTree(segmentTree, 0, input, 0, 3);
 std::queue<int> q;
 traverseSegmentTree(segmentTree, sizeof(input)/sizeof(input[0]) * 2, 0, q);
 
+	tree2.PrintData();
+	TreeIterator treeIter2(tree1.m_root);
+	int result2;
+	bool success2 = treeIter2.getNext(result2);
+
+	while(success1 && success2)
+	{
+		if (result1 == result2)
+		{
+			std::cout << "found a match: " << result1 << std::endl;
+			success2 = treeIter2.getNext(result2);
+		}
+
+		success1 = treeIter1.getNext(result1);
+		success2 = treeIter2.getNext(result2);
+	}
+
+	std::cout << "Found a match: " << std::endl;
 }

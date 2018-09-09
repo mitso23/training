@@ -447,6 +447,15 @@ public:
 		return m_data[index];
 	}
 
+	template <typename T>
+	array1D_VIEW<T>& operator+=(array1D<T, size>& as, ::size_t increment)
+	{
+	   as.ptr += increment;
+	   as.len -= increment;
+	   // We can now log if len < increment
+	   return array1D_VIEW;
+	}
+
 private:
 	T* m_data;
 };

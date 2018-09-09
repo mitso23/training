@@ -47,6 +47,12 @@ struct my_is_same<T, T>
 	}
 };
 
+template< class T >
+typename my_remove_reference<T>::type&& my_move(T&& t )
+{
+	return static_cast<typename my_remove_reference<T>::type&&>(t);
+}
+
 Noisy process2()
 {
 	Noisy n;
@@ -144,12 +150,267 @@ void testTemplReference(T t)
 
 }
 
+void test_my_move()
+{
+	Noisy n;
+
+	process(my_move(n));
+}
+
+/**
+ * @brief default deleter class for resources that have been allocated using new
+ */
+template<typename T>
+struct DefaultNewDeleter
+{
+    void operator ()(T* ptr)
+    {
+        if (ptr)
+        {
+            delete ptr;
+        }
+    }
+};
+
+/**
+ * @brief a simple resource managing class similar to unique_ptr but without the ability of moving the resource
+ */
+template<typename T, typename F=DefaultNewDeleter<T> >
+class ScopedPtr
+{
+public:
+    /**
+     * @brief default constructor
+     */
+    explicit ScopedPtr() : m_ptr(NULL)
+    {
+
+    }
+
+    /**
+     * @brief Constructor
+     * @param [in] ptr the raw resource that this class is going to own and manage
+     */
+    explicit ScopedPtr(T* ptr) : m_ptr(ptr)
+    {
+
+    }
+
+    /**
+     * @brief Constructor
+     * @param [in] ptr the raw resource that this class is going to own and manage
+     * @param [in] f a custom deleter function
+     */
+    explicit ScopedPtr(T* ptr, F f) : m_ptr(ptr), m_callback(f)
+    {
+
+    }
+
+    /**
+     * @brief operator! implementation
+     * @return true if the underlying pointer is not NULL or false if not
+     */
+    bool operator !() const
+    {
+        return !m_ptr;
+    }
+
+    /**
+     * @brief implicit convertion of this class to bool
+     */
+    operator bool() const
+    {
+        return (m_ptr != NULL);
+    }
+
+    /**
+     * @brief free the current resource and reassign it with the newly provided one
+     * @param [in] the new pointer that this class is going to manage
+     */
+    void Reset(T* ptr)
+    {
+        m_FreeResource();
+        m_ptr = ptr;
+    }
+
+    /**
+     * @return the underlying raw resource
+     */
+    T* Get() const
+    {
+        return m_ptr;
+    }
+
+    /**
+     * @brief restore the ownership back to the caller
+     * @return the underlying raw resource
+     */
+    T* Release()
+    {
+        T* temp = m_ptr;
+        m_ptr = NULL;
+        return temp;
+    }
+
+    /**
+     * @return the custom deleter functor
+     */
+    F GetDeleter() const
+    {
+        return m_callback;
+    }
+
+    /**
+     * @brief operator* implementation
+     */
+    T* operator->() const
+    {
+        return m_ptr;
+    }
+
+    /**
+     * @brief operator* implementation
+     */
+    T& operator*() const
+    {
+        return *m_ptr;
+    }
+
+    /**
+     * @brief destructor
+     */
+    ~ScopedPtr()
+    {
+        m_FreeResource();
+    }
+
+    ScopedPtr(ScopedPtr&& rhs)
+    	: m_ptr(nullptr)
+    {
+		std::cout << "move constructing the scoped pointer " << std::endl;
+		Reset(rhs.Release());
+	}
+
+    ScopedPtr& operator=(ScopedPtr&& rhs)
+    {
+    	std::cout << "move assigning the scoped pointer " << std::endl;
+
+    	Reset(rhs.Release());
+    	return *this;
+    }
+
+private:
+    /**
+     * @brief free the managed resource
+     */
+    void m_FreeResource()
+    {
+        if (m_ptr)
+        {
+            m_callback(m_ptr);
+            m_ptr = NULL;
+        }
+    }
+private:
+    /**
+     * @brief disable copying
+     */
+    ScopedPtr(const ScopedPtr& rhs);
+
+   /**
+     * @brief disable assignment operator
+     */
+    ScopedPtr& operator=(const ScopedPtr&rhs);
+protected:
+    T* m_ptr;               /**< The raw pointer that we are managing*/
+    F m_callback;           /**< Callback function for releasing the resource*/
+};
+
+
+ScopedPtr<int> testScopedPtrFromFunction()
+{
+	ScopedPtr<int> p(new int(2));
+
+	*p = 3;
+
+	return p;
+}
+
+ScopedPtr<Noisy> testScopedPtrFromFunctionNoisy()
+{
+	ScopedPtr<Noisy> p(new Noisy(1));
+
+	return p;
+}
+
+void testScopedPtrMove()
+{
+
+#if 0
+	// test move construction
+	{
+		ScopedPtr<int> p(new int(2));
+		ScopedPtr<int> f = my_move(p);
+
+		if (p)
+		{
+			std::cout << "FUCK P is not NULL" << std::endl;
+			std::cout << "P= " << *p << std::endl;
+		}
+		else
+		{
+			std::cerr << "Expected P to be NULL " << std::endl;
+		}
+
+		if (f)
+		{
+			std::cout << "EXPECTED F not to be NULL " << std::endl;
+			std::cout << "f = " << *f << std::endl;
+		}
+		else
+		{
+			std::cerr << "FUCK F IS NULL " << std::endl;
+		}
+
+	}
+#endif
+
+	//test move assignment
+	{
+		ScopedPtr<int> p(new int(2));
+		ScopedPtr<int> f(new int(3));
+		f = my_move(p);
+
+		if (p)
+		{
+			std::cout << "FUCK P is not NULL" << std::endl;
+			std::cout << "P= " << *p << std::endl;
+		}
+		else
+		{
+			std::cerr << "Expected P to be NULL " << std::endl;
+		}
+
+		if (f)
+		{
+			std::cout << "EXPECTED F not to be NULL " << std::endl;
+			std::cout << "f = " << *f << std::endl;
+		}
+		else
+		{
+			std::cerr << "FUCK F IS NULL " << std::endl;
+		}
+	}
+}
+
 void testRemoveReference()
 {
 
+#if 0
 	//This will call the lvalue reference
 	Noisy n;
 	process(std::forward<Noisy&>(n));
+#endif
 
 #if 0
 	Noisy n;

@@ -114,6 +114,10 @@ int main(int argc, char* argv[])
 	//differentTypeInitialization();
 	//testRemoveReference();
 	//testUniversalRefence();
+	//test_my_move();
+	//testScopedPtrMove();
+	//std::cout << *testScopedPtrFromFunction() << std::endl;
+	ScopedPtr<Noisy> res = testScopedPtrFromFunctionNoisy();
 
 #if 0
 	Matrix m1(1, 2);
