@@ -51,8 +51,7 @@ class RBTree
 public:
 	void insert(const int& data)
 	{
-		Node* newNode = &nodesPool[nodesPoolCounter++];
-		newNode->setData(data);
+		Node* newNode = new Node(data);
 
 		if (!m_minNode)
 		{
@@ -66,7 +65,20 @@ public:
 
 		m_root = BSTInsert(m_root, newNode);
 
-		fixViolation(m_root, newNode);
+		//fixViolation(m_root, newNode);
+	}
+
+	void rebalanceTree()
+	{
+		int array[1000000];
+		unsigned int index = 0;
+
+		inorderHelper2(m_root, array, index);
+
+		RBTree newTree;
+		sortedArrayToTree(array, 0, index, &newTree);
+
+		m_root = newTree.getRoot();
 	}
 
 	Node* findNode(const int data)
@@ -259,6 +271,23 @@ public:
 	}
 
 private:
+
+	void sortedArrayToTree(int arr[], int low, int high, RED_BLACK_TREE::RBTree* tree)
+	{
+		if (low > high)
+		{
+			return;
+		}
+
+		auto mid = (high + low  + 1)/2;
+		tree->insert(arr[mid]);
+
+		//std::cout << "low: " << low << " high: " << high << " mid: " << mid << " val: " << arr[mid] << std::endl;
+
+		sortedArrayToTree(arr, low, mid - 1, tree);
+		sortedArrayToTree(arr, mid + 1, high, tree);
+	}
+
 	/* A utility function to insert a new node with given key
 	   in BST */
 	Node* BSTInsert(Node* root, Node *pt)
@@ -407,6 +436,17 @@ private:
 		inorderHelper(root->left);
 		cout << "data: " << root->data << " left count " << root->numLeftCount << std::endl;
 		inorderHelper(root->right);
+	}
+
+	void inorderHelper2(Node *root, int* sortedArray, unsigned int& index)
+	{
+		if (root == NULL)
+			return;
+		else
+			sortedArray[++index] = root->data;
+
+		inorderHelper2(root->left, sortedArray, index);
+		inorderHelper2(root->right, sortedArray, index);
 	}
 
 	// Utility function to do level order traversal

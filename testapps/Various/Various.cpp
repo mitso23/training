@@ -482,11 +482,438 @@ public:
 	}
 };
 
-#include "array_view.h"
+/**
+ * @brief default deleter class for resources that have been allocated using new
+ */
+template<typename T>
+struct DefaultNewDeleter
+{
+	DefaultNewDeleter()
+	{
 
-using namespace av;
+	}
+
+	template <typename Y>
+	//NOTE: this is necessary so we can assign a deleter of type DefaultNewDeleter<Base> p = DefaultNewDeleter<Derived>
+	DefaultNewDeleter(const DefaultNewDeleter<Y>&)
+	{
+
+	}
+
+	void operator ()(T* ptr)
+    {
+        if (ptr)
+        {
+            delete ptr;
+        }
+    }
+};
+
+template<typename T>
+struct DefaultNewArrayDeleter
+{
+	DefaultNewArrayDeleter()
+	{
+
+	}
+
+	template <typename Y>
+	DefaultNewArrayDeleter(const DefaultNewDeleter<Y>&)
+	{
+
+	}
+
+    void operator ()(T* ptr)
+    {
+        if (ptr)
+        {
+            delete[] ptr;
+        }
+    }
+};
+
+/**
+ * @brief default deleter class for resources that have been allocated using malloc/calloc
+ */
+template<typename T>
+struct DefaultMallocDeleter
+{
+	DefaultMallocDeleter()
+	{
+
+	}
+
+	template <typename Y>
+	DefaultMallocDeleter(const DefaultNewDeleter<Y>&)
+	{
+
+	}
+
+    void operator ()(T* ptr)
+    {
+        if (ptr)
+        {
+            free(ptr);
+        }
+    }
+};
+
+/**
+ * @brief the purpose of this class is to allow to perform simple bindings (this pointer and an argument)
+ * allowing us to use member functions as custom deleters when using scoped lock with a custom deleter
+ */
+template<typename T, typename F, typename Arg1>
+class Bind
+{
+public:
+    /**
+     * @brief Constructor
+     * @param [in] f the function call back
+     * @param [in] thisPtr the this pointer where f is member of
+     */
+    Bind(F f, T* thisPtr) : m_thisPtr(thisPtr), m_f(f)
+    {
+
+    }
+
+    /**
+     * @brief operator() implementation
+     * @param [in] argument the passed in argument that the call back function will be called with
+     */
+    void operator()(Arg1* argument)
+    {
+        (m_thisPtr->*m_f)(argument);
+    }
+
+private:
+    T* m_thisPtr;       /**< The this pointer where m_f is member of*/
+    F m_f;              /**< Function call back*/
+};
+
+template <class T>
+struct custom_remove_reference
+{
+    typedef T type;
+};
+
+template <class T>
+struct custom_remove_reference<T&>
+{
+    typedef T type;
+};
+
+template <class T>
+struct custom_remove_reference<T&&>
+{
+    typedef T type;
+};
+
+template <class T, class U>
+struct custom_is_same
+{
+    bool operator()()
+    {
+        return false;
+    }
+
+};
+
+template <class T>
+struct custom_is_same<T, T>
+{
+    bool operator()()
+    {
+        return true;
+    }
+};
+
+template< class T >
+typename custom_remove_reference<T>::type&& custom_move(T&& t )
+{
+    return static_cast<typename custom_remove_reference<T>::type&&>(t);
+}
+
+template<typename T, typename F=DefaultNewDeleter<T> >
+class ScopedPtr
+{
+public:
+    /**
+     * @brief default constructor
+     */
+    ScopedPtr() : m_ptr(NULL)
+    {
+
+    }
+
+    /**
+     * @brief Constructor
+     * @param [in] ptr the raw resource that this class is going to own and manage
+     */
+    explicit ScopedPtr(T* ptr) : m_ptr(ptr)
+    {
+
+    }
+
+    /**
+     * @brief Constructor
+     * @param [in] ptr the raw resource that this class is going to own and manage
+     * @remarks to simplify the implementation we assume that the custom deleter is copyable
+     * @remarks if you want to copy be reference then use std::ref
+     * @param [in] f a custom deleter function
+     */
+    explicit ScopedPtr(T* ptr, F f) : m_ptr(ptr), m_callback(f)
+    {
+
+    }
+
+    /**
+     * @brief operator! implementation
+     * @return true if the underlying pointer is not NULL or false if not
+     */
+    bool operator !() const
+    {
+        return !m_ptr;
+    }
+
+    /**
+     * @brief implicit convertion of this class to bool
+     */
+    operator bool() const
+    {
+        return (m_ptr != NULL);
+    }
+
+    /**
+     * @brief free the current resource and reassign it with the newly provided one
+     * @param [in] the new pointer that this class is going to manage
+     */
+    void Reset(T* ptr)
+    {
+        m_FreeResource();
+        m_ptr = ptr;
+    }
+
+    /**
+     * @return the underlying raw resource
+     */
+    T* Get() const
+    {
+        return m_ptr;
+    }
+
+    /**
+     * @brief restore the ownership back to the caller
+     * @return the underlying raw resource
+     */
+    T* Release()
+    {
+        T* temp = m_ptr;
+        m_ptr = NULL;
+        return temp;
+    }
+
+    /**
+     * @return the custom deleter functor
+     */
+    F GetDeleter() const
+    {
+        return m_callback;
+    }
+
+    /**
+     * @brief operator* implementation
+     */
+    T* operator->() const
+    {
+        return m_ptr;
+    }
+
+    /**
+     * @brief operator* implementation
+     */
+    T& operator*() const
+    {
+        return *m_ptr;
+    }
+
+    /**
+     * @brief destructor
+     */
+    ~ScopedPtr()
+    {
+        m_FreeResource();
+    }
+
+    ScopedPtr(ScopedPtr&& rhs)
+            : m_ptr(nullptr)
+    		, m_callback(custom_move(rhs.m_callback))
+    {
+    	std::cout << "Move constructor has been called " << std::endl;
+        Reset(rhs.Release());
+    }
+
+    template<typename Y, typename D>
+    ScopedPtr(ScopedPtr<Y, D>&& rhs)
+                : m_ptr(nullptr)
+                , m_callback(custom_move(rhs.GetDeleter()))
+	{
+    	std::cout << "Move constructor with Y has been caleed " << std::endl;
+		Reset((rhs.Release()));
+	}
+
+    ScopedPtr& operator=(ScopedPtr&& rhs)
+    {
+    	std::cout << "operator = " << std::endl;
+        Reset(rhs.Release());
+        m_callback = custom_move(rhs.GetDeleter());
+        return *this;
+    }
+
+    template<typename Y, typename D>
+    ScopedPtr& operator=(ScopedPtr<Y, D>&& rhs)
+	{
+       std::cout << "operator = Y" << std::endl;
+	   Reset((rhs.Release()));
+	   m_callback = custom_move(rhs.GetDeleter());
+	   return *this;
+	}
+
+private:
+    /**
+     * @brief free the managed resource
+     */
+    void m_FreeResource()
+    {
+        if (m_ptr)
+        {
+            m_callback(m_ptr);
+            m_ptr = NULL;
+        }
+    }
+private:
+    /**
+     * @brief disable copying
+     */
+    ScopedPtr(const ScopedPtr& rhs);
+
+    /**
+     * @brief disable assignment operator
+     */
+    ScopedPtr& operator=(const ScopedPtr&rhs);
+protected:
+    T* m_ptr;               /**< The raw pointer that we are managing*/
+    F m_callback;           /**< Callback function for releasing the resource*/
+};
+
+class Base
+{
+public:
+	virtual ~Base()
+	{
+		std::cout << "base destructor is called " << std::endl;
+	}
+};
+
+class Derived : public Base
+{
+
+public:
+	~Derived()
+	{
+		std::cout << " derived destructor is called " << std::endl;
+	}
+};
+
+template<typename T>
+struct CustomNewDeleter
+{
+	CustomNewDeleter(bool* deleted) : m_deleted(deleted)
+	{
+		std::cout << "non default constructor called " << std::endl;
+	}
+
+	void operator ()(T* ptr)
+    {
+        if (ptr)
+        {
+        	std::cout << "Custom delete operator has been called" << std::endl;
+        	delete ptr;
+
+        	if (m_deleted)
+        	{
+        		std::cout << "setting the flag " << std::endl;
+        		*m_deleted = true;
+        	}
+        }
+    }
+
+	bool* m_deleted = nullptr;
+};
+
+void testMove(ScopedPtr<Base> b)
+{
+
+}
+
+bool binary_search(int* arr, int size, int value)
+{
+	int start = 0;
+	int end = size - 1;
+
+	while(start <= end)
+	{
+		int mid = start + (end - start)/2;
+
+		std::cout << "mid: " << mid << " start: " << start << " end: " << end << std::endl;
+
+		if (arr[mid] == value)
+		{
+			return true;
+		}
+		else if (value < arr[mid])
+		{
+			end = mid - 1;
+		}
+		else
+		{
+			start = mid + 1;
+		}
+	}
+
+	return false;
+}
+
+template<typename T>
+class Factory
+{
+public:
+	std::unique_ptr<T> Create()
+	{
+		return std::unique_ptr<T>(new T());
+	}
+};
+
+template<typename T>
+void foo(Factory<T>& f)
+{
+	auto o = f.Create();
+}
+
+class Skata
+{
+public:
+	template<typename T>
+	Skata(Factory<T>& f)
+	{
+
+	}
+};
+
 int main (int argc, char *argv[])
 {
+
+	Factory<int> f;
+	foo(f);
 
 #if 0
 	DongleProvider* dongleProvider = new DongleProvider();
@@ -510,8 +937,6 @@ int main (int argc, char *argv[])
 	// cloud specific communicator
 	(static_cast<CloudProvider*>(providers[1]))->GetCommunicator().Ping();
 #endif
-
-	array_view<int, 3> v;
 
 #if 0
   gint ret;

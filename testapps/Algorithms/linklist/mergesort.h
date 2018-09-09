@@ -25,7 +25,7 @@ void FrontBackSplit(struct Node* source, struct Node** frontRef, struct Node** b
 			//std::cout << "slow: " << slow->data << " fast: " << fast->data << std::endl;
 		}
 
-		std::cout << "mid point is " << slow->data << std::endl;
+		//std::cout << "mid point is " << slow->data << std::endl;
 
 		*frontRef = source;
 		//slow now points to one element before the mid
@@ -109,7 +109,7 @@ struct Node* SortedMerge(struct Node* a, struct Node* b)
 }
 
 
-void MergeSortList(Node*& list)
+void MergeSortList(Node** list)
 {
 	//base case
 	if (list == nullptr || *list == nullptr || (*list)->next == nullptr)
@@ -125,7 +125,7 @@ void MergeSortList(Node*& list)
 	MergeSortList(&a);
 	MergeSortList(&b);
 
-	*list = SortedMerge(a, b);
+	*list = SortedMerge2(a, b);
 }
 
 #endif /* MERGESORT_H_ */

@@ -47,12 +47,14 @@ int partition2(int* arr, int low, int high)
 int partition (int* arr, int low, int high)
 {
     // pivot (Element to be placed at right position)
-	auto pivotIndex = random()%(high - low);
-    auto pivot = arr[pivotIndex];
+	auto number = low + random()%(high-low);
+	std::swap(arr[number], arr[high]);
+
+	auto pivot = arr[high];
 
     auto i = (low - 1); // Index of smaller element
 
-    for (int j = low; j <= high- 1; j++)
+    for (int j = low; j <= high - 1; j++)
     {
         // If current element is smaller than or
         // equal to pivot
@@ -62,9 +64,10 @@ int partition (int* arr, int low, int high)
             std::swap(arr[i], arr[j]);
         }
     }
-    std::swap(arr[i + 1],arr[pivotIndex]);
 
-    return (i + 1);
+    std::swap(arr[i + 1],arr[high]);
+
+    return (i);
 }
 
 void quicksort_rec(int* arr, int low, int high)

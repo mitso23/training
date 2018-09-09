@@ -1,0 +1,12 @@
+https://github.com/docker  --> docker swarm, cloud, machine
+https://multicampus.udemy.com/docker-mastery/learn --> docker tutorial in udemy
+//Docker in confluence
+//Docker in rockford
+//Docker comunity edition and enterprece edition(paid)
+//https://store.docker.com/
+//https://docs.docker.com/install/linux/docker-ce/ubuntu/#prerequisites
+//https://github.com/BretFisher/udemy-docker-mastery  --> Docker resources from UDEMY course 
+
+//docker-machine is used to manage multiple docker containters or use it to install on windows or older mac books
+
+//docker-compose is used to define the services that will run in a docker file

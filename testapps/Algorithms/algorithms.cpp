@@ -65,11 +65,21 @@
 #include "sorting/find_element_sorted_rotated.h"
 #include "trees/red_black_tree.h"
 #include "trees/check_binary_tree_bst.h"
-//#include "linklist/mergesort.h"
+#include "linklist/mergesort.h"
 #include "linklist/remove_duplicate.h"
 #include "trees/k_smallest_element_bst.h"
 #include "trees/sorted_array_to_bst.h"
 #include "sorting/insertion_sort.h"
+#include "arrays/generate_combinations_two_sorted_arrays.h"
+#include "arrays/sort_array_zero_one_three.h"
+#include "arrays/reverse_array_special_characters.h"
+#include "arrays/count_triplets_sum_smaller_value.h"
+#include "arrays/longest_sub_array_cont_seq.h"
+#include "arrays/longest_sequence_array.h"
+#include "graphs/find_all_possible_islands.h"
+#include "strings/all_possible_palindromic_partition.h"
+#include "arrays/print_array_spiral.h"
+#include "trees/segment_tree.h"
 
 int main(int argc, char* argv[])
 {
@@ -1134,32 +1144,118 @@ int main(int argc, char* argv[])
 	tree.levelOrder();
 #endif
 
-	unsigned const DATA_SIZE = 1000000;
-	int data[DATA_SIZE];
+#if 0
+	unsigned const DATA_SIZE = 100;
+	int* data = new int[DATA_SIZE];
 	RED_BLACK_TREE::RBTree tree;
 	std::map<int, int> map;
+	Node* head = nullptr;
+	Node* tail = nullptr;
 
-#if 0
+
 	for(unsigned int i=0; i< DATA_SIZE; ++i)
 	{
 		data[i] = i;
-		tree.insert(i);
+		//tree.insert(i);
 		//map[i] = i;
+
+		push_front(&head, DATA_SIZE - i);
+		tail = (tail == nullptr ? head : tail);
 	}
-#else
+	push_front(&head, 1);
+
 	for(unsigned int i=0; i< DATA_SIZE; ++i)
 	{
 		data[i] = random() % DATA_SIZE;
-		tree.insert(data[i]);
+		//tree.insert(data[i]);
 		//map[i] = i;
+
+		push_front(&head, data[i]);
+		tail = (tail == nullptr ? head : tail);
 	}
-#endif
 
-	data[DATA_SIZE - 1] = 3;
-
-	//insertion_sort(data, 100000);
-	//quicksort(data, DATA_SIZE);
+	//printList(head);
+	//insertion_sort_list(&head, tail);
+	MergeSortList(&head);
+	//printList(head);
+	//insertion_sort(data, DATA_SIZE);
+	quicksort(data, DATA_SIZE);
+	for(unsigned int i=0; i< DATA_SIZE; ++i)
+	{
+		std::cout << data[i] << std::endl;
+	}
 	//std::sort(data, data + DATA_SIZE);
 
 	//tree.inorder();
+#endif
+
+#if 0
+	unsigned int arr1[] = { 10, 15, 25};
+	unsigned int arr2[] = { 1, 5, 20, 30};
+
+	generatCombination(arr1, sizeof(arr1)/sizeof(arr1[0]), arr2, sizeof(arr2)/sizeof(arr2[0]));
+#endif
+#if 0
+	//int inputData[] = { 0,0, 2, 2, 1, 0, 0, 2, 1, 2, 0, 1};
+	int inputData[] = {2,1};
+	sortArrayOneTwoThree(inputData, sizeof(inputData)/sizeof(inputData[0]));
+	for(auto i = 0U; i<  sizeof(inputData)/sizeof(inputData[0]); ++i)
+	{
+		std::cout << inputData[i] << std::endl;
+	}
+#endif
+#if 0
+	char d[] = "ab$c";
+	reverse_array_special_character(d);
+	printf("%s", d);
+#endif
+
+#if 0
+	//int ss[] = {14, 12, 11, 20};
+	int ss[] = { 1, 2, 3 , 4};
+	longest_cont_sub_array(ss, 4);
+#endif
+
+#if 0
+	int ss[] = { 10, 11, 1, 2, 3, 4, 7, 8, 9, 12, 13};
+	longest_sequence_array_2(ss, sizeof(ss)/sizeof(ss[0]));
+#endif
+
+#if 0
+unsigned int mat[5][5] = {
+							{1, 1, 0, 0, 0},
+							{0, 1, 0, 0, 1},
+							{1, 0, 0, 1, 1},
+							{0, 0, 0, 0, 0},
+							{1, 0, 1, 0, 1}
+						 };
+
+std::cout << "max islands: " << find_all_possible_islands(mat);
+#endif
+
+#if 0
+char ptr[] = "Geeks";
+std::vector<std::string> data;
+
+allPossiblePallindromicPartitions(ptr, 0, data);
+#endif
+
+#if 0
+int a[R][C] =
+{
+		{1,  2,  3,  4,  5,  6},
+        {7,  8,  9,  10, 11, 12},
+        {13, 14, 15, 16, 17, 18}
+};
+
+spiralPrint(a);
+#endif
+
+int input[] = { 1, 2, 3, 4 };
+int segmentTree[sizeof(input)/sizeof(input[0]) * 2];
+createSegmentTree(segmentTree, 0, input, 0, 3);
+
+std::queue<int> q;
+traverseSegmentTree(segmentTree, sizeof(input)/sizeof(input[0]) * 2, 0, q);
+
 }
