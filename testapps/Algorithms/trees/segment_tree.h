@@ -29,7 +29,6 @@ void createSegmentTree(int* sumTree, int currentNode, int* input, unsigned l, un
 	}
 }
 
-
 void traverseSegmentTree(int* sumTree, int size, int currentNode, std::queue<int>& q)
 {
 	if (currentNode >= size - 1)
@@ -50,9 +49,42 @@ void traverseSegmentTree(int* sumTree, int size, int currentNode, std::queue<int
 	}
 }
 
-int findSumSegmentTree(int* summTree, int size, int start, int end)
+int findSumSegmentTree(int* sumTree, int currentNode, int start, int end, int segmentStart, int segmentEnd)
 {
+	if (segmentEnd == segmentStart)
+	{
+		//std::cout << "last node" << currentNode << " sum: " << sumTree[currentNode]  << std::endl;
+		return sumTree[currentNode];
+	}
 
+	std::cout << "start: " << start << " end: " << end << " segmStart: " << segmentStart << " segmentEnd: " << segmentEnd << " node: " << currentNode << std::endl;
+
+	//check if the entire region is inside the current region
+	if (segmentStart >= start  && segmentEnd <= end)
+	{
+		//std::cout << "entire region in returnin sum" <<  sumTree[currentNode] << std::endl;
+		return sumTree[currentNode];
+	}
+
+	int mid = segmentStart + (segmentEnd - segmentStart)/2;
+
+	//std::cout << " mid: " << mid << std::endl;
+
+	int sum = 0;
+	if (start <= mid || end <=mid)
+	{
+		//std::cout << " going left: " << std::endl;
+		sum+= findSumSegmentTree(sumTree, 2*currentNode + 1, start, end, segmentStart, mid);
+	}
+
+	if (start >= (mid + 1) || end >= (mid + 1))
+	{
+		//std::cout << " going right: " << std::endl;
+		sum+= findSumSegmentTree(sumTree, 2*currentNode + 2, start, end, mid+1, segmentEnd);
+	}
+
+	//std::cout << "return sum " << sum << std::endl;
+	return sum;
 }
 
 #endif /* SEGMENT_TREE_H_ */
