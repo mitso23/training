@@ -1,11 +1,36 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <typeinfo>
+#include <iostream>
+
+
+class ArrayBase
+{
+	ArrayBase(unsigned int size)
+		: maxSize(size)
+	{
+
+	}
+
+	unsigned int GetSize() const
+	{
+		return maxSize;
+	}
+
+private:
+	unsigned int maxSize;
+};
 
 template<typename T, unsigned int size>
-class Array
+class Array : private ArrayBase
 {
 public:
+	Array() : ArrayBase(size)
+	{
+
+	}
+
 	T& operator[](unsigned int index)
 	{
 		return m_arr[index];
@@ -226,6 +251,9 @@ class Stack2 {
     Stack2<T,CONT>& operator= (Stack2<T2,CONT2> const&);
 };
 
+template class Stack2<std::string>;
+template class Stack2<int>;
+
 // a template of a template
 template <typename T, template<typename ELEM> class CONT>
 
@@ -242,4 +270,35 @@ class Stack3 {
 
 };
 
+template <typename T>
+class InitOfPodTypes
+{
+public:
+	T t = T();
+};
 
+/**
+ * Comparmax
+ * ison for the arrays
+ */
+template <typename T, int N, int M>
+T const* max (T const (&a)[N], T const (&b)[M])
+{
+	std::cout << "comparing arrays of different size" << std::endl;
+    return a < b ? b : a;
+}
+
+//The explanation for this behavior is that during argument deduction array-to-pointer conversion (often called decay)
+//occurs only if the parameter does not have a reference type. This is demonstrated by the following program:
+template <typename T>
+void ref (const T& x)
+{
+    std::cout << "x in ref(T const&): "
+              << typeid(x).name() << '\n';
+}
+template <typename T>
+void nonref (T x)
+{
+    std::cout << "x in nonref(T): "
+              << typeid(x).name() << '\n';
+}
