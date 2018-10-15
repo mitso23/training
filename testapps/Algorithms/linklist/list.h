@@ -1,99 +1,70 @@
 #ifndef TESTAPPS_ALGORITHMS_LIST_
 #define TESTAPPS_ALGORITHMS_LIST_
 
+#include <iostream>
 
 struct Node
 {
 	int data;
-	Node* next;
-	Node* previous;
+	Node* next = nullptr;
+	Node* previous = nullptr;
 };
 
-Node* m_head = NULL;
-Node* m_tail = NULL;
+Node arrayPool[10000000];
+static int arrPoolIdx = 0;
 
-
-/// tail 1 2 3 head
-void push_front(int data)
+/* Function to insert a node at the beginging of the linked list */
+void push_front(struct Node** head_ref, int new_data)
 {
-	if(m_head == NULL)
-	{
-		m_head = (Node*)malloc(sizeof(Node));
-		m_head->data = data;
-		m_head->next = NULL;
-		m_head->previous = NULL;
-		m_tail = m_head;
+  /* allocate node */
+  struct Node* new_node = &arrayPool[arrPoolIdx++];       //(struct Node*) malloc(sizeof(struct Node));
 
-		return;
+  /* put in the data  */
+  new_node->data  = new_data;
+
+  /* link the old list off the new node */
+  new_node->next = (*head_ref);
+
+  if (new_node->next)
+  {
+	  new_node->next->previous = new_node;
+  }
+
+  /* move the head to point to the new node */
+  (*head_ref)    = new_node;
+
+}
+
+void push_back(struct Node** tail, int new_data)
+{
+	/* allocate node */
+	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+
+	new_node->data = new_data;
+
+	new_node->previous = *tail;
+
+	if (new_node->previous)
+	{
+		new_node->previous->next = new_node;
 	}
 
-	Node* newNode = (Node*)malloc(sizeof(Node));
-
-	newNode->data = data;
-	newNode->next = NULL;
-	m_head->next = newNode;
-	newNode->previous = m_head;
-
-	m_head = newNode;
+	(*tail) = new_node;
 }
 
-/// tail 1 2 3 head
-void push_back(int data)
+
+/* Function to print nodes in a given linked list */
+void printList(struct Node *head)
 {
-	if(m_head == NULL)
+
+	std::cout << "printing list " << std::endl;
+
+	while (head != NULL)
 	{
-		m_head = (Node*)malloc(sizeof(Node));
-		m_head->data = data;
-		m_head->next = NULL;
-		m_tail = m_head;
-
-		return;
+		std::cout << head->data << std::endl;
+		head = head->next;
 	}
-
-	Node* newNode = (Node*)malloc(sizeof(Node));
-
-	newNode->data = data;
-	newNode->next = m_tail;
-	m_tail->previous = newNode;
-
-	m_tail = newNode;
-	m_tail->previous = NULL;
 }
-
-void remove_back()
-{
-	if(m_tail == NULL)
-	{
-		return;
-	}
-
-	Node* temp = m_tail;
-	m_tail = m_tail->next;
-	m_tail->previous = NULL;
-
-	free(temp);
-}
-
-void printList()
-{
-	Node* current = m_head;
-	while (current != NULL)
-	{
-		std::cout << current->data;
-		current = current->previous;
-	}
-	std::cout << std::endl;
-
-}
-
-void clearList()
-{
-	m_head = NULL;
-	m_tail = NULL;
-}
-
-
-
 
 
 

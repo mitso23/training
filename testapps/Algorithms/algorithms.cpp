@@ -1,7 +1,4 @@
-#include "strings.h"
-
 #include <vector>
-
 #include "Stl/stl.h"
 
 #include "dynamic_programming/coin_changing_problem.h"
@@ -10,7 +7,8 @@
 #include "combinatronics/permutation.h"
 #include "backtracking/collect_max_points_before_hitting_dead_end.h"
 #include "recursion/sum_digits.h"
-#include "combinatronics/combination_k_out_of_n_items.h"
+//#include "combinatronics/combination_k_out_of_n_items.h"
+#include "trees/tree.h"
 #include "parsers/matching_brackets.h"
 #include "graphs/graph.h"
 #include "matrix/communication_stations.h"
@@ -55,6 +53,33 @@
 #include "trees/bottom_view_tree.h"
 #include "hash/hash.h"
 #include "trees/check_binary_tree_subtree_another.h"
+#if 0
+#include "trees/construct_tree_from_preorder_inorder_traversal.h"
+#include "trees/remove_nodes_on_root_leaf_less_distance_k.h"
+#endif
+#include "trees/reverse_alternate_levels.h"
+#include "heap/binary_heap.h"
+#include "heap/k_largest_elements.h"
+#include "heap/sort_almost_sorted_array.h"
+#include "sorting/quicksort.h"
+#include "sorting/find_element_sorted_rotated.h"
+#include "trees/red_black_tree.h"
+#include "trees/check_binary_tree_bst.h"
+#include "linklist/mergesort.h"
+#include "linklist/remove_duplicate.h"
+#include "trees/k_smallest_element_bst.h"
+#include "trees/sorted_array_to_bst.h"
+#include "sorting/insertion_sort.h"
+#include "arrays/generate_combinations_two_sorted_arrays.h"
+#include "arrays/sort_array_zero_one_three.h"
+#include "arrays/reverse_array_special_characters.h"
+#include "arrays/count_triplets_sum_smaller_value.h"
+#include "arrays/longest_sub_array_cont_seq.h"
+#include "arrays/longest_sequence_array.h"
+#include "graphs/find_all_possible_islands.h"
+#include "strings/all_possible_palindromic_partition.h"
+#include "arrays/print_array_spiral.h"
+#include "trees/segment_tree.h"
 
 int main(int argc, char* argv[])
 {
@@ -804,6 +829,8 @@ int main(int argc, char* argv[])
 
 	printBottomView(tree.m_root);
 #endif
+
+#if 0
 	Tree tree1;
 	tree1.AddData(50);
 	tree1.AddData(30);
@@ -812,8 +839,7 @@ int main(int argc, char* argv[])
 	tree1.AddData(40);
 	tree1.AddData(1);
 	tree1.AddData(70);
-
-
+	tree1.PrintData();
 	tree1.PrintData();
 	TreeIterator treeIter1(tree1.m_root);
 	int result1;
@@ -824,23 +850,414 @@ int main(int argc, char* argv[])
 	tree2.AddData(20);
 	tree2.AddData(40);
 	tree2.AddData(1);
-
 	tree2.PrintData();
-	TreeIterator treeIter2(tree1.m_root);
+
 	int result2;
+	TreeIterator treeIter2(tree2.m_root);
 	bool success2 = treeIter2.getNext(result2);
 
+	bool found = false;
 	while(success1 && success2)
 	{
-		if (result1 == result2)
-		{
-			std::cout << "found a match: " << result1 << std::endl;
-			success2 = treeIter2.getNext(result2);
-		}
+		std::cout << "result1: " << result1 << " result2: " << result2 << std::endl;
 
-		success1 = treeIter1.getNext(result1);
-		success2 = treeIter2.getNext(result2);
+		if (!found && result1 == result2)
+		{
+			found = true;
+			success1 = treeIter1.getNext(result1);
+			success2 = treeIter2.getNext(result2);
+			std::cout << "found matching root: " << success1 << std::endl;
+		}
+		else if (found)
+		{
+			success1 = treeIter1.getNext(result1);
+			success2 = treeIter2.getNext(result2);
+
+			if (!success2)
+			{
+				std::cout << "subtree: " << std::endl;
+			}
+			else if (!(success1 && success2 && result1 == result2))
+			{
+				std::cout << "not a subtree" << std::endl;
+				return 0;
+			}
+		}
+		else
+		{
+			success1 = treeIter1.getNext(result1);
+		}
+	}
+#endif
+
+#if 0
+	auto res = find_square_root(34567012, 10);
+	std::cout << res << " res: " << " res*res: " << res*res << std::endl;
+#endif
+
+#if 0
+	char* pre = "abcdefhg";
+	char* inord = "dcfebahg";
+
+	printPreorder(createTree(inord, pre, 0, strlen(inord)));
+#endif
+#if 0
+	Tree tree1;
+	tree1.AddData(50);
+
+	tree1.AddData(30);
+
+	tree1.AddData(25);
+	tree1.AddData(20);
+	tree1.AddData(26);
+
+
+	tree1.AddData(35);
+	tree1.AddData(34);
+	tree1.AddData(36);
+
+	tree1.AddData(60);
+
+	tree1.AddData(65);
+	tree1.AddData(64);
+	tree1.AddData(66);
+
+	tree1.AddData(55);
+	tree1.AddData(54);
+	tree1.AddData(56);
+
+
+	tree1.PrintData();
+
+	//remove_nodes_less_given_distance(&tree1.m_root, nullptr, false, 1, 10);
+	MyNodeInfo* __arr[10];
+	std::queue<MyNodeInfo> q;
+	auto size = 0U;
+	reverseAlternateLevels(tree1.m_root, nullptr, 0, __arr, 0, size, q);
+
+	auto l = [](int data) { std::cout << "data: " << data << std::endl; };
+	tree1.iterateItems(l);
+#endif
+
+#if 0
+	Heap p(10);
+	p.insertItem(10);
+	p.insertItem(4);
+	p.insertItem(9);
+	p.insertItem(2);
+	p.insertItem(5);
+	p.insertItem(11);
+	p.sortHeap();
+	p.printHeap();
+#endif
+
+#if 0
+	int data[] = { 1, 7, 8, 10, 13, 5, 6, 100 };
+	printKLargestElementsArray(data, sizeof(data)/sizeof(data[0]), 3);
+#endif
+
+#if 0
+	int data[] = { 1, 3, 4 , 1 , 6};
+	sort_almost_sorted_array(data, sizeof(data)/sizeof(data[0]), 2);
+#endif
+
+#if 0
+	unsigned int data[] = {2, 1, 3, 10, 4, 9,5};
+	mergeSort2(data,0, 6);
+
+	for(unsigned int i=0; i< sizeof(data)/sizeof(data[0]); ++i)
+	{
+		std::cout << data[i] << std::endl;
+	}
+#endif
+
+#if 0
+	int data[] = {2, 1, 3, 4, 6, 7, 5, 9};
+	quicksort(data, sizeof(data)/sizeof(data[0]));
+
+	for(unsigned int i=0; i< sizeof(data)/sizeof(data[0]); ++i)
+	{
+		std::cout << data[i] << std::endl;
+	}
+#endif
+#if 0
+	int data[] = { 7,8,9,1,2,3,4,5,6 };
+	find_element(data, sizeof(data)/sizeof(data[0]), 1);
+#endif
+
+#if 0
+	Tree tree1;
+	tree1.AddData(50);
+	tree1.AddData(80);
+	tree1.AddData(85);
+	tree1.AddData(70);
+	tree1.AddData(65);
+	tree1.AddData(60);
+	tree1.AddData(75);
+	tree1.AddData(76);
+
+	tree1.AddData(30);
+	tree1.AddData(35);
+
+	tree1.AddData(25);
+
+	tree1.PrintData();
+
+	auto current = tree1.GetMaxNode();
+
+	while(current != nullptr)
+	{
+		std::cout << current->getData()<< std::endl;
+		current = current->getPrevious();
+	}
+#endif
+
+#if 0
+	Tree tree1;
+	tree1.AddData(50);
+	tree1.AddData(80);
+	tree1.AddData(85);
+	tree1.AddData(70);
+	tree1.AddData(65);
+	tree1.AddData(60);
+	tree1.AddData(75);
+	tree1.AddData(76);
+
+	tree1.AddData(30);
+	tree1.AddData(35);
+
+	tree1.AddData(25);
+
+	tree1.PrintData();
+	std::cout << checkBinaryTreeBst(tree1.m_root) << std::endl;
+#endif
+
+#if 0
+	Tree tree1;
+	tree1.AddData(11);
+	tree1.AddData(5);
+	tree1.AddData(14);
+
+	tree1.PrintData();
+	RotateLeft(tree1.m_root->m_left);
+	tree1.PrintData();
+#endif
+
+#if 0
+	RED_BLACK_TREE::RBTree tree;
+
+	tree.insert(40);
+	tree.insert(30);
+	tree.insert(60);
+	tree.insert(20);
+	tree.insert(35);
+	tree.insert(50);
+	tree.insert(70);
+	tree.insert(45);
+	tree.insert(55);
+	tree.insert(54);
+	tree.insert(56);
+
+
+	cout << "Inoder Traversal of Created Tree\n";
+	tree.inorder();
+
+	cout << "\n\nLevel Order Traversal of Created Tree\n";
+	tree.levelOrder();
+#endif
+
+#if 0
+	auto iter2 = tree.GetMaxNode();
+
+	while(iter2 != nullptr)
+	{
+		std::cout << "max element: " << iter2->getData() << std::endl;
+		iter2 = iter2->getPrevious();
+	}
+#endif
+
+#if 0
+
+	auto iter1 = tree.GetMinNode();
+
+	while(iter1 != nullptr)
+	{
+		std::cout << " element: " << iter1->getData() << std::endl;
+		iter1 = iter1->getNext();
 	}
 
-	std::cout << "Found a match: " << std::endl;
+	std::cout << "found node: " << tree.findNode(56)->data << std::endl;
+#endif
+
+#if 0
+	Node* head = nullptr;
+	Node* a = nullptr;
+	Node* b = nullptr;
+
+	push_back(&head, 1);
+	push_back(&head, 2);
+	push_back(&head, 3);
+	push_back(&head, 3);
+	push_back(&head, 3);
+	push_back(&head, 0);
+	push_back(&head, 4);
+	push_back(&head, 10);
+	push_back(&head, 6);
+	push_back(&head, 9);
+
+	printList(head);
+
+	MergeSortList(&head);
+	std::cout << "sorted list is " << std::endl;
+	printList(head);
+
+	std::cout << "sorted unique list is " << std::endl;
+	removeDuplicate(head);
+	printList(head);
+#endif
+
+#if 0
+	RED_BLACK_TREE::RBTree tree;
+	tree.insert(20);
+	tree.insert(8);
+	tree.insert(22);
+	tree.insert(4);
+	tree.insert(12);
+	tree.insert(10);
+	tree.insert(14);
+	tree.inorder();
+
+	std::cout << "kth smallest element: " << find_k_smallest_element(tree.getRoot(), 7);
+
+#endif
+
+#if 0
+	int data[] = { 1, 7, 3, 8, 9, 4, 6 };
+	Heap heap(100, data, 7sizeof(data)/sizeof(data[0]));
+	std::cout << "3 smallest: " << heap.getKthSmallestElement(3) << std::endl;
+#endif
+
+#if 0
+	int data[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	RED_BLACK_TREE::RBTree tree;
+	sortedArrayToTree(data, 0, 9, &tree);
+	tree.levelOrder();
+#endif
+
+#if 0
+	unsigned const DATA_SIZE = 100;
+	int* data = new int[DATA_SIZE];
+	RED_BLACK_TREE::RBTree tree;
+	std::map<int, int> map;
+	Node* head = nullptr;
+	Node* tail = nullptr;
+
+
+	for(unsigned int i=0; i< DATA_SIZE; ++i)
+	{
+		data[i] = i;
+		//tree.insert(i);
+		//map[i] = i;
+
+		push_front(&head, DATA_SIZE - i);
+		tail = (tail == nullptr ? head : tail);
+	}
+	push_front(&head, 1);
+
+	for(unsigned int i=0; i< DATA_SIZE; ++i)
+	{
+		data[i] = random() % DATA_SIZE;
+		//tree.insert(data[i]);
+		//map[i] = i;
+
+		push_front(&head, data[i]);
+		tail = (tail == nullptr ? head : tail);
+	}
+
+	//printList(head);
+	//insertion_sort_list(&head, tail);
+	MergeSortList(&head);
+	//printList(head);
+	//insertion_sort(data, DATA_SIZE);
+	quicksort(data, DATA_SIZE);
+	for(unsigned int i=0; i< DATA_SIZE; ++i)
+	{
+		std::cout << data[i] << std::endl;
+	}
+	//std::sort(data, data + DATA_SIZE);
+
+	//tree.inorder();
+#endif
+
+#if 0
+	unsigned int arr1[] = { 10, 15, 25};
+	unsigned int arr2[] = { 1, 5, 20, 30};
+
+	generatCombination(arr1, sizeof(arr1)/sizeof(arr1[0]), arr2, sizeof(arr2)/sizeof(arr2[0]));
+#endif
+#if 0
+	//int inputData[] = { 0,0, 2, 2, 1, 0, 0, 2, 1, 2, 0, 1};
+	int inputData[] = {2,1};
+	sortArrayOneTwoThree(inputData, sizeof(inputData)/sizeof(inputData[0]));
+	for(auto i = 0U; i<  sizeof(inputData)/sizeof(inputData[0]); ++i)
+	{
+		std::cout << inputData[i] << std::endl;
+	}
+#endif
+#if 0
+	char d[] = "ab$c";
+	reverse_array_special_character(d);
+	printf("%s", d);
+#endif
+
+#if 0
+	//int ss[] = {14, 12, 11, 20};
+	int ss[] = { 1, 2, 3 , 4};
+	longest_cont_sub_array(ss, 4);
+#endif
+
+#if 0
+	int ss[] = { 10, 11, 1, 2, 3, 4, 7, 8, 9, 12, 13};
+	longest_sequence_array_2(ss, sizeof(ss)/sizeof(ss[0]));
+#endif
+
+#if 0
+unsigned int mat[5][5] = {
+							{1, 1, 0, 0, 0},
+							{0, 1, 0, 0, 1},
+							{1, 0, 0, 1, 1},
+							{0, 0, 0, 0, 0},
+							{1, 0, 1, 0, 1}
+						 };
+
+std::cout << "max islands: " << find_all_possible_islands(mat);
+#endif
+
+#if 0
+char ptr[] = "Geeks";
+std::vector<std::string> data;
+
+allPossiblePallindromicPartitions(ptr, 0, data);
+#endif
+
+#if 0
+int a[R][C] =
+{
+		{1,  2,  3,  4,  5,  6},
+        {7,  8,  9,  10, 11, 12},
+        {13, 14, 15, 16, 17, 18}
+};
+
+spiralPrint(a);
+#endif
+
+int input[] = { 1, 2, 3, 4, 5, 6 };
+int segmentTree[sizeof(input)/sizeof(input[0]) * 2];
+createSegmentTree(segmentTree, 0, input, 0, 5);
+
+//std::queue<int> q;
+//traverseSegmentTree(segmentTree, sizeof(input)/sizeof(input[0]) * 2, 0, q);
+
+std::cout << findSumSegmentTree(segmentTree, 0, 2, 5, 0, 5) << std::endl;
+
 }

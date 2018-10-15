@@ -1,0 +1,5 @@
+#show where the memory leak is
+valgrind --leak-check=full
+
+#track file descriptors
+valgrind --leak-check=full --track-fds=yes 

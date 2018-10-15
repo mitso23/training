@@ -19,6 +19,11 @@ public:
 
 	}
 
+	void reset()
+	{
+		std::stack<Tree::Node*>().swap(m_stackNodes);
+	}
+
 	bool getNext(int& result)
 	{
 		if (m_stackNodes.empty())
@@ -78,7 +83,6 @@ public:
 private:
 	Tree::Node* m_root;
 	std::stack<Tree::Node*> m_stackNodes;
-	bool m_lastNode = false;
 	int m_visited[1000] = { false };
 };
 

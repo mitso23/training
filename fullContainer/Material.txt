@@ -1,0 +1,37 @@
+https://github.com/docker  --> docker swarm, cloud, machine
+https://multicampus.udemy.com/docker-mastery/learn --> docker tutorial in udemy
+//Docker in confluence
+//Docker in rockford
+//Docker comunity edition and enterprece edition(paid)
+//https://store.docker.com/
+//https://docs.docker.com/install/linux/docker-ce/ubuntu/#prerequisites
+//https://github.com/BretFisher/udemy-docker-mastery  --> Docker resources from UDEMY course 
+
+//docker-machine is used to manage multiple docker containters or use it to install on windows or older mac books
+
+//docker-compose is used to define the services that will run in a docker file
+
+// docker swarm and cloud
+
+
+1) explain what docker is 
+2) why is docker usefuly to our team (we can run applications self contained /easy reproducible environment)
+3) run the nginx demo (first detach and then interactive)
+3) show how we build a docker
+4) show the samsung demo (cppcheck, gcovr, valgrind ->memory leak, fd track, uninitialized variables)
+
+docker images are the application we want to run while containers are instance of the images (we can have multiple of them)
+docker is a process with restricted resources, it is like saying run process A with filesystemA and 2 CPU's 
+container run for as long as the application launches
+containers use bridge networking or can use the host interface --net=host, you can use web server in one container and the database in another container
+you can create multiple virtual networks and associate each docker with one network
+
+docker version --> shows that this is client service
+docker images -> shows the images you have
+docker container ls -> shows the container that runs
+docker stats -> looks at the statistic of conainer memory cpu 
+docker inspect -> configuration of the docker
+
+
+docker container run --publish 8080:80 --name web --detach --cpuset-cpus="0-1" nginx
+docker container run -it nginx bash

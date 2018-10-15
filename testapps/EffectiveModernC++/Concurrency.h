@@ -27,6 +27,11 @@ void asyncTask()
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
+std::promise<int> getDelayedResult()
+{
+	std::promise<int> p;
+}
+
 template<typename RandomIt>
 unsigned parallelAccumulate(RandomIt begin, RandomIt end)
 {
@@ -55,6 +60,36 @@ void scheduleTask()
 	}
 
 	std::cout << "finished running: " << std::endl;
+}
+
+template<typename InputIterator>
+void accumulate(InputIterator begin, InputIterator end, std::promise<int> p)
+{
+	auto sum = std::accumulate(begin, end, 0);
+	p.set_value(sum);
+	std::cout << "accumulate result is: " << sum << std::endl;
+}
+
+#if 0
+template<class T, template <typename> class C>
+void accumulate2(typename C<T>::iterator begin, typename C<T>::iterator end, std::promise<int> p)
+{
+	auto sum = std::accumulate(begin, end, 0);
+	p.set_value(sum);
+	std::cout << "accumulate result is: " << sum << std::endl;
+}
+#endif
+
+void test_future()
+{
+	std::promise<int> p;
+	std::future<int> f = p.get_future();
+
+	std::vector<int> v = {1, 2, 3 , 4 };
+	std::thread t(accumulate2<int, std::vector<int> >, v.begin(), v.end(), std::move(p));
+
+	std::cout << "future result is: " << f.get() << std::endl;
+	t.join();
 }
 
 class ThreadRAII

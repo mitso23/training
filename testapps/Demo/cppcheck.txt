@@ -1,0 +1,5 @@
+#display all warning and errors
+cppcheck --enable=all .
+
+#suppress some of the warning
+cppcheck --enable=all --suppressions-list=suppress.txt . 

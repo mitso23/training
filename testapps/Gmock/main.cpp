@@ -1,5 +1,6 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "hal.h"
 
 using ::testing::AtLeast;
 using ::testing::Return;
@@ -39,6 +40,41 @@ public:
     MOCK_CONST_METHOD0(GetY, int());
 };
 
+class MockHAL : public HAL
+{
+
+public:
+	MockHAL(const MockHAL&) = delete;
+	MockHAL& operator=(const MockHAL& ) = delete;
+
+public:
+	MockHAL()
+	{
+		m_mockTurtle = new MockTurtle();
+	};
+
+	Turtle& getTurtle()
+	{
+		return *m_mockTurtle;
+	}
+
+	~MockHAL()
+	{
+		delete m_mockTurtle;
+	}
+
+private:
+	Turtle* m_mockTurtle = nullptr;
+};
+
+HAL& HAL::getInstance()
+{
+	static MockHAL mockHal;
+	return mockHal;
+}
+
+
+
 class Painter
 {
 public:
@@ -74,7 +110,9 @@ private:
 
 TEST(PainterTest, CanDrawSomething)
 {
-    MockTurtle turtle;
+	auto& hal = HAL::getInstance();
+	auto& turtle =*dynamic_cast<MockTurtle*>(&hal.getTurtle());
+
     Painter paint(turtle);
 
     EXPECT_CALL(turtle, GetX())
