@@ -1,3 +1,5 @@
+#include <typeinfo>
+
 template<typename T>
 class IsClassT
 {
@@ -125,4 +127,38 @@ void apply (typename TypeOp<T>::RefT arg, void (*func)(T))
 {
     func(arg);
 }
+
+enum
+{
+	HANLDE,
+	FD,
+	ID,
+};
+
+template<int N>
+struct IntWrapper
+{
+	int x;
+};
+
+using Handle = IntWrapper<HANLDE>;
+using Fd = IntWrapper<FD>;
+
+
+// This can be used to efficiently pass arguments, either by reference or by value
+template<typename T>
+class RParam
+{
+public:
+	typedef typename IfThenElse<sizeof(T) <= 2 * sizeof(void*),
+								T,
+								T const&>::ResultT Type;
+};
+
+template<typename T>
+void EfficientPassingOfArguments(RParam<T> param)
+{
+	std::cout << typeid(param).name() << std::endl;
+}
+
 

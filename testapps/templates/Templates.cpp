@@ -2,6 +2,7 @@
 #include "TemplatesInDepth.h"
 #include "PolicyTypeTraits.h"
 #include "TypeFunctions.h"
+#include "TemplatesInheritance.h"
 
 #include <iostream>
 #include <algorithm>
@@ -207,7 +208,11 @@ int main(int argc, char* argv[])
 	}
 #endif
 
+#if 0
 	const int& x = int();
 
 	apply<const int&>(x, foo);
+#endif
+
+	std::cout << "Empty" << sizeof(Empty) << " EmptyToo: " << sizeof(EmptyToo) << " Non Empty: " << sizeof(NonEmpty) << std::endl;
 }
