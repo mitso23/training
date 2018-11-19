@@ -3,6 +3,8 @@
 #include "PolicyTypeTraits.h"
 #include "TypeFunctions.h"
 #include "TemplatesInheritance.h"
+#include "TypeErasure.h"
+#include "simple_function.h"
 
 #include <iostream>
 #include <algorithm>
@@ -32,10 +34,10 @@ class MyType
 
 void foo(int x)
 {
-
+	std::cout << "calling foo: " << std::endl;
 }
 
-void foo(const int& x)
+void foo1(const int& x)
 {
 
 }
@@ -214,5 +216,38 @@ int main(int argc, char* argv[])
 	apply<const int&>(x, foo);
 #endif
 
+#if 0
 	std::cout << "Empty" << sizeof(Empty) << " EmptyToo: " << sizeof(EmptyToo) << " Non Empty: " << sizeof(NonEmpty) << std::endl;
+#endif
+
+#if 0
+	std::vector<Object> backpack;
+	backpack.push_back( Object( Weapon() ) );
+	backpack.push_back( Object( Armor() ) );
+	backpack.push_back( Object( Potion() ) );
+#endif
+
+#if 0
+	function<void, int> f;
+	f(1);
+#endif
+
+
+
+#if 1
+
+	my_function2<void(int)> ff {ffoo()};
+	my_function2<void(int)> ff2 = std::move(ff);
+
+	ff2 = my_function2<void(int)>{ffoo2()};
+
+	std::cout << sizeof(ff2) << std::endl;
+
+#endif
+
+#if 0
+	my_function<void(int)> ff(ffoo{});
+	ff(1);
+#endif
+
 }

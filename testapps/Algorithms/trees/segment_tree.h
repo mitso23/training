@@ -87,4 +87,33 @@ int findSumSegmentTree(int* sumTree, int currentNode, int start, int end, int se
 	return sum;
 }
 
+void updateSegmentTree(int* segmentTree, int currentNode, int targetValue, int updateValue, int startSegment, int endSegment)
+{
+	std::cout << "currentNode " << currentNode << " start: " << startSegment << " end: " << endSegment << std::endl;
+
+	if ((startSegment == endSegment) && segmentTree[currentNode] == targetValue)
+	{
+		std::cout << "found target value " << targetValue << " at node: " << currentNode << std::endl;
+		segmentTree[currentNode]+= updateValue;
+		return;
+	}
+	else if (startSegment == endSegment)
+	{
+		std::cout << "can't find the value" << std::endl;
+		return;
+	}
+
+	int mid = startSegment + (endSegment - startSegment)/2;
+	segmentTree[currentNode]+=updateValue;
+
+	if (targetValue < mid)
+	{
+		updateSegmentTree(segmentTree, 2*currentNode + 1, targetValue, updateValue, startSegment, mid);
+	}
+	else
+	{
+		updateSegmentTree(segmentTree, 2*currentNode + 2, targetValue, updateValue, mid + 1, endSegment);
+	}
+}
+
 #endif /* SEGMENT_TREE_H_ */

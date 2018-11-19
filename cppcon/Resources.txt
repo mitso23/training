@@ -1,0 +1,10 @@
+How to write a std::function
+https://www.youtube.com/watch?v=VY83afAJUIg&list=TLGGQLwauu0h128wMzExMjAxOA
+
+Use meson as a build system
+
+Use google benchmark
+https://github.com/google/benchmark
+
+All the presentations
+https://github.com/CppCon/CppCon2018/tree/master/Presentations

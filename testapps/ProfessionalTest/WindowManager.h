@@ -343,7 +343,7 @@ void Front(int id)
 
 	if (displayObjects[id].id == frontObject.id)
 	{
-		fprintf(fp, "id: %d is already the front object\n", d);
+		fprintf(fp, "id: %d is already the front object\n", id);
 		return;
 	}
 
