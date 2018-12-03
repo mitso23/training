@@ -93,7 +93,6 @@ typedef int CustomPolicy;
 BreadSlicer<Policy3_is<CustomPolicy> > bc;
 
 
-
 //EMPTY CLASS OPTIMIZATION an empty class will most likely have size = 1 to be able to represent an array of empty classes
 class Empty
 {
@@ -110,4 +109,99 @@ class NonEmpty : public Empty, public EmptyToo
 {
 
 };
+
+template<typename CountedType, unsigned int numObjects = 1>
+class ObjectCounter
+{
+private:
+	static size_t count;    // number of existing objects
+protected:
+	// default constructor
+	ObjectCounter()
+	{
+		++ObjectCounter<CountedType>::count;
+		if (live() > numObjects)
+		{
+			throw 1;
+		}
+	}
+
+	// copy constructor
+	ObjectCounter(ObjectCounter<CountedType> const&)
+	{
+		++ObjectCounter<CountedType>::count;
+		if (live() > numObjects)
+		{
+			throw 1;
+		}
+	}
+
+	// destructor
+	~ObjectCounter()
+	{
+		--ObjectCounter<CountedType>::count;
+	}
+
+public:
+	// return number of existing objects:
+	static size_t live()
+	{
+		return ObjectCounter<CountedType>::count;
+	}
+};
+
+template <typename CountedType, unsigned int numObjects>
+size_t ObjectCounter<CountedType, numObjects>::count = 0;
+
+class SingleObject : private ObjectCounter<SingleObject>
+{
+
+};
+
+class NotVirtual
+{
+
+};
+
+
+class Virtual
+{
+public:
+	virtual void foo()
+	{
+	}
+
+	virtual ~Virtual()
+	{
+
+	}
+};
+
+
+template<typename VBase>
+class BBase: private VBase
+{
+public:
+	// the virtuality of foo() depends on its declaration
+	// (if any) in the base class VBase
+	void foo()
+	{
+		std::cout << "Base::foo()" << '\n';
+	}
+};
+
+
+template<typename V>
+class Derived: public BBase<V>
+{
+public:
+	void foo()
+	{
+		std::cout << "Derived::foo()" << '\n';
+	}
+};
+
+
+
+
 

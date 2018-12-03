@@ -3,11 +3,13 @@
 #include "PolicyTypeTraits.h"
 #include "TypeFunctions.h"
 #include "TemplatesInheritance.h"
+#include "Metaprograms.h"
 
 #include <iostream>
 #include <algorithm>
 #include <functional>
 #include <list>
+#include <string.h>
 
 struct X
 {
@@ -214,5 +216,34 @@ int main(int argc, char* argv[])
 	apply<const int&>(x, foo);
 #endif
 
+#if 0
 	std::cout << "Empty" << sizeof(Empty) << " EmptyToo: " << sizeof(EmptyToo) << " Non Empty: " << sizeof(NonEmpty) << std::endl;
+#endif
+
+#if 0
+	SingleObject object;
+	SingleObject object2;
+#endif
+
+#if 0
+	BBase<NotVirtual>* p1 = new Derived<NotVirtual>;
+	p1->foo();  // calls Base::foo()
+
+	BBase<Virtual>* p2 = new Derived<Virtual>;
+	p2->foo();  // calls Derived::foo()
+#endif
+
+#if 0
+	std::cout << Pow3<7>::result << std::endl;
+#endif
+
+#if 0
+	std::cout << "sqrt: " << Sqrt2<99999>::result << std::endl;
+#endif
+
+	int a[600];
+	memset(a, 1, 600);
+	int b[600];
+	memset(b, 2, 600);
+	std::cout << DoTProduct<sizeof(a)/sizeof(a[0]), int>::Result(a, b) << std::endl;
 }
