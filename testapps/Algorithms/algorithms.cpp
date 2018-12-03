@@ -1260,4 +1260,6 @@ createSegmentTree(segmentTree, 0, input, 0, 5);
 
 std::cout << findSumSegmentTree(segmentTree, 0, 2, 5, 0, 5) << std::endl;
 
+updateSegmentTree(segmentTree, 0, 3, 10, 0, 5);
+
 }

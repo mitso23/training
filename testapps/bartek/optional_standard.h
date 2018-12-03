@@ -276,6 +276,7 @@ struct nullopt_t
   struct init{};
   constexpr explicit nullopt_t(init){}
 };
+
 constexpr nullopt_t nullopt{nullopt_t::init()};
 
 
