@@ -222,7 +222,7 @@ public:
 
     Result operator()(Arguments&&... args)
     {
-        (*functionHolderBase)(std::forward<Arguments>(args)...);
+        return (*functionHolderBase)(std::forward<Arguments>(args)...);
     }
 
     my_function2& operator = (const my_function2& rhs)

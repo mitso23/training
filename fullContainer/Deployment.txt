@@ -1,1 +1,2 @@
 docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix/ mitso23/training
+docker run -it --rm -e DISPLAY=$DISPLAY -v /home/tvkey/:/home/mitso23 training:latest

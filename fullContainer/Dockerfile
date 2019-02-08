@@ -1,13 +1,5 @@
-FROM ubuntu:16.04
-RUN apt-get update && apt-get install -y \
-build-essential \
-vim \
-tar \
-wget \
-net-tools \
-iputils-ping \
-ssh
-FROM ubuntu:16.04
+FROM ubuntu:18.04
+
 RUN apt-get update && apt-get install -y \
 build-essential \
 vim \
