@@ -27,7 +27,12 @@ pkg-config \
 g++ \
 libssl-dev \
 curl \
-sudo 
+sudo \
+gcc-7 
+
+ARG https_proxy
+ARG http_proxy
+
 
 RUN useradd -ms /bin/bash mitso23 && adduser mitso23 sudo
 WORKDIR /home/mitso23/
@@ -35,6 +40,9 @@ RUN chown -R mitso23:mitso23 /usr/local/lib/
 RUN chown -R mitso23:mitso23 /usr/local/include/
 
 USER mitso23
+RUN git config --global http.proxy $http_proxy 
+RUN git config --global https.proxy $https_proxy
+
 RUN cd /home/mitso23 && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes #redo 
 
 RUN cd /home/mitso23/training/packages/googletest/ &&  rm CMakeCache.txt && cmake -DBUILD_SHARED_LIBS=ON && make && cp googlemock/libgmock.so /usr/local/lib/  && cp -r googlemock/include/* /usr/local/include/
