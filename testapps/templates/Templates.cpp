@@ -9,7 +9,6 @@
 #include "TypeClassification.h"
 #include "SmartPointers.h"
 #include "Tuples.h"
-#include "utils/Noisy.h"
 #include "Expected.h"
 
 #include <iostream>
@@ -318,7 +317,7 @@ int main(int argc, char* argv[])
 	f(1);
 #endif
 
-#if 0
+#if 1
 
 	my_function2<void(int)> ff {ffoo()};
 	my_function2<void(int)> ff2 = std::move(ff);
@@ -388,9 +387,10 @@ int main(int argc, char* argv[])
 	std::cout << val<1>(f) << std::endl;
 #endif
 
+#if 0
 	Expected<Noisy, int> e1;
 
-	Expected<Noisy, int> e3 = Noisy();
+	Expected<Noisy, int> e3 = Noisy();l
 	const Noisy* n = &*e3;
 	std::cout << "e3 id is " << e3->getId() << std::endl;
 
@@ -398,7 +398,6 @@ int main(int argc, char* argv[])
 	std::cout << "e4 value is " << *e4 << std::endl;
 
 	Expected<Noisy, int> e6 = UnExpected<int>(3);
-
-
+#endif
 
 }
