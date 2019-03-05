@@ -27,7 +27,12 @@ libssl-dev \
 curl \
 sudo \
 gcc-7 \
-openjdk-8-jre 
+openjdk-8-jre \
+gcovr \
+valgrind \
+cppcheck \
+gdb 
+ 
  
 ARG https_proxy
 ARG http_proxy
