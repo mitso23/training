@@ -49,10 +49,10 @@ USER mitso23
 RUN git config --global http.proxy $http_proxy 
 RUN git config --global https.proxy $https_proxy
 
-RUN cd /home/mitso23 && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes #redo 
+RUN cd /tmp && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes #redo 
 
-RUN cd /home/mitso23/training/packages/googletest/ &&  rm CMakeCache.txt && cmake -DBUILD_SHARED_LIBS=ON && make && cp googlemock/libgmock.so /usr/local/lib/  && cp -r googlemock/include/* /usr/local/include/
-RUN cd /home/mitso23/training/packages/googletest/googletest/ && cmake ./ && make && cp libgtest.a /usr/local/lib && cp -r include/* /usr/local/include/
+RUN cd /tmp/training/packages/googletest/ &&  rm CMakeCache.txt && cmake -DBUILD_SHARED_LIBS=ON && make && cp googlemock/libgmock.so /usr/local/lib/  && cp -r googlemock/include/* /usr/local/include/
+RUN cd /tmp/training/packages/googletest/googletest/ && cmake ./ && make && cp libgtest.a /usr/local/lib && cp -r include/* /usr/local/include/
 
 RUN wget https://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/3/eclipse-cpp-neon-3-linux-gtk-x86_64.tar.gz && tar -zxvf eclipse-cpp-neon-3-linux-gtk-x86_64.tar.gz  
 
@@ -60,8 +60,6 @@ RUN cd eclipse && ./eclipse > /dev/null 2>&1 &
 
 #RUN git clone https://github.com/imatix/zguide.git && tar -zxvf zeromq-3.2.5.tar.gz && cd zeromq-3.2.5 && ./configure --prefix=/usr/local/  && make && make install 
 
-
-RUN mkdir /home/mitso23/training/bin
 ENV PRJ_ROOT=/home/mitso23/training
 
 
