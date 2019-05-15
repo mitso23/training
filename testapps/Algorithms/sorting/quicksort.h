@@ -44,6 +44,9 @@ int partition2(int* arr, int low, int high)
 
 }
 
+// 4 5 3 1 2 8 9 pivot is 3
+// 4 5 1 2 8 9 (3) we move 3 to the end
+
 int partition (int* arr, int low, int high)
 {
     // pivot (Element to be placed at right position)
@@ -69,6 +72,39 @@ int partition (int* arr, int low, int high)
 
     return (i);
 }
+
+#if 0
+int partition3(int* arr, int start, int end)
+{
+    //std::cout << "start: " << start << " end: " << end <<std::endl;
+    int pivot = end;
+    int i = start - 1;
+    int swapLoc = start;
+
+    while(i + 1< end)
+    {
+        ++i;
+
+        if (arr[i] <= arr[pivot])
+        {
+            if (i != swapLoc)
+            {
+                //std::cout << "swapping " << arr[i] << " with: " << arr[swapLoc] << std::endl;
+                swap(&arr[i], &arr[swapLoc]);
+            }
+            ++swapLoc;
+
+            //std::cout << "swap loc: " << swapLoc << std::endl;
+        }
+    }
+
+    swap(&arr[pivot], &arr[swapLoc]);
+
+    //std::cout << "returning pivot " << swapLoc << std::endl;
+
+    return swapLoc;
+}
+#endif
 
 void quicksort_rec(int* arr, int low, int high)
 {

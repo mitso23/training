@@ -70,9 +70,27 @@ void process(Noisy&& n)
 }
 
 template<typename T>
+class my_forward
+{
+    typedef std::remove_reference<T>::type& type;
+}
+
+template<typename T>
+class my_forward<T&&>
+{
+    typedef std::remove_reference<T>::type&& type;
+}
+
+template<typename T>
+my_forward<T>::type forward(T&& t)
+{
+    return static_cast<typename my_forward<T>::type>(t);
+}
+
+template<typename T>
 void logAndProcess(T&& param)
 {
-	process(std::forward<T>(param));
+	process(forward<T>(param));
 }
 
 class Matrix

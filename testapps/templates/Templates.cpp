@@ -27,9 +27,12 @@ void Stack2<T, CONT>::push(const T&)
 
 }
 
-class MyType
+struct MyType
 {
-
+    int foo(int x, int y)
+    {
+        return x + y;
+    }
 };
 
 void foo(int x)
@@ -225,6 +228,8 @@ int main(int argc, char* argv[])
 	backpack.push_back( Object( Weapon() ) );
 	backpack.push_back( Object( Armor() ) );
 	backpack.push_back( Object( Potion() ) );
+
+
 #endif
 
 #if 0
@@ -234,7 +239,7 @@ int main(int argc, char* argv[])
 
 
 
-#if 1
+#if 0
 
 	my_function2<void(int)> ff {ffoo()};
 	my_function2<void(int)> ff2 = std::move(ff);
@@ -249,5 +254,10 @@ int main(int argc, char* argv[])
 	my_function<void(int)> ff(ffoo{});
 	ff(1);
 #endif
+
+	MyType m;
+	auto wrapper = mem_fn(&MyType::foo, m);
+	function<int(int, int)> f(wrapper);
+	std::cout << f(1,2) << std::endl;
 
 }

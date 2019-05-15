@@ -291,50 +291,31 @@ private:
     Allocator allocator;
 };
 
-
-template<typename>
-class my_function;
-
-template<typename Result, typename ... Arguments>
-class my_function<Result(Arguments...)>
+template<typename R, typename T, typename ...Arguments>
+class MemFn
 {
 public:
-    template<typename Functor>
-    my_function(const Functor& f)
-        : invokePtr (reinterpret_cast<invokePtr_t>(invoke<Functor>))
-        , createPtr(reinterpret_cast<createPtr_t>(create<Functor>))
-
+    MemFn(R (T::*fn)(Arguments...), T& this_)
+        : m_fn(fn)
+        , m_this(this_)
     {
-        createPtr(&storage[0], &f);
+
     }
 
-    Result operator()(Arguments&&... args)
+    R operator()(Arguments&&... args)
     {
-        invokePtr(storage, std::forward<Arguments>(args)...);
+        return (m_this.*m_fn)(std::forward<Arguments>(args)...);
     }
 
 private:
-    using invokePtr_t = Result(*)(void*, Arguments&&...);
-    using createPtr_t = void(*)(void*, const void*);
-    using destroyPtr_t = void(*)(void*);
-
-    invokePtr_t invokePtr;
-    createPtr_t createPtr;
-    destroyPtr_t destroyPtr;
-    uint8_t storage[16];
-
-    template<typename Functor>
-    static Result invoke(Functor* f, Arguments&&... args)
-    {
-        return (*f)(std::forward<Arguments>(args)...);
-    }
-
-    template<typename Functor>
-    static void create(Functor* destination, Functor* source)
-    {
-        new(destination)ffoo(*source);
-    }
+    R (T::*m_fn)(Arguments...);
+    T& m_this;
 };
 
+template<typename R, typename T, typename ...Arguments>
+MemFn<R, T, Arguments...> mem_fn(R (T::*fn)(Arguments...), T& this_)
+{
+    return MemFn<R, T, Arguments...>(fn, this_);
+}
 
 #endif /* SIMPLE_FUNCTION_H_ */

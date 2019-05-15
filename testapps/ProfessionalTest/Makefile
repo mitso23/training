@@ -11,7 +11,7 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS=
+export LIBS=-lpthread -lgmock -lgtest
 export NAME= professional.out
 
 .PHONY: depend clean
