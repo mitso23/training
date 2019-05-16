@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <string>
 
 namespace MulticastServer
 {
@@ -18,7 +19,7 @@ int sd;
 char databuf[1024];
 int datalen = sizeof(databuf);
 
-int CreateServer()
+int CreateServer(std::string ipAddress)
 {
 
     /* Create a datagram socket on which to send. */
@@ -64,7 +65,7 @@ int CreateServer()
     /* Set local interface for outbound multicast datagrams. */
     /* The IP address specified must be associated with a local, */
     /* multicast capable interface. */
-    localInterface.s_addr = inet_addr("10.0.2.15");
+    localInterface.s_addr = inet_addr(ipAddress.c_str());
     if (setsockopt(sd, IPPROTO_IP, IP_MULTICAST_IF, (char *) &localInterface, sizeof(localInterface)) < 0)
     {
 
