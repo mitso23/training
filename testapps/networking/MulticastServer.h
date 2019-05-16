@@ -41,8 +41,8 @@ int CreateServer()
     /* group address of 225.1.1.1 and port 5555. */
     memset((char *) &groupSock, 0, sizeof(groupSock));
     groupSock.sin_family = AF_INET;
-    groupSock.sin_addr.s_addr = inet_addr("226.1.1.1");
-    groupSock.sin_port = htons(4321);
+    groupSock.sin_addr.s_addr = inet_addr("238.1.1.1");
+    groupSock.sin_port = htons(8082);
 
     //Disable loopback so you do not receive your own datagrams.
 #if 0
@@ -64,7 +64,7 @@ int CreateServer()
     /* Set local interface for outbound multicast datagrams. */
     /* The IP address specified must be associated with a local, */
     /* multicast capable interface. */
-    localInterface.s_addr = inet_addr("192.168.0.7");
+    localInterface.s_addr = inet_addr("10.0.2.15");
     if (setsockopt(sd, IPPROTO_IP, IP_MULTICAST_IF, (char *) &localInterface, sizeof(localInterface)) < 0)
     {
 
@@ -76,7 +76,7 @@ int CreateServer()
         printf("Setting the local interface...OK\n");
     }
 
-    for(unsigned int i=0; i< 10; ++i)
+    for(unsigned int i=0; i< 10000; ++i)
     {
         sprintf(databuf, "Multicast test message seq number %i", i);
 
@@ -91,6 +91,8 @@ int CreateServer()
         {
             printf("Sending datagram message...OK\n");
         }
+
+        sleep(1);
     }
 
     //Try the re-read from the socket if the loopback is not disable
