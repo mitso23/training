@@ -2,24 +2,36 @@
 
 class Weapon
 {
+    void fire();
+
 	void weapon();
 };
+
 class Armor
 {
+    void fire();
+
 	void armor();
 };
+
 class Helmet
 {
+    void fire();
+
 	void helmet();
 };
 
 class Scroll
 {
+    void fire();
+
 	void scroll();
 };
 
 class Potion
 {
+    void fire();
+
 	void potion();
 };
 
@@ -28,6 +40,7 @@ class Object
    struct ObjectConcept
    {
        virtual ~ObjectConcept() {}
+       virtual void fire() = 0;
    };
 
    template< typename T > struct ObjectModel : ObjectConcept
@@ -36,10 +49,17 @@ class Object
        {
 
        }
+
        virtual ~ObjectModel()
        {
     	   std::cout << "Destroying an ObjectModel: " << std::endl;
        }
+
+       void fire() override
+       {
+           object.fire();
+       }
+
      private:
        T object;
    };

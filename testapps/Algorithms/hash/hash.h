@@ -47,6 +47,12 @@ public:
 					current = current->nextNode;
 				}
 
+				if (!current)
+				{
+				    std::cout << "max limit reached aborting" << std::endl;
+				    exit(1);
+				}
+
 				current->nextNode = new BucketNode(key, value);
 				std::cout << "add,  key: " << key << " data: " << value << std::endl;
 			}

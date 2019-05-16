@@ -1,6 +1,8 @@
 #ifndef AUTOCORRECTION_H_
 #define AUTOCORRECTION_H_
 
+#include "../Algorithms/trees/ternary_search_tree.h"
+
 #include <string.h>
 #include <deque>
 
@@ -132,13 +134,28 @@ private:
 
 unsigned int HashGenerator(const char* str)
 {
-	unsigned sum = 0;
+	unsigned sum = 5381;
 	for(unsigned int i=0; i< strlen(str); ++i)
 	{
-		sum+= sum * 131 + str[i];
+		sum+= sum * 33 + str[i];
 	}
 
 	return sum % 70000;
+}
+
+inline uint32_t HashGenerator2(const char* str) {
+
+    uint32_t hash = 123456;
+    uint32_t prime = 13;
+
+    for(int i = 0; i < strlen(str); ++i) {
+        uint8_t value = str[i];
+        hash = hash ^ value;
+        hash *= prime;
+    }
+
+    return hash % 70000;
+
 }
 
 struct Bucket
@@ -203,19 +220,30 @@ struct Array
 
 	void AddBucket(const Bucket* bucket)
 	{
-		if (index < 20)
+		if (index < 10)
 		{
 			buckets[index] = *bucket;
 			++index;
+
+			//if (index >=2)
+			  //  std::cout << "collision detected for string " << bucket->str << " count: " << index << std::endl;
 		}
 		else
 		{
-			std::cout << "SHIT" << std::endl;
+			std::cout << "SHIT: " << index << std::endl;
 			abort();
 		}
 	}
 
-	Bucket buckets[20];
+	void Print()
+	{
+	    for(unsigned int i=0; i< index; ++i)
+	    {
+	        //std::cout << "i: " << i << " str: " << buckets[i].str<< std::endl;
+	    }
+	}
+
+	Bucket buckets[10];
 	unsigned int index;
 };
 
@@ -228,15 +256,21 @@ struct Hash
 
 	void AddWord(const char* str)
 	{
-		unsigned int key = HashGenerator(str);
+		unsigned int key = HashGenerator2(str);
 		static int counter = 0;
+		char* strCopy = (char*)malloc(strlen(str) + 1);
+		strcpy(strCopy, str);
 		//std::cout << "Add str: " << str << " key: " << key << std::endl;
 
-		Bucket bucket = { str, key };
+		Bucket bucket = { strCopy, key };
 
 		if(table[bucket.key].index != 0)
 		{
-			//std::cout << "collision detected for string " << bucket.str << " count: " << ++counter << std::endl;
+
+		}
+		else
+		{
+		    //std::cout << "no collision" << std::endl;
 		}
 
 		table[bucket.key].AddBucket(&bucket);
@@ -244,11 +278,17 @@ struct Hash
 
 	bool CheckWordExists(const char* str)
 	{
-		unsigned int key = HashGenerator(str);
+		unsigned int key = HashGenerator2(str);
 		//std::cout << "Get str: " << str << " key: " << key << std::endl;
 
 		for(unsigned int i=0; i< table[key].index; ++i)
 		{
+		    if (table[key].buckets[i].key != key)
+		    {
+		        //std::cerr << "keys are not the same " << std::endl;
+		        return false;
+		    }
+
 			if (strcmp(table[key].buckets[i].str, str) == 0)
 			{
 				return true;
@@ -256,6 +296,14 @@ struct Hash
 		}
 
 		return false;
+	}
+
+	void PrintAllWords()
+	{
+	    for(unsigned int i=0; i< 70000; ++i)
+	    {
+	        table[i].Print();
+	    }
 	}
 
 	static Array table[70000];

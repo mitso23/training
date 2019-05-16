@@ -16,6 +16,25 @@ void swap2(T& a, T& b)
 	b= std::move(tmp);
 }
 
+
+
+void TestNoisy(Noisy&& noisy)
+{
+    std::cout << "rvalue reference: " << std::endl;
+}
+
+void TestNoisy(const Noisy& noisy)
+{
+    std::cout << "reference version called " << std::endl;
+}
+
+template<typename T>
+void TestNoisyUniversal(T&& t)  //T t or T& t
+{
+    TestNoisy(static_cast<typename std::remove_reference<T>::type&&>(t));
+}
+
+
 //By default it will use the move operator to get the noisy (or use compiler return value optimisation)
 Noisy getNoisy()
 {

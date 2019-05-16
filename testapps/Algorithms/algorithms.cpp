@@ -80,6 +80,8 @@
 #include "strings/all_possible_palindromic_partition.h"
 #include "arrays/print_array_spiral.h"
 #include "trees/segment_tree.h"
+#include "trees/binary_indexed_tree.h"
+#include "trees/suffix_tree.h"
 
 int main(int argc, char* argv[])
 {
@@ -1251,6 +1253,7 @@ int a[R][C] =
 spiralPrint(a);
 #endif
 
+#if 0
 int input[] = { 1, 2, 3, 4, 5, 6 };
 int segmentTree[sizeof(input)/sizeof(input[0]) * 2];
 createSegmentTree(segmentTree, 0, input, 0, 5);
@@ -1262,4 +1265,21 @@ std::cout << findSumSegmentTree(segmentTree, 0, 2, 5, 0, 5) << std::endl;
 
 updateSegmentTree(segmentTree, 0, 3, 10, 0, 5);
 
+#endif
+
+#if 0
+int freq[] =  { 2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9 };
+int n = sizeof(freq) / sizeof(freq[0]);
+int *BITree = createBinaryIndexedTree(freq, n);
+cout << "Sum of elements in arr[0..5] is " << getSum(BITree, 5);
+
+// Let use test the update operation
+freq[3] += 6;
+updateNode(BITree, n, 3, 6); //Update BIT for above change in arr[]
+
+cout << "\nSum of elements in arr[0..5] after update is " << getSum(BITree, 5);
+
+#endif
+
+//createPrefixTree("banana", strlen("banana") + 1);
 }

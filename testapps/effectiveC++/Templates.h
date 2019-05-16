@@ -209,8 +209,7 @@ void doAdvance(output_iterator_tag outputIter)
 {
 	std::cout << "advancing output iterator" << std::endl;
 }
-
-template<typename IterT, typename DistT>
+istT>
 void advance(IterT& iter, DistT d)
 {
 	typename iterator_trait<IterT>::iterator_category iterCategory;
@@ -225,6 +224,7 @@ void advance(IterT& iter, DistT d)
   }
   else
   {
+template<typename IterT, typename D
 
   }
 #endif

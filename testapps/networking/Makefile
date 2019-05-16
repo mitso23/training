@@ -4,20 +4,19 @@
 # 'make clean'  removes all .o and executable files
 # #
 #
-
 include ../../common.mk
 
 ############EDIT THIS FOR PROJECT SPECIFIC SETTINGS ################################### 
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS=-lpthread -lgmock -lgtest
-export NAME= professional.out
+export LIBS= -lpthread
+export NAME= multicast
 
 .PHONY: depend clean
 
 all:
-	make -C ../../ -f rules.mk depend       
+	make -C ../../ -f rules.mk depend 	
 	make -C ../../ -f rules.mk $(NAME)
 
 clean:

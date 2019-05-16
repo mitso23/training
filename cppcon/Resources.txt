@@ -8,3 +8,6 @@ https://github.com/google/benchmark
 
 All the presentations
 https://github.com/CppCon/CppCon2018/tree/master/Presentations
+
+C++ cache friendly code (how to pack types together in the struct to reduce space)
+https://www.youtube.com/watch?v=Nz9SiF0QVKY

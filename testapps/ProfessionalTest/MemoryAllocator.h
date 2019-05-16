@@ -103,15 +103,13 @@ public:
 	public:
 		Node(const MemInfo&& meminfo)
 			: m_meminfo(meminfo)
-			, inUse(true)
 		{
 
 		}
 
-		MemInfo m_meminfo;				///< Memory related information
-		Node* next = nullptr;			///< pointer to next free/allocated memory chunk
-		Node* previous = nullptr;		///< pointer to previous free/allocated memory chunk
-		bool inUse = false;				///< If this node is not used then it can be re-used by another component
+		MemInfo m_meminfo;				                        ///< Memory related information
+		Node* next = nullptr;			                        ///< pointer to next free/allocated memory chunk
+		Node* previous = nullptr;		                        ///< pointer to previous free/allocated memory chunk
 		static const uint32_t s_magicCookie = MAGIC_COOKIE; 	///< sanity checker
 	};
 
@@ -120,13 +118,12 @@ public:
 	{
 		if (!head)
 		{
-			tail = node;
 			head = node;
 		}
 		else
 		{
-			head->next = node;
-			node->previous = head;
+			node->next = head;
+			head->previous = node;
 			head = node;
 		}
 	}
@@ -138,7 +135,6 @@ public:
 		//Instruct GCC_BUILTIN that this is highly unlikely to happen
 		if (!head)
 		{
-			tail = node;
 			head = node;
 		}
 		else
@@ -152,17 +148,24 @@ public:
 	/// NodePrevious->node->NodeNext
 	void RemoveNode(Node* node)
 	{
-		//Branch prediction
+
 		if (node->next)
 		{
 			node->next->previous = node->previous;
 		}
 
-		//Branch prediction
 		if (node->previous)
 		{
 			node->previous->next = node->next;
 		}
+
+		if (node == head)
+		{
+		    head = node->next;
+		}
+
+		node->next = nullptr;
+		node->previous = nullptr;
 	}
 
 	//[ALLOCATED]->[ALLOCATED(FREE 2)]->[ALLOCATED]->[FREE]->[ALLOCATED (FREE 1)]->[FREE]
@@ -173,18 +176,22 @@ public:
 		if (!head)
 		{
 			head = node;
-			tail = node;
 		}
 		else
 		{
+
 			node->previous = next->previous;
-			node->next = next;
-			next->previous = node;
+            node->next = next;
+            next->previous = node;
+
+            if (next == head)
+            {
+                head = node;
+            }
 		}
 	}
 
 	Node* head = nullptr;
-	Node* tail = nullptr;
 };
 
 // Caching system
@@ -209,7 +216,6 @@ public:
 		assert(reinterpret_cast<ptrdiff_t>(m_heapAllocatedMemory) % sizeof(aligned_t) == 0);
 
 		m_freeList.head = node;
-		m_freeList.tail = node;
 
 		std::cout << "size of hw alignment: " << sizeof(aligned_t) << " size of pointer: " << sizeof(List::Node*) << std::endl;
 
@@ -227,13 +233,14 @@ public:
 	void* Allocate(size_t size)
 	{
 		List::Node* currentNodeFromFreeList = m_freeList.head;
-		while(1)
+
+		while(currentNodeFromFreeList)
 		{
 			const size_t hwAlignment = AlignTo(size, sizeof(aligned_t));
 			const size_t header = AlignTo(sizeof(List::Node*), sizeof(aligned_t));
 			const size_t totalSizeRequired = hwAlignment + header;
 
-			std::cout << "size: " << size << " hwAlignment: " << hwAlignment << " header: " << header << " total: " << totalSizeRequired << std::endl;
+			std::cout << "size: " << size << " aligning size to HW: " << hwAlignment << " header: " << header << " total: " << totalSizeRequired << std::endl;
 
 			if (currentNodeFromFreeList->m_meminfo.allocatedSize >= totalSizeRequired)
 			{
@@ -266,10 +273,10 @@ public:
 				return result;
 
 			}
-
-			if (currentNodeFromFreeList == m_freeList.tail)
+			else
 			{
-				break;
+			    std::cout << "trying next block: " << std::endl;
+			    currentNodeFromFreeList = currentNodeFromFreeList->next;
 			}
 		}
 
@@ -286,32 +293,32 @@ public:
 	/// 5) Remove the Node* from the allocation list
 	void Free(void* ptr)
 	{
-		List::Node* node = nullptr;
+		List::Node* nodeToBeFreed = nullptr;
 		const size_t header = AlignTo(sizeof(List::Node*), sizeof(aligned_t));
 		ptrdiff_t diff = reinterpret_cast<ptrdiff_t>(static_cast<char*>(ptr) - header);
 		assert(diff > 0);
 
-		memcpy(&node, reinterpret_cast<char*>(diff), sizeof(List::Node*));
+		memcpy(&nodeToBeFreed, reinterpret_cast<char*>(diff), sizeof(List::Node*));
 
-		assert(node != nullptr);
-		assert(node->s_magicCookie == MAGIC_COOKIE);
+		assert(nodeToBeFreed != nullptr);
+		assert(nodeToBeFreed->s_magicCookie == MAGIC_COOKIE);
 
-		std::cout << "freeing memory: " << node->m_meminfo << " from node: " << node << std::endl;
+		std::cout << "freeing memory: " << nodeToBeFreed->m_meminfo << " from node: " << nodeToBeFreed << std::endl;
 
-		List::Node* currentNode = m_freeList.head;
+		List::Node* currentNodeFreeList = m_freeList.head;
 
 		/// Free list: [0-10]  [21-30]
 		/// Node: [11-20]
-		while(1)
+		while(currentNodeFreeList)
 		{
-		    Range m = { node->m_meminfo.start,
-		                node->m_meminfo.start + node->m_meminfo.allocatedSize - 1
+		    Range m = { nodeToBeFreed->m_meminfo.start,
+		                nodeToBeFreed->m_meminfo.start + nodeToBeFreed->m_meminfo.allocatedSize - 1
 		              };
 		    Range l;
 		    Range r;
 
 		    List::Node* leftNode = nullptr;
-            List::Node* midNode = node;
+            List::Node* midNode = nodeToBeFreed;
             List::Node* rightNode = nullptr;
 
             MemInfo* leftNodeMemInfo = nullptr;
@@ -319,41 +326,41 @@ public:
             MemInfo* rightNodeMemInfo = nullptr;
 
             // Check if we can we add this after the current node in the free list
-		    if (node->m_meminfo.start >= currentNode->m_meminfo.start + currentNode->m_meminfo.allocatedSize)
+		    if (nodeToBeFreed->m_meminfo.start >= currentNodeFreeList->m_meminfo.start + currentNodeFreeList->m_meminfo.allocatedSize)
 			{
-			    l = Range { currentNode->m_meminfo.start,
-			                currentNode->m_meminfo.start + currentNode->m_meminfo.allocatedSize - 1
+			    l = Range { currentNodeFreeList->m_meminfo.start,
+			                currentNodeFreeList->m_meminfo.start + currentNodeFreeList->m_meminfo.allocatedSize - 1
 			              };
 
-			    leftNode = currentNode;
+			    leftNode = currentNodeFreeList;
 			    leftNodeMemInfo = &leftNode->m_meminfo;
-			    rightNode = currentNode->next;
+			    rightNode = currentNodeFreeList->next;
 
 			    if (rightNode)
 			    {
-			        r = Range { currentNode->next->m_meminfo.start,
-			                    currentNode->next->m_meminfo.start + currentNode->next->m_meminfo.allocatedSize - 1
+			        r = Range { currentNodeFreeList->next->m_meminfo.start,
+			                    currentNodeFreeList->next->m_meminfo.start + currentNodeFreeList->next->m_meminfo.allocatedSize - 1
 			                  };
 			        rightNodeMemInfo = &rightNode->m_meminfo;
 			    }
 
 			}
 		    // Can we add this before the current node in the free list ?
-			else if (node->m_meminfo.start + node->m_meminfo.allocatedSize <= currentNode->m_meminfo.start)
+			else if (nodeToBeFreed->m_meminfo.start + nodeToBeFreed->m_meminfo.allocatedSize <= currentNodeFreeList->m_meminfo.start)
 			{
-			    r = Range { currentNode->m_meminfo.start,
-			                currentNode->m_meminfo.start + currentNode->m_meminfo.allocatedSize - 1
+			    r = Range { currentNodeFreeList->m_meminfo.start,
+			                currentNodeFreeList->m_meminfo.start + currentNodeFreeList->m_meminfo.allocatedSize - 1
 			              };
 
-			    rightNode = currentNode;
+			    rightNode = currentNodeFreeList;
 			    rightNodeMemInfo = &rightNode->m_meminfo;
-			    leftNode = currentNode->previous;
+			    leftNode = currentNodeFreeList->previous;
 
 				// Check if we can do a 3 way merge
 				if (leftNode)
 				{
-					l = { currentNode->previous->m_meminfo.start,
-					      currentNode->previous->m_meminfo.start + currentNode->previous->m_meminfo.allocatedSize
+					l = { currentNodeFreeList->previous->m_meminfo.start,
+					      currentNodeFreeList->previous->m_meminfo.start + currentNodeFreeList->previous->m_meminfo.allocatedSize
 					    };
 
 					leftNodeMemInfo = &leftNode->m_meminfo;
@@ -369,6 +376,8 @@ public:
 
 		    if (leftNode && rightNode && CanMergeRanges(l, m, r))
             {
+		        m_allocationList.RemoveNode(nodeToBeFreed);
+
                 std::cout << "merging " << l << " with: " << m << " and " << r << std::endl;
 
                 leftNodeMemInfo->allocatedSize+= midNodeMemInfo->allocatedSize;
@@ -379,11 +388,12 @@ public:
 
                 m_freeList.RemoveNode(rightNode);
 
-                m_allocationList.RemoveNode(node);
-                break;
+                return;
             }
             else if (rightNode && CanMergeRanges(m, r))
             {
+                m_allocationList.RemoveNode(nodeToBeFreed);
+
                 std::cout << "merging middle " << m << " with right: " << r << std::endl;
 
                 midNodeMemInfo->allocatedSize+= rightNodeMemInfo->allocatedSize;
@@ -391,49 +401,98 @@ public:
 
                 rightNode->m_meminfo = *midNodeMemInfo;
 
-                m_allocationList.RemoveNode(node);
-                break;
+                return;
             }
             else if (leftNode && CanMergeRanges(l, m))
             {
-                std::cout << "merging " << l << " with: " << m <<  std::endl;
+                m_allocationList.RemoveNode(nodeToBeFreed);
+
+                std::cout << "merging left " << l << " with middle: " << m <<  std::endl;
 
                 leftNodeMemInfo->allocatedSize+= midNodeMemInfo->allocatedSize;
                 leftNodeMemInfo->actualSize+= midNodeMemInfo->actualSize;
 
-                m_allocationList.RemoveNode(node);
-                break;
+
+                return;
             }
             else if (leftNode && m > l)
             {
+                m_allocationList.RemoveNode(nodeToBeFreed);
+
                 std::cout << " adding free block after left: " << l << std::endl;
                 m_freeList.AddNext(leftNode, midNode);
 
-                m_allocationList.RemoveNode(node);
-                break;
+                return;
             }
             else if (rightNode && m < r)
             {
+                m_allocationList.RemoveNode(nodeToBeFreed);
+
                 std::cout << " adding free block before right: " << r << std::endl;
                 m_freeList.AddBefore(rightNode, midNode);
 
-                m_allocationList.RemoveNode(node);
-                break;
+                return;
             }
 
-			if (currentNode == m_freeList.tail)
+		    currentNodeFreeList = currentNodeFreeList->next;
+
+			if (!currentNodeFreeList)
 			{
 			    std::cerr << "error freeing memory" << std::endl;
 				exit(1);
 			}
-
-			currentNode = currentNode->next;
 		}
+
+		//If we are here it means that the free list was empty [everything was already allocated]
+	    m_allocationList.RemoveNode(nodeToBeFreed);
+		m_freeList.AddToStart(nodeToBeFreed);
 	}
 
 	~Allocator()
 	{
 		delete[] m_heapAllocatedMemory;
+	}
+
+	size_t GetFreeSize()
+	{
+	    auto current = m_freeList.head;
+	    size_t freeSize = 0;
+
+	    while(current)
+	    {
+	        freeSize+= current->m_meminfo.allocatedSize;
+	        current = current->next;
+
+	        if (!current)
+	        {
+	            break;
+	        }
+	    }
+
+	    std::cout << "amount of free space is " << freeSize << std::endl;
+
+	    return freeSize;
+	}
+
+	size_t GetAllocatedSize()
+	{
+	    auto current = m_allocationList.head;
+	    size_t allocatedSize = 0;
+
+	    while(current)
+	    {
+	        allocatedSize+= current->m_meminfo.allocatedSize;
+	        current = current->next;
+
+	        if (!current)
+	        {
+	            break;
+	        }
+	    }
+
+	    std::cout << "amount of allocated memory is " << allocatedSize << std::endl;
+
+	    return allocatedSize;
 	}
 
 private:
@@ -442,5 +501,351 @@ private:
 	List m_allocationList;
 	size_t m_maxSize;
 };
+
+
+// available memory is [0-15] and make sure the entire one is used and we have 0 memory
+void TestOneFullAllocation()
+{
+    Allocator allocator(16);
+
+    if (allocator.GetFreeSize() != 16)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    auto ptr = allocator.Allocate(7);
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetFreeSize() != 0)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    allocator.Free(ptr);
+
+    if (allocator.GetFreeSize() != 16)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 0)
+    {
+       std::cerr << "error " << std::endl;
+       exit(-1);
+    }
+}
+
+//[0-31] Allocation
+// Allocate 8 ptr1
+//      ** Free one list start 16, 31
+//      ** alloc1[0-15]
+// Allocate 8 ptr2
+//      ** Free list is empty
+//      ** alloc2[16,31]->alloc1[0-15]
+
+// Free 8 ptr1
+//      ** free list one entry [0-15]
+
+// Free 8 ptr2
+//      ** free list one entry merge with previous [0-31]
+void TestTwoBackToBackAllocationsFreeInOrder()
+{
+    Allocator allocator(32);
+
+    auto ptr1 = allocator.Allocate(7);
+
+    if (allocator.GetFreeSize() != 16)
+    {
+       std::cerr << "error" << std::endl;
+       exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+       std::cerr << "error " << std::endl;
+       exit(-1);
+    }
+
+    auto ptr2 = allocator.Allocate(7);
+
+    if (allocator.GetFreeSize() != 0)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 32)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    allocator.Free(ptr1);
+
+    if (allocator.GetFreeSize() != 16)
+    {
+      std::cerr << "error" << std::endl;
+      exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+      std::cerr << "error " << std::endl;
+      exit(-1);
+    }
+
+    allocator.Free(ptr2);
+    if (allocator.GetFreeSize() != 32)
+    {
+      std::cerr << "error" << std::endl;
+      exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 0)
+    {
+      std::cerr << "error " << std::endl;
+      exit(-1);
+    }
+}
+
+
+//[0-31] Allocation
+// Allocate 8 ptr1
+//      ** Free one list start 16, 31
+//      ** alloc1[0-15]
+// Allocate 8 ptr2
+//      ** Free list is empty
+//      ** alloc2[16,31]->alloc1[0-15]
+
+// Free 8 ptr2
+//      ** free list one entry [16-31]
+//      ** allocator one entry [0-15]
+
+// Free 8 ptr1
+//      ** free list one entry merge with previous [0-31]
+//      ** allocator list should be empty
+void TestTwoBackToBackAllocationsFreeOutOfOrder()
+{
+    Allocator allocator(32);
+
+    auto ptr1 = allocator.Allocate(7);
+
+    if (allocator.GetFreeSize() != 16)
+    {
+       std::cerr << "error" << std::endl;
+       exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+       std::cerr << "error " << std::endl;
+       exit(-1);
+    }
+
+    auto ptr2 = allocator.Allocate(7);
+
+    if (allocator.GetFreeSize() != 0)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 32)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    allocator.Free(ptr2);
+
+    if (allocator.GetFreeSize() != 16)
+    {
+      std::cerr << "error" << std::endl;
+      exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+      std::cerr << "error " << std::endl;
+      exit(-1);
+    }
+
+    allocator.Free(ptr1);
+    if (allocator.GetFreeSize() != 32)
+    {
+      std::cerr << "error" << std::endl;
+      exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 0)
+    {
+      std::cerr << "error " << std::endl;
+      exit(-1);
+    }
+}
+
+//[0-128] Allocation
+// Allocate 8 ptr1  [1]
+//      ** Free one list start 16, 128
+//      ** alloc1[0-15]
+// Allocate 8 ptr2   [2]
+//      ** Free one list start [32-128]
+//      ** alloc2[16,31]->alloc1[0-15]
+
+// Allocate 8 ptr3 [3]
+//     ** Free one list start[48-128]
+//     ** alloc3[32-47]->alloc2[16-31]->alloc1[0,15]
+
+// Free 8 ptr2 [4]
+//      ** free list one entry [16-31]->[48-128]
+//      ** alloc3[32-47]->alloc1[0-15]
+
+// Allocate 16 ptr4 [5]
+//      ** free list two entries [16-31]->[72-128]
+//      ** alloc4[48-71]->alloc3[32-47]->alloc1[0-15]
+
+// Free ptr4 [6]
+//      ** free list two entries [16-31]->[48-128]
+//      ** alloc3[32-47]->alloc1[0-15]
+
+// Free ptr3 [7]
+//      ** free list one entry [16-128]
+//      ** alloc1[0-15]
+
+// Free ptr1 [7]
+//      ** free list one entry[0-128]
+//      ** list is empty
+
+void TestMultipleAllocationsFrees()
+{
+    Allocator allocator(128);
+
+    // [1]
+    auto ptr1 = allocator.Allocate(8);
+
+    if (allocator.GetFreeSize() != 112)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    //[2]
+    auto ptr2 = allocator.Allocate(8);
+
+    if (allocator.GetFreeSize() != 96)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 32)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    // [3]
+    auto ptr3 = allocator.Allocate(8);
+
+    if (allocator.GetFreeSize() != 80)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 48)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    // [4]
+    allocator.Free(ptr2);
+
+    if (allocator.GetFreeSize() != 96)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 32)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    // [5]
+    auto ptr4 = allocator.Allocate(16);
+
+    if (allocator.GetFreeSize() != 72)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 56)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    // [6]
+    allocator.Free(ptr4);
+
+    if (allocator.GetFreeSize() != 96)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 32)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    allocator.Free(ptr3);
+
+    if (allocator.GetFreeSize() != 112)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 16)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+
+    // [7]
+    allocator.Free(ptr1);
+
+    if (allocator.GetFreeSize() != 128)
+    {
+        std::cerr << "error" << std::endl;
+        exit(-1);
+    }
+
+    if (allocator.GetAllocatedSize() != 0)
+    {
+        std::cerr << "error " << std::endl;
+        exit(-1);
+    }
+}
 
 #endif /* MEMORYALLOCATOR_H_ */

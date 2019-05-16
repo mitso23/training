@@ -72,6 +72,8 @@ TCP transport on two different hosts without authentication:
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -273,6 +275,8 @@ unsigned int print(unsigned int* arr, unsigned start, unsigned mid , unsigned en
 	}
 
 	std::cout << std::endl;
+
+	return 0;
 }
 
 void find_min_max_meets_conditions(unsigned* arr, unsigned size, unsigned value)
@@ -883,6 +887,11 @@ bool binary_search(int* arr, int size, int value)
 	return false;
 }
 
+class Object
+{
+
+};
+
 template<typename T>
 class Factory
 {
@@ -909,11 +918,345 @@ public:
 	}
 };
 
+void swap(int* l, int* r)
+{
+    int temp = *l;
+    *l = *r;
+    *r = temp;
+}
+
+
+int partition(int* arr, int start, int end)
+{
+    //std::cout << "start: " << start << " end: " << end <<std::endl;
+    int pivot = end;
+    int i = start - 1;
+    int swapLoc = start;
+
+    while(i + 1< end)
+    {
+        ++i;
+
+        if (arr[i] <= arr[pivot])
+        {
+            if (i != swapLoc)
+            {
+                //std::cout << "swapping " << arr[i] << " with: " << arr[swapLoc] << std::endl;
+                swap(&arr[i], &arr[swapLoc]);
+            }
+            ++swapLoc;
+
+            //std::cout << "swap loc: " << swapLoc << std::endl;
+        }
+    }
+
+    swap(&arr[pivot], &arr[swapLoc]);
+
+    //std::cout << "returning pivot " << swapLoc << std::endl;
+
+    return swapLoc;
+}
+
+void sort(int* arr, int start, int end)
+{
+    if (start <= end)
+    {
+        int pivot = partition(arr, start, end);
+        sort(arr, start, pivot -1);
+        sort(arr, pivot + 1, end);
+    }
+}
+
+#include <assert.h>
+#include <limits.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+struct EvenNumbers
+{
+    unsigned int evenFreq[36];
+    unsigned int size = 0;
+};
+
+struct OddNumbers
+{
+    unsigned int oddFreq[36];
+    unsigned int size = 0;
+    unsigned int numberOnes = 0;
+};
+
+struct stringView
+{
+    const char* str;
+    unsigned int len;
+};
+
+
+// N = 0 R = 1
+// (N*16 + R)*res mod 16 = N*res + R*res/16
+unsigned long long int calculatePermutations(unsigned int n)
+{
+    if (n == 1)
+    {
+        return 1;
+    }
+
+    unsigned int N = 0;
+    unsigned int R = 1;
+    unsigned int MAX = (1000000000 + 7);
+    //unsigned int MAX = 16;
+
+    for(unsigned int i=2; i<=n; ++i)
+    {
+        N = N * i;
+        N+= (R*i) / MAX;
+        R = (R * i) % MAX;
+    }
+
+    return R;
+}
+
+void CalculateLettersFrequency(stringView& view, unsigned int characterFreq[36])
+{
+    for(unsigned int i=0; i< view.len; ++i)
+    {
+        ++characterFreq[view.str[i] - 'a'];
+    }
+}
+
+
+// O odds E even
+
+// 3 odd numbers and 2 even
+// 3*(1*2*3*4) = 3*(3+2 -1)! = O * (O + E - 1)!
+
+// 3 odds
+// 3! 1*2*3 O!
+
+// 3 even
+// 3! 1*2*3 E!
+
+// N ones and E evens
+// 11(22)(33)(44) 2 * ( 1*2*3) = N*(E!)
+unsigned long long CreateHistogram(unsigned int characterFreq[36])
+{
+    EvenNumbers evenNumbers;
+    OddNumbers oddNumbers;
+
+    for(unsigned int i=0; i< 36; ++i)
+    {
+        if (characterFreq[i] != 0)
+        {
+            if (characterFreq[i] & 1)
+            {
+                if(characterFreq[i] == 1)
+                {
+                    ++oddNumbers.numberOnes;
+                }
+                else
+                {
+                    oddNumbers.oddFreq[oddNumbers.size++] = characterFreq[i];
+                }
+            }
+            else
+            {
+                evenNumbers.evenFreq[evenNumbers.size++] = characterFreq[i] ;
+            }
+        }
+    }
+
+    // O odds E even
+    // 3 odd numbers and 2 even
+    // 3*(1*2*3*4) = 3*(3+2)! = O * (O + E)!
+    if (evenNumbers.size != 0 && oddNumbers.size != 0)
+    {
+        return oddNumbers.size * calculatePermutations(evenNumbers.size + oddNumbers.size) +
+               oddNumbers.numberOnes*calculatePermutations(evenNumbers.size + oddNumbers.size);
+    }
+    else if (oddNumbers.size != 0)
+    {
+        return calculatePermutations(oddNumbers.size) + oddNumbers.numberOnes;
+    }
+    else if (evenNumbers.size != 0 && oddNumbers.numberOnes == 0)
+    {
+        return calculatePermutations(evenNumbers.size);
+    }
+    else if (oddNumbers.numberOnes != 0 && evenNumbers.size != 0)
+    {
+        auto res = oddNumbers.numberOnes * calculatePermutations(evenNumbers.size);
+    }
+    else if (oddNumbers.numberOnes !=0 && evenNumbers.size == 0)
+    {
+        //abc max number of palindromes are a, b, c
+        return oddNumbers.numberOnes;
+    }
+
+    return 0;
+}
+
+unsigned long long Calculate(const char* str, unsigned l, unsigned r)
+{
+    // hello l=2 an r=4
+    // ell
+    const char* subStr = str + (l - 1);
+    stringView strView = { subStr, r - l + 1 };
+    unsigned int characterFreq[36];
+    memset(characterFreq, 0, sizeof(characterFreq));
+
+    CalculateLettersFrequency(strView, characterFreq);
+    return CreateHistogram(characterFreq);
+}
+
 int main (int argc, char *argv[])
 {
 
-	Factory<int> f;
-	foo(f);
+    //calculatePermutations(10);
+
+#if 0
+    //ones but no evens
+    {
+        char str[] = "abc";
+        //std::cout << "abc max perm: " << Calculate(str, 1, 3) << std::endl;
+        if (Calculate(str, 1, 3) != 3)
+        {
+
+            //std::cerr << "abc" << std::endl;
+            exit(1);
+        }
+    }
+
+    //even + odds
+    {
+           char str[] = "cccbbbaa";
+           //std::cout << "cccbbbaa max perm: " << Calculate(str, 1, strlen(str)) << std::endl;
+           if (Calculate(str, 1, strlen(str)) != 4)
+           {
+              std::cerr << "cccbbbaa" << std::endl;
+              exit(1);
+           }
+    }
+
+    //even + odds + ones
+    {
+          char str[] = "cccbbbaagkl";
+          //std::cout << "cccbbbaa max perm: " << Calculate(str, 1, strlen(str)) << std::endl;
+          if (Calculate(str, 1, strlen(str)) != (4+3))
+          {
+             std::cerr << "cccbbbaagkl" << std::endl;
+             exit(1);
+          }
+    }
+
+    //only odds
+    {
+         char str[] = "ccbbaaddabcd";
+         //std::cout << "cccbbbaa max perm: " << Calculate(str, 1, strlen(str)) << std::endl;
+         if (Calculate(str, 1, strlen(str)) != 24)
+         {
+            std::cerr << "ccbbaaddabcd" << std::endl;
+            exit(1);
+         }
+    }
+
+    //only even
+    {
+        char str[] = "ccbbaadd";
+        //std::cout << "cccbbbaa max perm: " << Calculate(str, 1, strlen(str)) << std::endl;
+        if (Calculate(str, 1, strlen(str)) != 24)
+        {
+           std::cerr << "ccbbaadd" << std::endl;
+           exit(1);
+        }
+    }
+
+    //ones with even
+    {
+        char str[] = "week";
+        //std::cout << "cccbbbaa max perm: " << Calculate(str, 1, strlen(str)) << std::endl;
+        if (Calculate(str, 1, 4) != 2)
+        {
+           std::cerr << "week" << std::endl;
+           exit(1);
+        }
+    }
+
+    //ones with odd
+    {
+        char str[] = "weeek";
+        //std::cout << "cccbbbaa max perm: " << Calculate(str, 1, strlen(str)) << std::endl;
+        if (Calculate(str, 1, 4) != 2)
+        {
+           std::cerr << "week" << std::endl;
+           exit(1);
+        }
+    }
+
+
+    {
+        /////////////// 12345678901234567890123456
+        char str[27] = "wuhmbspjnfviogqzldrcxtaeyk";
+        std::cout << "max perm: " << Calculate(str, 4, 5) << std::endl;
+    }
+    std::cout << "pass" << std::endl;
+
+#endif
+
+
+    std::ifstream input("input.txt");
+    std::ifstream result("result.txt");
+
+    if (input.bad() || result.bad())
+    {
+        std::cerr << "shit" << std::endl;
+        exit(1);
+    }
+
+    char str[] = "wldsfubcsxrryqpqyqqxrlffumtuwymbybnpemdiwyqz";
+    std::string inputLine;
+    std::string currentResult;
+
+    //auto nPerm = Calculate(str, 14, 24);
+
+#if 1
+    unsigned pass = 0;
+    unsigned fail = 0;
+    while(input.good() && result.good())
+    {
+        input >> inputLine;
+        auto l = std::atoi(inputLine.c_str());
+        input >> inputLine;
+        auto r = std::atoi(inputLine.c_str());
+
+        result >> currentResult;
+        auto res = std::atoi(currentResult.c_str());
+
+        auto nPerm = Calculate(str, l, r);
+
+        if (nPerm != res)
+        {
+            ++fail;
+            std::cout <<  "l: " << l << " r: " << r << " fail, expected: "<< res << " got: " << nPerm << std::endl;
+        }
+        else
+        {
+            ++pass;
+            std::cout << "l: " << l << " r: " << r <<  " pass: " << nPerm << std::endl;
+        }
+
+        std::cout << "pass: " << pass << " fail: " << fail << std::endl;
+        if (l == 14 && r == 24)
+        {
+            exit(1);
+        }
+
+    }
+#endif
 
 #if 0
 	DongleProvider* dongleProvider = new DongleProvider();

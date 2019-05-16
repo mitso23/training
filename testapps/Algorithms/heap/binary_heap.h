@@ -19,6 +19,11 @@ public:
 		m_array = new int[m_capacity];
 	}
 
+	void Clear()
+	{
+	    m_size = 0;
+	}
+
 	Heap(unsigned int capacity, int array[], unsigned int size)
 		: m_capacity(capacity)
 		, m_array(array)

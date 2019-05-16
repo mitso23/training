@@ -56,5 +56,10 @@ int main(int argc, char* argv[])
 	//getNoisy().setData(4);
 	//std::cout << n << std::endl;
 	//Noisy n= getNoisyMove();
+
+	//testNoisyWrapper();
+	Noisy n;
+	//TestNoisyUniversal(n);
+
 }
 

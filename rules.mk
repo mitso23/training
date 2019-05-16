@@ -34,15 +34,3 @@ else
 endif
 # DO NOT DELETE
 
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/Basics.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/TemplatesInDepth.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/PolicyTypeTraits.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/TypeFunctions.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/TemplatesInheritance.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/Metaprograms.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/TypeErasure.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/simple_function.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/TypeClassification.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/SmartPointers.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/Tuples.h
-/home/mitso23/training//testapps/templates/Templates.o: /home/mitso23/training/testapps/templates/Expected.h
