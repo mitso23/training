@@ -201,17 +201,17 @@ void printArguments(Args&&... args)
 	char buffer[1024];
 	unsigned int pos = 0;
 
-	(printSingleArgument(std::forward<Args&&>(args), buffer, pos),...);
+	(printSingleArgument(std::forward<Args>(args), buffer, pos),...);
 
 	std::cout << buffer << " )" << std::endl;
 }
 
 template<typename F, typename ...Args>
-void CallFuncPrintArgs(const char* filename,  int line, const char* function, F&& f, Args&&... args)
+void CallFuncPrintArgs(const char* filename,  int line, const char* function, F& f, Args&&... args)
 {
 	std::cout << filename << ":" << " line: " << line << " function: " << function << " (";
-	printArguments(std::forward<Args&&>(args)...);
-	f(args...);
+	f(std::forward<Args>(args)...);
+	printArguments(std::forward<Args>(args)...);
 }
 
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)

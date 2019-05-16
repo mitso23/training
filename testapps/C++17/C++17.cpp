@@ -6,6 +6,9 @@
 #include <array>
 #include <vector>
 #include <list>
+#include <utils/Noisy.h>
+
+#include <utils/counted.h>
 
 class skata2
 {
@@ -13,6 +16,16 @@ public:
 	friend std::ostream& operator<<(std::ostream& str, skata2& s)
 	{
 		return str << " skata2";
+	}
+
+	skata2()
+	{
+		std::cout << "constructor called " << std::endl;
+	}
+
+	skata2(skata2&& s)
+	{
+		std::cout << "rvalue method has been called" << std::endl;
 	}
 
 };
@@ -73,6 +86,21 @@ struct my_is_same
 	}
 };
 
+void dummy(int x, int y, std::vector<int>&& z, const std::list<int>& w,
+		skata2&& sk, std::array<int, 2> a, const std::string s,
+		std::array<int, 3> arr, float ff, char c1, char c2, ObjCounter<int>&& o)
+{
+	std::cout << "size of the vector is " << z.size() <<  " is rvlaue: " << std::is_rvalue_reference<decltype(z)>::value << std::endl;
+	z.push_back(10);
+}
+
+template<typename U>
+void processAndLog(U&& n)
+{
+	process(std::forward<U>(n));
+
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -86,7 +114,6 @@ int main(int argc, char* argv[])
 
 	std::cout << "foo result: " << foo(1, 2);
 	std::cout << "foo result: " << foo(1.0, 2.2);
-#endif
 
 	class skata
 	{
@@ -102,8 +129,8 @@ int main(int argc, char* argv[])
 	std::cout << "is stl container: " << is_stl_container<std::vector<int>>{} << std::endl;
 	std::cout << "is integral: " << std::is_integral<std::decay_t<int&&>>::value << std::endl;
 	std::cout << "is same: " << std::is_same<uint16_t, unsigned short>::value << std::endl;
-	//std::cout << "is stl array: " << is_stl_array<std::array<int, 3>> {} << std::endl;
-	my_is_same<int, int> m;
+
+	my_is_same<std::string, std::string> m;
 
 	int x = 1;
 	int y = 2;
@@ -111,6 +138,30 @@ int main(int argc, char* argv[])
 	std::list<int> w = {7, 8, 9};
 	std::array<int, 2> a = { 10, 11 };
 	std::string s = "Dimitrios";
-	printArguments(x, y, z, w, skata2{}, a, s);
+	std::array<int, 3> arr = {9, 9, 9};
+	float ff = 10.23456;
+	char c1 = 1;
+	char c2 = 'a';
+	ObjCounter<int> objCounter;
+	auto yy = std::move(skata{});
+
+	//printArguments(x, y, z, w, skata2{}, a, s, arr, ff, c1, c2);
+	//CALL(dummy, x, y, std::move(z), w, skata2{}, a, s, arr, ff, c1, c2, std::move(objCounter));
+
+	//dummy(x, y, std::move(z), w, std::move(skata2{}), a, s, arr, ff, c1, c2, std::move(objCounter));
+	//dummy(x, y, std::move(z), w, skata2{}, a, s, arr, ff, c1, c2, std::move(objCounter));
+
+	Noisy n;
+	processAndLog(n);
+
+	std::cout << "original vector size is " << z.size() << std::endl;
+	std::cout << "created: " << objCounter.counter.created << " copy constructed: "
+			  << objCounter.counter.copyConstructed << " move constructed: "
+			  << objCounter.counter.moveConstructed << " move assigned: "
+			  << objCounter.counter.moveAssigned << std::endl;
+#endif
+
+	int x[] = { 1, 10, 2 };
+	findPeakElement(x, sizeof(x)/sizeof(x[0]));
 }
 
