@@ -8,6 +8,8 @@
 #include "Move.h"
 #include "enums.h"
 
+void skata(std::vector<int>&& r)
+
 int main(int argc, char* argv[])
 {
 
@@ -57,7 +59,7 @@ int main(int argc, char* argv[])
 
 	//testNoisyWrapper();
 	Noisy n;
-	TestNoisyUniversal(n);
+	//TestNoisyUniversal(n);
 
 }
 

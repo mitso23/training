@@ -32,7 +32,7 @@ public:
 			*data= *rv.data;
 	}
 
-	Noisy(Noisy&& rv) : id(create++), data(nullptr)
+	Noisy(Noisy&& rv) : id(rv.id), data(nullptr)
 	{
 		std::cout << "mov[" << id << "] = " << "[" << rv.id << "]" << std::endl;
 		swap(rv);

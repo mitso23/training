@@ -1,7 +1,7 @@
 #include <typeinfo>
 
 template<typename T>
-class IsClassT
+class IsClassT2
 {
 private:
 	typedef char One;
@@ -17,7 +17,7 @@ private:
 public:
 	enum
 	{
-		Yes = sizeof(IsClassT<T>::test<T>(0)) == 1
+		Yes = sizeof(IsClassT2<T>::test<T>(0)) == 1
 	};
 
 	enum
@@ -143,6 +143,7 @@ struct IntWrapper
 
 using Handle = IntWrapper<HANLDE>;
 using Fd = IntWrapper<FD>;
+
 
 
 // This can be used to efficiently pass arguments, either by reference or by value

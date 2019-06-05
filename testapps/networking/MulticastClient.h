@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <string>
 
 namespace MulticastClient
 {
@@ -19,7 +20,7 @@ int datalen;
 
 char databuf[1024];
 
-int CreateClient()
+int CreateClient(std::string ipAddress)
 {
     printf("Starting client: \n");
 
@@ -55,7 +56,7 @@ int CreateClient()
     /* specified as INADDR_ANY. */
     memset((char *) &localSock, 0, sizeof(localSock));
     localSock.sin_family = AF_INET;
-    localSock.sin_port = htons(4321);
+    localSock.sin_port = htons(8082);
     localSock.sin_addr.s_addr = INADDR_ANY;
     if (bind(sd, (struct sockaddr*) &localSock, sizeof(localSock)))
     {
@@ -68,12 +69,12 @@ int CreateClient()
         printf("Binding datagram socket...OK.\n");
     }
 
-    /* Join the multicast group 226.1.1.1 on the local 192.168.0.7 */
+    /* Join the multicast group 238.1.1.1 on the local 192.168.0.7 */
     /* interface. Note that this IP_ADD_MEMBERSHIP option must be */
     /* called for each local interface over which the multicast */
     /* datagrams are to be received. */
-    group.imr_multiaddr.s_addr = inet_addr("226.1.1.1");
-    group.imr_interface.s_addr = inet_addr("192.168.0.7");
+    group.imr_multiaddr.s_addr = inet_addr("238.1.1.1");
+    group.imr_interface.s_addr = inet_addr(ipAddress.c_str());
     if (setsockopt(sd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &group, sizeof(group)) < 0)
     {
         perror("Adding multicast group error");
