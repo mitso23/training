@@ -76,7 +76,7 @@ int CreateServer()
         printf("Setting the local interface...OK\n");
     }
 
-    for(unsigned int i=0; i< 10; ++i)
+    for(unsigned int i=0; i< 1000; ++i)
     {
         sprintf(databuf, "Multicast test message seq number %i", i);
 
@@ -91,6 +91,8 @@ int CreateServer()
         {
             printf("Sending datagram message...OK\n");
         }
+
+        sleep(1);
     }
 
     //Try the re-read from the socket if the loopback is not disable

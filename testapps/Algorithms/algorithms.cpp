@@ -76,6 +76,7 @@
 #include "arrays/count_triplets_sum_smaller_value.h"
 #include "arrays/longest_sub_array_cont_seq.h"
 #include "arrays/longest_sequence_array.h"
+#include "arrays/find_matching_brackets_no_extra_space.h"
 #include "graphs/find_all_possible_islands.h"
 #include "strings/all_possible_palindromic_partition.h"
 #include "arrays/print_array_spiral.h"
@@ -1282,4 +1283,7 @@ cout << "\nSum of elements in arr[0..5] after update is " << getSum(BITree, 5);
 #endif
 
 //createPrefixTree("banana", strlen("banana") + 1);
+
+char pr[] = "(([]{})[]()[]){}";
+checkParenthesis(pr);
 }
