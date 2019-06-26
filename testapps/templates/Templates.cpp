@@ -365,14 +365,17 @@ int main(int argc, char* argv[])
 	std::cout << "is class ? " << IsClassT<class skata>::Yes << std::endl;
 #endif
 
-#if 0
+#if 1
 	ManagedType::Ptr p(new ManagedType());
 	{
-		ManagedType::Ptr p2 = ManagedType::Ptr (new ManagedType());;
+		ManagedType::Ptr p2 = ManagedType::Ptr (new ManagedType());
+		ManagedType::Ptr p3 = p2;
 		std::cout << p->x << std::endl;
 	};
 
-	std::cout << "sizeof SmartPtr is " << sizeof(std::shared_ptr<int>) << std::endl;
+	auto x = std::make_shared<int>();
+	std::weak_ptr<int> xx = x;
+
 	std::cout << "sizeof smart ptr is " << sizeof(ManagedType::Ptr) << std::endl;
 #endif
 
@@ -406,10 +409,12 @@ int main(int argc, char* argv[])
 	Expected<Noisy, int> e6 = UnExpected<int>(3);
 #endif
 
+#if 0
 	MyType m;
 	auto wrapper = mem_fn(&MyType::foo, m);
 	function<int(int, int)> f(wrapper);
 	std::cout << f(1,2) << std::endl;
+#endif
 
 
 }

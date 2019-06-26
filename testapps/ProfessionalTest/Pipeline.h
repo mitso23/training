@@ -1,4 +1,4 @@
-#include <algorithm>USE_HEAP_PROCESSING_LIST
+#include <algorithm>
 
 #define LOG_INFO(X) //std::cout << X << std::endl;
 #define LOG_DEBUG(X) //std::cout << X << std::endl;

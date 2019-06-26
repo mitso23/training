@@ -11,6 +11,7 @@
 //#include "MemoryAllocator.h"
 //#include "Autocomplete.h"
 #include "Pipeline.h"
+#include "Primitives.h"
 
 
 #include <vector>
@@ -403,6 +404,181 @@ TEST(Pipeline, threeStagesFiveTools)
     ASSERT_EQ(0, wip[2]);
 
 }
+
+TEST(Primitives, RotateArrayFourByFour)
+{
+	int object[4][4] = {
+							 { 1,  2,   3,  4   },
+							 { 5,  6,   7,  8   },
+							 { 9,  10,  11, 12  },
+							 { 13, 14,  15, 16 },
+					   };
+
+	// Rotate 90 degrees
+	{
+		int object[4][4] = {     { 1,  2,   3,  4   },
+								 { 5,  6,   7,  8   },
+								 { 9,  10,  11, 12  },
+								 { 13, 14,  15, 16 },
+						   };
+		rotate_cw(4, object, 1);
+
+		EXPECT_EQ(13, object[0][0]);
+		EXPECT_EQ(14, object[1][0]);
+		EXPECT_EQ(15, object[2][0]);
+		EXPECT_EQ(16, object[3][0]);
+
+		EXPECT_EQ(9,  object[0][1]);
+		EXPECT_EQ(10, object[1][1]);
+		EXPECT_EQ(11, object[2][1]);
+		EXPECT_EQ(12, object[3][1]);
+
+		EXPECT_EQ(5,  object[0][2]);
+		EXPECT_EQ(6, object[1][2]);
+		EXPECT_EQ(7, object[2][2]);
+		EXPECT_EQ(8, object[3][2]);
+
+		EXPECT_EQ(5,  object[0][2]);
+		EXPECT_EQ(6, object[1][2]);
+		EXPECT_EQ(7, object[2][2]);
+		EXPECT_EQ(8, object[3][2]);
+	}
+
+
+	//Rotate 180 degrees
+	{
+		std::cout << "4x4 180: " << std::endl;
+		rotate_cw(4, object, 2);
+
+		EXPECT_EQ(16, object[0][0]);
+		EXPECT_EQ(15, object[0][1]);
+		EXPECT_EQ(14, object[0][2]);
+		EXPECT_EQ(13, object[0][3]);
+
+		EXPECT_EQ(12, object[1][0]);
+		EXPECT_EQ(11, object[1][1]);
+		EXPECT_EQ(10, object[1][2]);
+		EXPECT_EQ(9,  object[1][3]);
+
+		EXPECT_EQ(8, object[2][0]);
+		EXPECT_EQ(7, object[2][1]);
+		EXPECT_EQ(6, object[2][2]);
+		EXPECT_EQ(5,  object[2][3]);
+
+		EXPECT_EQ(4, object[3][0]);
+		EXPECT_EQ(3, object[3][1]);
+		EXPECT_EQ(2, object[3][2]);
+		EXPECT_EQ(1,  object[3][3]);
+	}
+}
+
+TEST(Primitives, RotateArrayTwoTwo)
+{
+	// Rotate 90 degrees
+	{
+		int object[4][4] = {	 { 1,  2,   3,  4   },
+								 { 5,  6,   7,  8   },
+								 { 9,  10,  11, 12  },
+								 { 13, 14,  15, 16 },
+						   };
+
+
+		rotate_cw(2, object, 1);
+
+		EXPECT_EQ(5, object[0][0]);
+		EXPECT_EQ(6, object[1][0]);
+
+		EXPECT_EQ(1, object[0][1]);
+		EXPECT_EQ(2, object[1][1]);
+	}
+
+	//Rotate 180 degrees
+	{
+		int object[4][4] = {	 { 1,  2,   3,  4   },
+								 { 5,  6,   7,  8   },
+								 { 9,  10,  11, 12  },
+								 { 13, 14,  15, 16 },
+							   };
+
+		rotate_cw(2, object, 2);
+
+		EXPECT_EQ(6, object[0][0]);
+		EXPECT_EQ(5, object[0][1]);
+
+		EXPECT_EQ(2, object[1][0]);
+		EXPECT_EQ(1, object[1][1]);
+
+	}
+
+	//Rotate 270 degrees
+	{
+		int object[4][4] = {	 { 1,  2,   3,  4 },
+								 { 4,  5,   6,  4 },
+								 { 7,  8,   9,  4 },
+								 { 4,  4,   4,  4 },
+							};
+
+		std::cout << "3x3: 270" << std::endl;
+		rotate_cw(3, object, 3);
+
+		EXPECT_EQ(3, object[0][0]);
+		EXPECT_EQ(6, object[0][1]);
+		EXPECT_EQ(9, object[0][2]);
+
+		EXPECT_EQ(2, object[1][0]);
+		EXPECT_EQ(5, object[1][1]);
+		EXPECT_EQ(8, object[1][2]);
+
+		EXPECT_EQ(1, object[2][0]);
+		EXPECT_EQ(4, object[2][1]);
+		EXPECT_EQ(7, object[2][2]);
+	}
+}
+
+TEST(Primitives, ArrayFlipUp)
+{
+	int object[4][4] = { { 1, 1, 0 },
+						 { 0, 1, 1 },
+						 { 0, 0, 0 }
+	};
+
+	flip(3, object, 0);
+
+	EXPECT_EQ(0, object[0][0]);
+	EXPECT_EQ(0, object[0][1]);
+	EXPECT_EQ(0, object[0][2]);
+
+	EXPECT_EQ(0, object[1][0]);
+	EXPECT_EQ(1, object[1][1]);
+	EXPECT_EQ(1, object[1][2]);
+
+	EXPECT_EQ(1, object[2][0]);
+	EXPECT_EQ(1, object[2][1]);
+	EXPECT_EQ(0, object[2][2]);
+}
+
+TEST(Primitives, ArrayFlipLeft)
+{
+	int object[4][4] = { { 1, 1, 0 },
+						 { 0, 1, 1 },
+						 { 0, 0, 0 }
+	};
+
+	flip(3, object, 1);
+
+	EXPECT_EQ(0, object[0][0]);
+	EXPECT_EQ(1, object[0][1]);
+	EXPECT_EQ(1, object[0][2]);
+
+	EXPECT_EQ(1, object[1][0]);
+	EXPECT_EQ(1, object[1][1]);
+	EXPECT_EQ(0, object[1][2]);
+
+	EXPECT_EQ(0, object[2][0]);
+	EXPECT_EQ(0, object[2][1]);
+	EXPECT_EQ(0, object[2][2]);
+}
+
 
 //This test takes almost one second to complete
 TEST(Pipeline, fiveStagesNineToolsOneHundredThousandsItems)
