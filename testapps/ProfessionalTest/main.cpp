@@ -11,7 +11,7 @@
 //#include "MemoryAllocator.h"
 //#include "Autocomplete.h"
 #include "Pipeline.h"
-#include "Primitives.h"
+#include "ArrayPrimitives.h"
 
 
 #include <vector>
@@ -592,6 +592,11 @@ TEST(Pipeline, fiveStagesNineToolsOneHundredThousandsItems)
     pipeline::AddLot(1000000);
 
     ASSERT_EQ(1000000, pipeline::Simulate(30*1000000, wip));
+}
+
+TEST(ArrayPrimitives, MoveLeftNoOverlap)
+{
+
 }
 
 int main(int argc, char** argv)
