@@ -140,6 +140,7 @@ void flip(int M, int object[4][4], int vh)
 	}
 }
 
+
 struct Object
 {
 	int x;
@@ -147,8 +148,6 @@ struct Object
 
 	int width;
 	int height;
-
-	int object[4][4];
 };
 
 struct Board
@@ -181,16 +180,21 @@ bool CheckIfObjectOverlap(const Object& srcObject, const Object& dstObject)
 void initObject(int size, int object[4][4])
 {
 	srcObject.x = 0;
-	srcObject.y = 0;
+	srcObject.y = b.height;
 	srcObject.height = size;
 	srcObject.width = size;
 
-	for(int i=0; i< size; ++i)
+	dstObject = srcObject;
+
+	int yy = 0;
+	for(int y=b.height; y>=(b.height - size); --y)
 	{
-		for (int j=0; j< size; ++j)
+		for (int x= 0; x<= size; ++x)
 		{
-			srcObject.object[i][j] = object[i][j];
+			b.board[y][x] = object[yy][x];
 		}
+
+		++yy;
 	}
 }
 
@@ -208,6 +212,56 @@ void initBoard(int size, int board[10][10])
 	}
 }
 
+void Fill(const Object& rec)
+{
+	for(int y = rec.y; y > (rec.y - rec.height); --y)
+	{
+		for (int x = rec.x; x < rec.x + rec.width; ++x)
+		{
+			b.board[y][x] = 0;
+		}
+	}
+}
+
+void Copy(const Object& src, const Object& dst)
+{
+	for(int j=0; j< src.height; ++j)
+	{
+		for(int i=0; i< src.width; ++i)
+		{
+			int srcX = src.x + i;
+			int srcY = src.y - j;
+
+			int dstX = dst.x + i;
+			int dstY = dst.y - j;
+
+			if (dstY < 0 || dstX >= b.width )
+			{
+				std::cout << "x: " << dstX << " y: " << dstY << " out of bounds " << std::endl;
+				continue;
+			}
+			else
+			{
+				std::cout << "copying y: " << srcY << " x: " << srcX << " to y: " << dstY << " x: " << dstX << std::endl;
+				b.board[dstY][dstX] = b.board[srcY][srcX];
+			}
+		}
+	}
+}
+
+void printBoard()
+{
+	for(int y=b.height; y>0; --y)
+	{
+		for (int x= 0; x< b.width; ++x)
+		{
+			std::cout << b.board[y][x] << " ";
+		}
+
+		std::cout << std::endl;
+	}
+}
+
 // 0 0 0 1 0 0
 // 0 1 0 0 0 0
 // 0 1 0 1 0 0
@@ -219,29 +273,31 @@ void move(int dir, int count)
 	if (dir == 2)
 	{
 		//find the left corner and check if it can be moved left
-		int minMoveRight = 0;
+		int minMoveRight = b.width;
 
-		for(int y= srcObject.y; y >=0; --y)
+		for(int y= srcObject.y; y >(srcObject.y - srcObject.height); --y)
 		{
 			int currentMoveRight = 0;
 			bool stop = false;
 
 			int startX = srcObject.x + srcObject.width - 1;
-			int value = srcObject.object[y][startX];
+			int value = b.board[y][startX];
 
 			std::cout << "y: " << y << " startX: " << startX << " value: " << value << std::endl;
 
-			for(int k= 1; k< count; ++k)
+			for(int k= 1; k<= count; ++k)
 			{
 				if (value == 1 && ((startX + k) >= b.width))
 				{
 					stop = true;
 					std::cout << "out of bounds " << startX + k << std::endl;
+					break;
 				}
 				else if (value == 1 && b.board[y][startX + k] != 0)
 				{
 					stop = true;
 					std::cout << " can't move one to obstacle " << b.board[y][startX + k] << std::endl;
+					break;
 				}
 				else
 				{
@@ -255,9 +311,14 @@ void move(int dir, int count)
 				std::cout << "current Move left " << currentMoveRight << " is less: " << minMoveRight << std::endl;
 				minMoveRight = currentMoveRight;
 			}
+
+			if (stop)
+			{
+				break;
+			}
 		}
 
-		dstObject.x-= minMoveRight;
+		dstObject.x+= minMoveRight;
 	}
 	//left
 	else if (dir == 3)
@@ -269,7 +330,7 @@ void move(int dir, int count)
 			int currentMoveLeft = 0;
 			bool stop = false;
 			int startX = srcObject.x;
-			int value = srcObject.object[y][startX];
+			int value = b.board[y][startX];
 
 			std::cout << "y: " << y << " startX: " << startX << " value: " << value << std::endl;
 
@@ -279,17 +340,24 @@ void move(int dir, int count)
 				{
 					stop = true;
 					std::cout << "out of bounds " << startX - k << std::endl;
+					break;
 				}
 				else if (value == 1 && b.board[y][startX - k] != 0)
 				{
 					stop = true;
 					std::cout << " can't move one to obstacle " << b.board[y][startX - k] << std::endl;
+					break;
 				}
 				else
 				{
 					std::cout << " can move left from x: " << startX << " y: " << y << std::endl;
 					++currentMoveLeft;
 				}
+			}
+
+			if (stop)
+			{
+				break;
 			}
 
 			if (currentMoveLeft < minMoveLeft)
@@ -316,7 +384,7 @@ void move(int dir, int count)
 			int currentMoveUp = 0;
 			bool stop = false;
 			int startY = srcObject.y;
-			int value = srcObject.object[startY][x];
+			int value = b.board[startY][x];
 
 			std::cout << "y: " << startY << " x: " << x << " value: " << value << std::endl;
 
@@ -326,17 +394,24 @@ void move(int dir, int count)
 				{
 					stop = true;
 					std::cout << "out of bounds " << startY + k << std::endl;
+					break;
 				}
 				else if (value == 1 && b.board[startY+k][x] != 0)
 				{
 					stop = true;
 					std::cout << " can't move one to obstacle " << b.board[startY + k][x] << std::endl;
+					break;
 				}
 				else
 				{
 					std::cout << " can move up x: " << x << " y: " << startY << std::endl;
 					++currentMoveUp;
 				}
+			}
+
+			if (stop)
+			{
+				break;
 			}
 
 			if (currentMoveUp < minMoveUp)
@@ -362,7 +437,7 @@ void move(int dir, int count)
 			int currentMoveDown = 0;
 			bool stop = false;
 			int startY = srcObject.y - srcObject.height;
-			int value = srcObject.object[startY][x];
+			int value = b.board[startY][x];
 
 			std::cout << "y: " << startY << " x: " << x << " value: " << value << std::endl;
 
@@ -372,11 +447,13 @@ void move(int dir, int count)
 				{
 					stop = true;
 					std::cout << "out of bounds " << startY - k << std::endl;
+					break;
 				}
 				else if (value == 1 && b.board[startY-k][x] != 0)
 				{
 					stop = true;
 					std::cout << " can't move one to obstacle " << b.board[startY - k][x] << std::endl;
+					break;
 				}
 				else
 				{
@@ -384,6 +461,12 @@ void move(int dir, int count)
 					++currentMoveDown;
 				}
 			}
+
+			if (stop)
+			{
+				break;
+			}
+
 
 			if (currentMoveDown < minMoveDown)
 			{
@@ -400,28 +483,8 @@ void move(int dir, int count)
 	}
 	else
 	{
-		for(int j=0; j< srcObject.height; ++j)
-		{
-			for(int i=0; i< srcObject.width; ++i)
-			{
-				int srcX = srcObject.x + i;
-				int srcY = srcObject.y - j;
-
-				int dstX = dstObject.x + i;
-				int dstY = dstObject.y - j;
-
-				if (dstY < 0 || dstX < 0)
-				{
-					std::cout << "x: " << dstX << " y: " << dstY << " out of bounds " << std::endl;
-					continue;
-				}
-				else
-				{
-					std::cout << "copying y: " << srcY << " x: " << srcX << " to y: " << dstY << " x: " << dstX << std::endl;
-					dstObject.object[dstY][dstX] = srcObject.object[srcY][srcX];
-				}
-			}
-		}
+		Copy(srcObject, dstObject);
+		Fill(srcObject);
 	}
 
 

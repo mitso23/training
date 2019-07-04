@@ -594,9 +594,68 @@ TEST(Pipeline, fiveStagesNineToolsOneHundredThousandsItems)
     ASSERT_EQ(1000000, pipeline::Simulate(30*1000000, wip));
 }
 
-TEST(ArrayPrimitives, MoveLeftNoOverlap)
+TEST(ArrayPrimitives, MoveRightNoOverlapNoOverflow)
 {
+	int board[10][10] = { {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+					      {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+	};
 
+	int object[4][4] = { { 1, 1 },
+						 { 1, 1 }
+ 	};
+
+	initBoard(4, board);
+	initObject(2, object);
+
+	move(2, 2);
+
+	printBoard();
+}
+
+TEST(ArrayPrimitives, MoveRightNoOverlapOneCantOverflow)
+{
+	int board[10][10] = { {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+					      {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+	};
+
+	int object[4][4] = { { 1, 1 },
+						 { 1, 1 }
+ 	};
+
+	initBoard(4, board);
+	initObject(2, object);
+
+	printBoard();
+
+	move(2, 3);
+
+	printBoard();
+}
+
+TEST(ArrayPrimitives, MoveRightNoOverlapOverflow)
+{
+	int board[10][10] = { {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+					      {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+	};
+
+	int object[4][4] = { { 1, 0 },
+						 { 1, 0 }
+ 	};
+
+	initBoard(4, board);
+	initObject(2, object);
+
+	printBoard();
+
+	move(2, 3);
+
+	printBoard();
 }
 
 int main(int argc, char** argv)
