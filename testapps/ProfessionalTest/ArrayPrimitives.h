@@ -148,6 +148,12 @@ struct Object
 
 	int width;
 	int height;
+
+	friend std::ostream& operator << (std::ostream& s, const Object& o)
+	{
+		s << "y: " << o.y << " x: " << o.x << " width: " << o.width << " height: " << o.height << std::endl;
+		return s;
+	}
 };
 
 struct Board
@@ -158,9 +164,9 @@ struct Board
 	int board[10][10];
 };
 
-static Object srcObject;
-static Object dstObject;
-static Board  b;
+Object srcObject;
+Object dstObject;
+Board  b;
 
 bool CheckIfObjectOverlap(const Object& srcObject, const Object& dstObject)
 {
@@ -173,23 +179,22 @@ bool CheckIfObjectOverlap(const Object& srcObject, const Object& dstObject)
 		return false;
 	}
 
-	std::cout << "Object overlap" << std::endl;
 	return true;
 }
 
 void initObject(int size, int object[4][4])
 {
 	srcObject.x = 0;
-	srcObject.y = b.height;
+	srcObject.y = b.height - 1;
 	srcObject.height = size;
 	srcObject.width = size;
 
 	dstObject = srcObject;
 
 	int yy = 0;
-	for(int y=b.height; y>=(b.height - size); --y)
+	for(int y=(b.height - 1); y>=(b.height - size); --y)
 	{
-		for (int x= 0; x<= size; ++x)
+		for (int x= 0; x< size; ++x)
 		{
 			b.board[y][x] = object[yy][x];
 		}
@@ -214,11 +219,15 @@ void initBoard(int size, int board[10][10])
 
 void Fill(const Object& rec)
 {
+	std::cout << "Fill: " << rec << std::endl;
+
 	for(int y = rec.y; y > (rec.y - rec.height); --y)
 	{
 		for (int x = rec.x; x < rec.x + rec.width; ++x)
 		{
 			b.board[y][x] = 0;
+
+			std::cout << "setting y: " << y << " x: " << x << " to zero" << std::endl;
 		}
 	}
 }
@@ -249,9 +258,31 @@ void Copy(const Object& src, const Object& dst)
 	}
 }
 
+void CopyOverlap(const Object& src, const Object& dst, int dir)
+{
+	//move right
+	if (dir == 2)
+	{
+		for(int j=0; j< src.height; ++j)
+		{
+			for(int i=0; i< src.width; ++i)
+			{
+				int srcX = src.x + src.width - i - 1;
+				int srcY = src.y - j;
+
+				int dstX = dst.x + dst.width - i - 1;
+				int dstY = dst.y - j;
+
+				b.board[dstY][dstX] = b.board[srcY][srcX];
+				std::cout << "copying y: " << srcY << " x: " << srcX << " val: " <<  b.board[srcY][srcX] << " to y: " << dstY << " x: " << dstX << std::endl;
+			}
+		}
+	}
+}
+
 void printBoard()
 {
-	for(int y=b.height; y>0; --y)
+	for(int y=(b.height - 1); y>=0; --y)
 	{
 		for (int x= 0; x< b.width; ++x)
 		{
@@ -283,11 +314,23 @@ void move(int dir, int count)
 			int startX = srcObject.x + srcObject.width - 1;
 			int value = b.board[y][startX];
 
+			while(!value)
+			{
+				--startX;
+				value = b.board[y][startX];
+
+				if (startX == 0 && value == 0)
+				{
+					std::cerr << "board has no 1" << std::endl;
+					return;
+				}
+			}
+
 			std::cout << "y: " << y << " startX: " << startX << " value: " << value << std::endl;
 
 			for(int k= 1; k<= count; ++k)
 			{
-				if (value == 1 && ((startX + k) >= b.width))
+				if (((startX + k) >= b.width))
 				{
 					stop = true;
 					std::cout << "out of bounds " << startX + k << std::endl;
@@ -479,7 +522,19 @@ void move(int dir, int count)
 
 	if (CheckIfObjectOverlap(srcObject, dstObject))
 	{
-		std::cout << "Objects overlap: " << std::endl;
+		std::cout << "Objects overlap for dir: " << dir << std::endl;
+
+		if (dir == 2)
+		{
+			Object overlapArea;
+			overlapArea.x = srcObject.x;
+			overlapArea.y = srcObject.y;
+			overlapArea.width = (dstObject.x - srcObject.x);
+			overlapArea.height = srcObject.height;
+
+			CopyOverlap(srcObject, dstObject, dir);
+			Fill(overlapArea);
+		}
 	}
 	else
 	{

@@ -658,9 +658,88 @@ TEST(ArrayPrimitives, MoveRightNoOverlapOverflow)
 	printBoard();
 }
 
+TEST(ArrayPrimitives, MoveRightOverlapNoOverflow)
+{
+	int board[10][10] = { {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+					      {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+	};
+
+	int object[4][4] = { { 1, 1 },
+						 { 1, 1 }
+ 	};
+
+	initBoard(4, board);
+	initObject(2, object);
+
+	printBoard();
+
+	move(2, 1);
+
+	EXPECT_EQ(0, b.board[0][0]);
+	EXPECT_EQ(0, b.board[1][0]);
+
+	EXPECT_EQ(1, b.board[3][1]);
+	EXPECT_EQ(1, b.board[3][2]);
+
+
+	EXPECT_EQ(1, b.board[2][1]);
+	EXPECT_EQ(1, b.board[2][2]);
+
+	printBoard();
+}
+
+TEST(ArrayPrimitives, MoveRightOverflow)
+{
+	int board[10][10] = { {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+					      {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+	};
+
+	int object[4][4] = { { 1, 1 },
+						 { 1, 1 }
+ 	};
+
+	initBoard(4, board);
+	initObject(2, object);
+
+	printBoard();
+
+	move(2, 10);
+
+	printBoard();
+}
+
+
+TEST(ArrayPrimitives, MoveRightPariallyOverflow)
+{
+	int board[10][10] = { {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+					      {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						  {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+	};
+
+	int object[4][4] = { { 1, 0 },
+						 { 1, 0 }
+ 	};
+
+	initBoard(4, board);
+	initObject(2, object);
+
+	printBoard();
+
+	move(2, 10);
+
+	printBoard();
+}
+
+
+
 int main(int argc, char** argv)
 {
-    ::testing::InitGoogleMock(&argc, argv);
+	::testing::InitGoogleMock(&argc, argv);
     return RUN_ALL_TESTS();
 }
 
