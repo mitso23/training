@@ -12,8 +12,6 @@
 //#include "Autocomplete.h"
 #include "Pipeline.h"
 #include "ArrayPrimitives.h"
-
-
 #include <vector>
 #include <string.h>
 #include <memory>
@@ -24,6 +22,9 @@
 #include <unordered_set>
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "Dfs.h"
+#include "simple_hash.h"
+
 
 using ::testing::AtLeast;
 using ::testing::Return;
@@ -542,7 +543,7 @@ TEST(Primitives, ArrayFlipUp)
 						 { 0, 0, 0 }
 	};
 
-	flip(3, object, 0);
+	flip2(3, object, 0);
 
 	EXPECT_EQ(0, object[0][0]);
 	EXPECT_EQ(0, object[0][1]);
@@ -735,7 +736,281 @@ TEST(ArrayPrimitives, MoveRightPariallyOverflow)
 	printBoard();
 }
 
+TEST(ArrayPrimitives, TestInitialization)
+{
+	init(1000);
+	start();
 
+	for(unsigned int repeat = 0; repeat < 100; ++repeat)
+	{
+		for(unsigned int y=0; y< 1000; ++y)
+		{
+			EXPECT_FALSE(check(y, 3));
+			EXPECT_TRUE(check(y, 3));
+
+			start();
+		}
+
+		init(1000);
+		start();
+	}
+}
+
+TEST(Search, BFS)
+{
+	Queue q;
+	Coordinates src;
+	src.y = 0;
+	src.x = 0;
+
+	Coordinates dst;
+	dst.y = 3;
+	dst.x = 0;
+
+	find_shortest_path(src, dst, q);
+}
+
+TEST(Search, DFS)
+{
+	int path[7][2];
+
+	path[0][0] = 10;
+	path[0][1] = 7;
+
+	path[1][0] = 10;
+	path[1][1] = 25;
+
+	path[2][0] = 10;
+	path[2][1] = 15;
+
+	path[3][0] = 7;
+	path[3][1] = 3;
+
+	path[4][0] = 25;
+	path[4][1] = 16;
+
+	path[5][0] = 15;
+	path[5][1] = 8;
+
+	path[6][0] = 3;
+	path[6][1] = 9;
+
+	dfs_init(7, path);
+
+	EXPECT_EQ(1, dfs(10));
+	EXPECT_EQ(1, dfs(7));
+	EXPECT_EQ(-1, dfs(25));
+	EXPECT_EQ(-1, dfs(16));
+	EXPECT_EQ(-1, dfs(15));
+}
+
+static unsigned int seed = 3;
+static unsigned int pseudo_rand(void)
+{
+	seed = seed * 214013 + 2531011;
+	return seed & 0x7FFFFFFF;
+}
+
+static void printScore(const Student* s) {
+	if (s == nullptr) {
+		printf("none\n");
+	}
+	else {
+		printf("%s : %d\n", s->name, s->score);
+	}
+}
+
+static void strCpy(char* dst, char* src) {
+	int i = 0;
+	while (src[i] != '\0') {
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+}
+
+static bool strSame(char* str1, char* str2) {
+	while (*str1 || *str2) {
+		if (*str1 != *str2)return false;
+		str1++;
+		str2++;
+	}
+	return true;
+}
+
+static void makeName(char* str) {
+	for (int i = 0; i < MAX_NAME; i++) {
+		str[i] = pseudo_rand() % 26 + 'a';
+	}
+	str[MAX_NAME] = '\0';
+}
+
+static void delStudent(int i) {
+	students[i].init();
+}
+
+static void makeStudent(int i) {
+	//students[i].init();
+	makeName(students[i].name);
+	students[i].score = pseudo_rand() % 10000 + 1;
+}
+
+TEST(Hash, SimpleHash3)
+{
+	//freopen("output.txt", "w", stdout);
+	int score = 0;
+	init();
+
+	const int maxIdx = MAX_ITEM / 10 * 8; // 800000
+
+	for (int i = 0; i < maxIdx; i++) { // make 800000 students
+		makeStudent(i);
+		insert(students[i].name, students[i].score);
+	}
+
+	for (int i = 0; i < (maxIdx / 10); i++) { // check 80000 students
+		int index = pseudo_rand() % maxIdx;
+		Student* node = search(students[index].name);
+		if (node && strSame(node->name, students[index].name) && node->score == students[index].score) {
+			score++;
+		}
+	}
+
+	for (int i = 0; i < maxIdx / 2; i++) { // delete 400000 students
+		int index = pseudo_rand() % maxIdx;
+		if (students[index].score != 0) {
+			del(students[index].name);
+			delStudent(index);
+		}
+	}
+
+	for (int i = maxIdx; i < MAX_ITEM; i++) { // make 200000 students more
+		makeStudent(i);
+		insert(students[i].name, students[i].score);
+	}
+
+	for (int i = 0; i < MAX_ITEM / 10; i++) { // check 100000 students
+		int index = pseudo_rand() % maxIdx;
+		if (students[index].score == 0) {
+			i--; continue;
+		}
+		Student* node = search(students[index].name);
+		if (node && strSame(node->name, students[index].name) && node->score == students[index].score) {
+			score++;
+		}
+	}
+
+	printf("score : %d\n", score); // it must be 180000
+
+
+}
+
+
+
+TEST(Hash, SimpleHash2)
+{
+	init();
+
+	insert("abc", 10);
+	insert("def", 20);
+	insert("xyz", 30);
+	insert("a", 44);
+	insert("ab", 55);
+
+	printScore(search("abc"));
+	printScore(search("def"));
+	printScore(search("xyz"));
+	printScore(search("a"));
+	printScore(search("ab"));
+	printScore(search("ac"));
+
+	del("abc");
+	del("def");
+	del("xyz");
+
+
+	printScore(search("abc"));
+	printScore(search("a"));
+	printScore(search("ab"));
+
+	del("abc");
+	del("a");
+	del("zzz");
+
+	printScore(search("abc"));
+	printScore(search("a"));
+	printScore(search("ab"));
+
+
+	del("ab");
+
+	printScore(search("abc"));
+	printScore(search("a"));
+	printScore(search("ab"));
+
+	insert("def", 99);
+	insert("xyz", 88);
+	insert("a", 77);
+	insert("ab", 66);
+
+	printScore(search("abc"));
+
+	printScore(search("a"));
+	printScore(search("ab"));
+	printScore(search("def"));
+	printScore(search("xyz"));
+
+}
+
+TEST(Hash, SimpleHash)
+{
+	init();
+
+	insert("abc", 10);
+	insert("ab", 11);
+	insert("ba", 11);
+	insert("aaa", 11);
+
+	//These have the same hash
+	EXPECT_NE(nullptr, search("abc"));
+	EXPECT_NE(nullptr, search("ab"));
+	EXPECT_NE(nullptr, search("ba"));
+
+	//These have not the same hash
+	EXPECT_NE(nullptr, search("aaa"));
+
+	del("ab");
+	EXPECT_EQ(nullptr, search("ab"));
+	EXPECT_NE(nullptr, search("abc"));
+	EXPECT_NE(nullptr, search("ba"));
+
+
+	del("abc");
+	EXPECT_EQ(nullptr, search("abc"));
+	EXPECT_NE(nullptr, search("ba"));
+
+	del("ba");
+	EXPECT_EQ(nullptr, search("ba"));
+
+	insert("abc", 10);
+	EXPECT_NE(nullptr, search("abc"));
+
+	insert("a", 10);
+	insert("b", 10);
+	insert("c", 10);
+	insert("d", 10);
+	insert("e", 10);
+	insert("f", 10);
+	insert("g", 10);
+
+	EXPECT_NE(nullptr, search("a"));
+	EXPECT_NE(nullptr, search("b"));
+	EXPECT_NE(nullptr, search("c"));
+	EXPECT_NE(nullptr, search("d"));
+	EXPECT_NE(nullptr, search("e"));
+	EXPECT_NE(nullptr, search("f"));
+	EXPECT_NE(nullptr, search("g"));
+}
 
 int main(int argc, char** argv)
 {

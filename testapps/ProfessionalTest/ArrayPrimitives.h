@@ -545,7 +545,65 @@ void move(int dir, int count)
 
 }
 
-void getBoard(int board[10][10])
-{
+int g_N;
+int g_checkBoard[1000][1000];
+int g_initCounter;
+bool g_InitializedOnce = false;
 
+void init (int N)
+{
+	g_N = N;
+	g_initCounter = 0;
+
+	if (!g_InitializedOnce)
+	{
+		memset(&g_checkBoard[0][0], 0, sizeof(g_checkBoard));
+	}
+	else
+	{
+		g_InitializedOnce = true;
+	}
 }
+
+void start()
+{
+	++g_initCounter;
+}
+
+bool check(int y, int x)
+{
+	if (g_checkBoard[y][x] == g_initCounter)
+	{
+		return true;
+	}
+	else
+	{
+		g_checkBoard[y][x] = g_initCounter;
+		return false;
+	}
+}
+
+void flip2 (int M, int object [4] [4], int vh)
+{
+	for(unsigned int y=0; y< M; ++y)
+	{
+		for(unsigned int x=0; x< M; ++x)
+		{
+			unsigned int srcY = y;
+			unsigned int srcX = x;
+
+			unsigned int dstY = M - y - 1;
+			unsigned int dstX = x;
+
+			if (srcY == dstY)
+			{
+				return;
+			}
+			else
+			{
+				__swap(object[srcY][srcX], object[dstY][dstX]);
+			}
+		}
+	}
+}
+
