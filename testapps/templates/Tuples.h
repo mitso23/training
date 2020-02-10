@@ -91,6 +91,7 @@ public:
 	{
 	}
 };
+
 // specialization for 1st field of a plain duo
 template<typename A, typename B>
 class DuoValue<1, Duo<A, B> >

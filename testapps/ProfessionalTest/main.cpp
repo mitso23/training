@@ -29,7 +29,7 @@
 using ::testing::AtLeast;
 using ::testing::Return;
 using ::testing::_;
-
+using namespace test;
 
 FILE* fp = nullptr;
 
@@ -861,7 +861,7 @@ TEST(Hash, SimpleHash3)
 	int score = 0;
 	init();
 
-	const int maxIdx = MAX_ITEM / 10 * 8; // 800000
+	const int maxIdx = MAX_ITEM / 10 * 8; // 800000l
 
 	for (int i = 0; i < maxIdx; i++) { // make 800000 students
 		makeStudent(i);

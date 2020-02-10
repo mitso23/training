@@ -31,7 +31,8 @@ openjdk-8-jre \
 gcovr \
 valgrind \
 cppcheck \
-gdb 
+gdb \
+linux-tools-common linux-tools-generic linux-tools-`uname -r`
  
  
 ARG https_proxy
