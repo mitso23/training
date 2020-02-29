@@ -39,6 +39,8 @@ linux-tools-`uname -r`
 ARG https_proxy
 ARG http_proxy
 
+ENV http_proxy $http_proxy
+ENV https.proxy $http_proxy
 
 RUN useradd -ms /bin/bash mitso23 && adduser mitso23 sudo
 WORKDIR /home/mitso23/
@@ -50,6 +52,7 @@ RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk
 USER mitso23
 RUN git config --global http.proxy $http_proxy 
 RUN git config --global https.proxy $https_proxy
+RUN curl -v https://sh.rustup.rs -sSf | bash -s -- -y
 
 RUN cd /tmp && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes #redo 
 
@@ -63,6 +66,9 @@ RUN cd eclipse && ./eclipse > /dev/null 2>&1 &
 #RUN git clone https://github.com/imatix/zguide.git && tar -zxvf zeromq-3.2.5.tar.gz && cd zeromq-3.2.5 && ./configure --prefix=/usr/local/  && make && make install 
 
 ENV PRJ_ROOT=/home/mitso23/training
+ENV PATH="/mitso23/.cargo/bin:${PATH}"
+
+
 
 
 
