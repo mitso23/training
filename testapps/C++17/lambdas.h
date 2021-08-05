@@ -1,0 +1,8 @@
+//
+// Created by mitso23 on 3/21/21.
+//
+
+#ifndef TRAINING_TESTAPPS_C_17_LAMBDAS_H_
+#define TRAINING_TESTAPPS_C_17_LAMBDAS_H_
+
+#endif //TRAINING_TESTAPPS_C_17_LAMBDAS_H_
