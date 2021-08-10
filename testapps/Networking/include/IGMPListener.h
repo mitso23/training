@@ -1,8 +1,24 @@
-//
-// Created by mitso23 on 8/4/21.
-//
+#pragma once
 
-#ifndef NETWORKING_INCLUDE_IGMPLISTENER_H_
-#define NETWORKING_INCLUDE_IGMPLISTENER_H_
+#include <string>
+#include <functional>
 
-#endif //NETWORKING_INCLUDE_IGMPLISTENER_H_
+class IGMPListener
+{
+ public:
+	using Callback = std::function<void (std::string)>;
+
+	IGMPListener(std::string networkInterface, Callback&& callback);
+
+	void Listen();
+
+ private:
+	void m_handleIGMP3Message(uint8_t* msg);
+	int m_handleIGMPRecord(uint8_t* record);
+
+ private:
+	std::string m_networkInterface;
+	int m_fd = -1;
+	Callback m_callback;
+
+};

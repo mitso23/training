@@ -1,8 +1,19 @@
-//
-// Created by mitso23 on 8/4/21.
-//
+#pragma once
+#include "IGMPListener.h"
+#include "MulticastClient.h"
+#include <iostream>
 
-#ifndef NETWORKING_INCLUDE_RTPSTREAMING_H_
-#define NETWORKING_INCLUDE_RTPSTREAMING_H_
+class RTPStreaming
+{
 
-#endif //NETWORKING_INCLUDE_RTPSTREAMING_H_
+ public:
+	RTPStreaming(std::string interfaceAddress, uint16_t port);
+
+ private:
+	void m_StreamRequested(std::string&& multicastAddress);
+ private:
+	IGMPListener m_igmpListener;
+	std::string m_interfaceAddress;
+	uint16_t m_port;
+	std::string m_multicastAddress;
+};
