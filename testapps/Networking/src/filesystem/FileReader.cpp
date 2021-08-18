@@ -31,12 +31,14 @@ std::vector<uint8_t> FileReader::Read(size_t size) const
 	if (res < 0)
 	{
 		LOGE("Failed to read: ", strerror(errno));
+		abort();
 		return result;
 	}
 
 	if (size != static_cast<decltype(size)>(res))
 	{
 		LOGE("Read only", res);
+		abort();
 		return result;
 	}
 

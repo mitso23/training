@@ -305,6 +305,33 @@ src/rtpstream/RTPStreaming.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/networking.dir/build.make CMakeFiles/networking.dir/src/rtpstream/RTPStreaming.cpp.s
 .PHONY : src/rtpstream/RTPStreaming.cpp.s
 
+src/utils/Logging.o: src/utils/Logging.cpp.o
+
+.PHONY : src/utils/Logging.o
+
+# target to build an object file
+src/utils/Logging.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/networking.dir/build.make CMakeFiles/networking.dir/src/utils/Logging.cpp.o
+.PHONY : src/utils/Logging.cpp.o
+
+src/utils/Logging.i: src/utils/Logging.cpp.i
+
+.PHONY : src/utils/Logging.i
+
+# target to preprocess a source file
+src/utils/Logging.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/networking.dir/build.make CMakeFiles/networking.dir/src/utils/Logging.cpp.i
+.PHONY : src/utils/Logging.cpp.i
+
+src/utils/Logging.s: src/utils/Logging.cpp.s
+
+.PHONY : src/utils/Logging.s
+
+# target to generate assembly for a file
+src/utils/Logging.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/networking.dir/build.make CMakeFiles/networking.dir/src/utils/Logging.cpp.s
+.PHONY : src/utils/Logging.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -332,6 +359,9 @@ help:
 	@echo "... src/rtpstream/RTPStreaming.o"
 	@echo "... src/rtpstream/RTPStreaming.i"
 	@echo "... src/rtpstream/RTPStreaming.s"
+	@echo "... src/utils/Logging.o"
+	@echo "... src/utils/Logging.i"
+	@echo "... src/utils/Logging.s"
 .PHONY : help
 
 

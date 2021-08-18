@@ -1,9 +1,9 @@
 #include "RTPHeader.h"
 #include "Logging.h"
 
-RTPPacket::RTPPacket(uint16_t seqNum, uint32_t timeStamp, std::vector<uint8_t>&& payload, bool endOfStream)
+RTPPacket::RTPPacket(uint16_t seqNum, uint32_t timeStamp, std::vector<uint8_t>&& payload, bool endOfStream, struct timespec& deliveryTime)
 {
-	m_packet.resize(payload.size() + sizeof(seqNum) + sizeof(timeStamp) + 4);
+	m_packet.resize(payload.size() + sizeof(seqNum) + sizeof(timeStamp) + 4 + 2);
 
 	//version 0x2, no padding, no extension
 	m_packet[0] = 0x80;
@@ -32,6 +32,8 @@ RTPPacket::RTPPacket(uint16_t seqNum, uint32_t timeStamp, std::vector<uint8_t>&&
 	}
 
 	std::copy(payload.begin(), payload.end(), &m_packet[12]);
+
+	m_deliveryTime = deliveryTime;
 
 	LOGD("Packet size", m_packet.size());
 

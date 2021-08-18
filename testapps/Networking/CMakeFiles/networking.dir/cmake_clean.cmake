@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/networking.dir/src/networking/MulticastClient.cpp.o"
   "CMakeFiles/networking.dir/src/networking/RTPHeader.cpp.o"
   "CMakeFiles/networking.dir/src/rtpstream/RTPStreaming.cpp.o"
+  "CMakeFiles/networking.dir/src/utils/Logging.cpp.o"
   "networking"
   "networking.pdb"
 )

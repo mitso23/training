@@ -3,9 +3,11 @@
 
 CMakeFiles/networking.dir/main.cpp.o
  /home/mitso23/training/testapps/Networking/main.cpp
+ include/BlockingQueue.h
  include/IGMPListener.h
  include/Logging.h
  include/MulticastClient.h
+ include/RTPHeader.h
  include/RTPStreaming.h
 CMakeFiles/networking.dir/src/filesystem/FileReader.cpp.o
  /home/mitso23/training/testapps/Networking/src/filesystem/FileReader.cpp
@@ -25,6 +27,7 @@ CMakeFiles/networking.dir/src/networking/RTPHeader.cpp.o
  include/RTPHeader.h
 CMakeFiles/networking.dir/src/rtpstream/RTPStreaming.cpp.o
  /home/mitso23/training/testapps/Networking/src/rtpstream/RTPStreaming.cpp
+ include/BlockingQueue.h
  include/FileReader.h
  include/IGMPListener.h
  include/Logging.h
@@ -32,3 +35,6 @@ CMakeFiles/networking.dir/src/rtpstream/RTPStreaming.cpp.o
  include/RTPHeader.h
  include/RTPStreaming.h
  include/TSPacket.h
+CMakeFiles/networking.dir/src/utils/Logging.cpp.o
+ /home/mitso23/training/testapps/Networking/src/utils/Logging.cpp
+ include/Logging.h

@@ -17,4 +17,4 @@ add_executable(networking
                src/networking/MulticastClient.cpp
                src/networking/IGMPListener.cpp
                src/rtpstream/RTPStreaming.cpp
-               main.cpp include/Logging.h include/FileReader.h src/filesystem/FileReader.cpp include/TSPacket.h include/RTPHeader.h src/networking/RTPHeader.cpp)
+               main.cpp include/Logging.h include/FileReader.h src/filesystem/FileReader.cpp include/TSPacket.h include/RTPHeader.h src/networking/RTPHeader.cpp src/utils/Logging.cpp include/BlockingQueue.h)

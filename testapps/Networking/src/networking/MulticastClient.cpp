@@ -70,6 +70,12 @@ MulticastClient::MulticastClient(std::string interfaceAddress, std::string mutli
 
 int MulticastClient::Send(std::vector<uint8_t>&& data)
 {
+	if (data.empty())
+	{
+		LOGE("Empty packet");
+		return 0;
+	}
+
 	LOGD("data size", data.size());
 
 	auto result = sendto(m_fd,
@@ -82,10 +88,16 @@ int MulticastClient::Send(std::vector<uint8_t>&& data)
 	if (result < 0)
 	{
 		LOGE("failed to write", result);
+		//abort();
 	}
 	else
 	{
 		LOGI("wrote", result , "bytes");
+
+		if (result != data.size())
+		{
+			abort();
+		}
 	}
 
 	return result;
