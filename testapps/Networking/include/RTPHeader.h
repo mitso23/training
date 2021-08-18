@@ -2,16 +2,17 @@
 
 #include <vector>
 #include <cstdint>
-#include <time.h>
+#include <chrono>
 
 class RTPPacket
 {
+	using TimePoint = std::chrono::high_resolution_clock::time_point;
  public:
 	RTPPacket(uint16_t seqNum,
 			  uint32_t timeStamp,
 			  std::vector<uint8_t>&& payload,
 			  bool endOfStream,
-			  struct timespec& deliveryTime);
+			  TimePoint& deliveryTime);
 
 	std::vector<uint8_t>&& TakePacket()
 	{
@@ -27,12 +28,12 @@ class RTPPacket
 		m_deliveryTime = packet.GetDeliveryTime();
 	}
 
-	struct timespec GetDeliveryTime() const
+	TimePoint GetDeliveryTime() const
 	{
 		return m_deliveryTime;
 	}
 
  private:
 	std::vector<uint8_t> m_packet;
-	struct timespec m_deliveryTime;
+	TimePoint m_deliveryTime;
 };

@@ -44,10 +44,10 @@ void RTPStreaming::m_StreamingThread()
 	while (!m_terminate.load())
 	{
 		auto packet = m_packets.Pop();
-		struct timespec deliveryTime = packet.GetDeliveryTime();
+		auto deliveryTime = packet.GetDeliveryTime();
 
 		//LOGE("sending packet sec", deliveryTime.tv_sec, " nsec: ", deliveryTime.tv_nsec);
-		clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &deliveryTime, NULL);
+		std::this_thread::sleep_until(deliveryTime);
 		multicastClient.Send(std::move(packet.TakePacket()));
 	}
 
@@ -67,7 +67,6 @@ void RTPStreaming::m_StreamRequested(std::string&& multicastAddress)
 	{
 		LOGD("New multicast address", multicastAddress);
 		m_multicastAddress = multicastAddress;
-
 		m_thread = std::move(std::thread{&RTPStreaming::m_StreamingThread, this});
 	}
 
@@ -77,48 +76,25 @@ void RTPStreaming::m_StreamRequested(std::string&& multicastAddress)
 
 		const unsigned int packetSize = (1500 / 188) * 188;
 		const double bitRate = 5000000;
-		double intervalSec = (packetSize * 8) / bitRate;
-		LOGD("intervalSec", intervalSec);
+		std::chrono::nanoseconds interval {static_cast<uint32_t>((packetSize * 8UL * 1000UL * 1000UL * 1000UL) / bitRate)};
+		auto deliveryTime = std::chrono::high_resolution_clock::now();
 
-		struct timespec deliveryTime;
-		if (clock_gettime(CLOCK_MONOTONIC, &deliveryTime) != 0)
-		{
-			LOGE("Failed to get CLOCK_MONOTONIC");
-			return;
-		}
+		LOGD("interval", interval.count());
 
 		for(uint16_t i = 0; i< 100000; ++i)
 		{
-			struct timespec tp;
-
-			if (clock_gettime(CLOCK_MONOTONIC, &tp) != 0)
-			{
-				LOGE("Failed to get CLOCK_MONOTONIC");
-				return;
-			}
-
-			uint32_t timestamp =  static_cast<uint32_t>((tp.tv_sec * 90000LL) + ((tp.tv_nsec * 9LL) / 100000LL));
+			auto timestamp = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+			timestamp*= 90000;
 			LOGI("timestamp", timestamp);
 
-			auto begin = std::chrono::steady_clock::now();
 			auto receivedData = reader.Read(packetSize);
-
-			deliveryTime.tv_nsec+= intervalSec * 1000ULL * 1000ULL * 1000ULL;
-			while(deliveryTime.tv_nsec > 999999999)
-			{
-				deliveryTime.tv_sec+=1;
-				deliveryTime.tv_nsec-= 1000*1000*1000;
-			}
-
-			RTPPacket packet {seqNum++, timestamp, std::move(receivedData), false, deliveryTime};
+			deliveryTime+= interval;
+			RTPPacket
+				packet{ seqNum++, static_cast<uint32_t>(timestamp), std::move(receivedData), false, deliveryTime };
 
 			//LOGE("Adding packet sec", deliveryTime.tv_sec, " nsec: ", deliveryTime.tv_nsec);
 			m_packets.Push(std::move(packet));
 
-			auto end = std::chrono::steady_clock::now();
-			auto durationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-
-			//abort();
 		}
 	}
 	catch(std::exception& e)
