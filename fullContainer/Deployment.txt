@@ -1,2 +1,2 @@
 docker build --build-arg http_proxy=http://106.1.18.35:8080 --build-arg https_proxy=https://106.1.18.35:8080 -t training:latest  .
-docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix/ -v /home/tvkey/training:/home/mitso23/training training:latest
+docker run --cap-add=SYS_ADMIN --security-opt seccomp=unconfined -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix/ -v /home/tvkey:/home/tvkey training:latest

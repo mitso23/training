@@ -34,3 +34,5 @@ else
 endif
 # DO NOT DELETE
 
+/home/tvkey/training//testapps/MoveSemanticsJosutis/MoveSemantics.o: /home/tvkey/training/testapps/MoveSemanticsJosutis/PowerOfMoveSemantics.h
+/home/tvkey/training//testapps/MoveSemanticsJosutis/MoveSemantics.o: /home/tvkey/training/include/utils/counted.h

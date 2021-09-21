@@ -42,31 +42,31 @@ ARG http_proxy
 ENV http_proxy $http_proxy
 ENV https.proxy $http_proxy
 
-RUN useradd -ms /bin/bash mitso23 && adduser mitso23 sudo
-WORKDIR /home/mitso23/
-RUN chown -R mitso23:mitso23 /usr/local/lib/
-RUN chown -R mitso23:mitso23 /usr/local/include/
+RUN useradd -ms /bin/bash tvkey && adduser tvkey sudo
+WORKDIR /home/tvkey/
+RUN chown -R tvkey:tvkey /usr/local/lib/
+RUN chown -R tvkey:tvkey /usr/local/include/
+RUN chown -R tvkey:tvkey /usr/include/
 
 RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java 50
 
-USER mitso23
+USER tvkey
 RUN git config --global http.proxy $http_proxy 
 RUN git config --global https.proxy $https_proxy
-RUN curl -v https://sh.rustup.rs -sSf | bash -s -- -y
+#RUN curl -v https://sh.rustup.rs -sSf | bash -s -- -y
 
 RUN cd /tmp && mkdir training && git clone https://github.com/mitso23/training.git && cd training && git checkout hotFixes #redo 
 
 RUN cd /tmp/training/packages/googletest/ &&  rm CMakeCache.txt && cmake -DBUILD_SHARED_LIBS=ON && make && cp googlemock/libgmock.so /usr/local/lib/  && cp -r googlemock/include/* /usr/local/include/
 RUN cd /tmp/training/packages/googletest/googletest/ && cmake ./ && make && cp libgtest.a /usr/local/lib && cp -r include/* /usr/local/include/
 
-RUN wget https://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/3/eclipse-cpp-neon-3-linux-gtk-x86_64.tar.gz && tar -zxvf eclipse-cpp-neon-3-linux-gtk-x86_64.tar.gz  
+#RUN wget https://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/3/eclipse-cpp-neon-3-linux-gtk-x86_64.tar.gz && tar -zxvf eclipse-cpp-neon-3-linux-gtk-x86_64.tar.gz  
 
-RUN cd eclipse && ./eclipse > /dev/null 2>&1 &
+#RUN cd eclipse && ./eclipse > /dev/null 2>&1 &
 
 #RUN git clone https://github.com/imatix/zguide.git && tar -zxvf zeromq-3.2.5.tar.gz && cd zeromq-3.2.5 && ./configure --prefix=/usr/local/  && make && make install 
 
-ENV PRJ_ROOT=/home/mitso23/training
-ENV PATH="/mitso23/.cargo/bin:${PATH}"
+ENV PRJ_ROOT=/home/tvkey/training
 
 
 

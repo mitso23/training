@@ -8,6 +8,8 @@
 #ifndef INCLUDE_UTILS_COUNTED_H_
 #define INCLUDE_UTILS_COUNTED_H_
 
+#include "memory"
+
 /**
  * A simple object for keeping track of objects lifecycle
  */

@@ -66,7 +66,7 @@ struct Factory
 	T Get()
 	{
 		static_assert(has_type<T, std::tuple<Ts...>>{}, "there is no such type in the container");
-		return T();
+		return std::get<T>(products);
 	}
 
 	std::tuple<Ts...> products;
