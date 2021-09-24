@@ -2,7 +2,7 @@ DIR:=$(PRJ_ROOT)/$(DIR)
 
 SRCS:= $(patsubst %,$(DIR)/%,$(SRCS))
 
-ifneq (,$(findstring gcc-7,$(CC)))
+ifneq (,$(findstring gcc-10,$(CC)))
 	OBJS:= $(patsubst %.cpp,%.o,$(SRCS))
 else
 	OBJS:= $(patsubst %.c,%.o,$(SRCS))
@@ -34,5 +34,4 @@ else
 endif
 # DO NOT DELETE
 
-/home/tvkey/training//testapps/MoveSemanticsJosutis/MoveSemantics.o: /home/tvkey/training/testapps/MoveSemanticsJosutis/PowerOfMoveSemantics.h
-/home/tvkey/training//testapps/MoveSemanticsJosutis/MoveSemantics.o: /home/tvkey/training/include/utils/counted.h
+

@@ -79,8 +79,27 @@ struct TestFuture
 	int& x;
 };
 
+template<typename T, typename U>
+struct my_is_same
+{
+	static bool constexpr result = false;
+};
+
+template<typename T>
+struct my_is_same<T,T>
+{
+	static bool constexpr result = true;
+};
+
+template<typename T>
+struct my_is_same<T,const T>
+{
+	static bool constexpr result = true;
+};
+
 int main(int argc, char* argv[])
 {
+	std::cout << my_is_same<int, const int>::result << std::endl;
 
 #if 0
 	int x = 1;
@@ -399,7 +418,7 @@ int main(int argc, char* argv[])
 #if 0
 	Expected<Noisy, int> e1;
 
-	Expected<Noisy, int> e3 = Noisy();l
+	Expected<Noisy, int> e3 = Noisy();
 	const Noisy* n = &*e3;
 	std::cout << "e3 id is " << e3->getId() << std::endl;
 

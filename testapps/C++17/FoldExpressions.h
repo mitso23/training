@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <type_traits>
 #include <sstream>
 #include <ctype.h>
@@ -216,4 +217,25 @@ void CallFuncPrintArgs(const char* filename,  int line, const char* function, F&
 
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #define CALL(f, args...) CallFuncPrintArgs(__FILENAME__, __LINE__, __FUNCTION__, f, ##args)
+
+
+template<typename T, typename... Args>
+constexpr std::vector<T> make_vector(Args&&... args)
+{
+	static_assert((std::is_constructible_v<T, Args&&> && ...));
+	std::vector<T> v;
+	(...,v.emplace_back(args));
+	return v;
+}
+
+template<typename ...Args>
+void printer(Args&& ... args)
+{
+	(std::cout << ... << args) << '\n';
+}
+
+struct Header
+{
+	inline static std::string s_name = {"Hello"};
+};
 

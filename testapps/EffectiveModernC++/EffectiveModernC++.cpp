@@ -80,6 +80,7 @@ int foo(int x)
 
 int main(int argc, char* argv[])
 {
+	foo(1);
 #if 0
 	std::vector<int> x = { 1,2 };
 	std::cout << getValue(x, 0) << std::endl;

@@ -206,7 +206,6 @@ class Tuple<P1,P2,NullT,NullT,NullT> : public Duo<P1,P2>
     }
 };
 #endif
-
 template<int...> struct seq
 {
 

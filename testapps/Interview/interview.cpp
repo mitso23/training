@@ -1,5 +1,6 @@
 #include "Basic.h"
 #include "Medium.h"
+#include <iterator>
 
 
 std::vector<std::vector<char>> lab= {
@@ -26,12 +27,9 @@ public:
 	}
 };
 
-
-
-
 int main(int argc, char* argv[])
 {
-	testConstructionDestructionOrder();
+	//testConstructionDestructionOrder();
 	//testCopyAssignementOperators();
 	//testPolymorphism();
 
@@ -83,5 +81,5 @@ int main(int argc, char* argv[])
 #endif
 
 	//functorExample();
-	downCastringTest();
+	//downCastringTest();
 }

@@ -22,7 +22,7 @@ void producer_thread()
 
 void consumer_thread()
 {
-	//std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	while (true)
 	{
 #if 0

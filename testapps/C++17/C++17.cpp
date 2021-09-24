@@ -6,8 +6,11 @@
 #include <array>
 #include <vector>
 #include <list>
+#include "StructureBinding.h"
+#include <iostream>
+#include <type_traits>
+#include "lambdas.h"
 #include <utils/Noisy.h>
-
 #include <utils/counted.h>
 
 class skata2
@@ -94,26 +97,63 @@ void dummy(int x, int y, std::vector<int>&& z, const std::list<int>& w,
 	z.push_back(10);
 }
 
-template<typename U>
-void processAndLog(U&& n)
+class MyClass
 {
-	process(std::forward<U>(n));
+ public:
+// no copy/move constructor defined:
+	MyClass(const MyClass&) = delete;
+	MyClass(MyClass&&) = delete;
+};
 
+
+MyClass CopyElision(MyClass x)
+{
+	//return x --> is not compiling
+	return MyClass{};
 }
 
 int main(int argc, char* argv[])
 {
 
 #if 0
-	// the answer to life, the universe, etc. in...l
-	auto a1 = 42;        // ... decimal
-	auto a2 = 0x2A;      // ... hexadecimal
-	auto a3 = 0b101010;  // ... binary
+	//iterateMap();
+	//ManipulateCustomers();
+	std::map<std::string, int> coll;
 
-	std::cout << "a3: " << a3 << std::endl;
+	if (auto [pos, ok] = coll.insert({"Hello", 42}); ok)
+	{
+		std::cout << Header::s_name << std::endl;
+	}
 
-	std::cout << "foo result: " << foo(1, 2);
-	std::cout << "foo result: " << foo(1.0, 2.2);
+	CopyElision(MyClass{});
+
+	auto v2 = Hashed::one;
+
+	switch (v2)
+	{
+		case normalFunc("one") :
+		{
+			std::cout << "Holly cow" << std::endl;
+		}
+		break;
+	}
+
+	std::string clearText("Dimitrios");
+	std::string encodedText;
+	std::string decodedText;
+	encodedText.reserve(9);
+	decodedText.reserve(9);
+	auto key = 'a';
+
+	for(auto& c : clearText)
+	{
+		encodedText.push_back(c ^ key);
+	}
+
+	for(auto& c : encodedText)
+	{
+		decodedText.push_back(c ^ key);
+	}
 
 	class skata
 	{
@@ -161,7 +201,7 @@ int main(int argc, char* argv[])
 			  << objCounter.counter.moveAssigned << std::endl;
 #endif
 
-	int x[] = { 1, 10, 2 };
-	findPeakElement(x, sizeof(x)/sizeof(x[0]));
+
+
 }
 
