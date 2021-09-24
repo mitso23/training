@@ -110,11 +110,14 @@ public:
 		std::cout << "BB copy constructor called " << std::endl;
 	}
 
+#if 0
 	BB& operator = (const BB& rhs)
 	{
+		std::cout << "BB assignment operator called " << std::endl;
 		AA::operator =(rhs);
 		return *this;
 	}
+#endif
 
 private:
 	int m_i;
@@ -139,7 +142,7 @@ public:
 class Base2: public Base1
 {
 public:
-	virtual void foo()
+	void foo() override
 	{
 		std::cout << "Base 2 foo " << std::endl;
 	}
@@ -184,6 +187,8 @@ void testCopyAssignementOperators()
 {
 	BB b(5);
 	BB c(10);
+
+	std::cout << "assignment " << std::endl;
 	c=b;
 }
 
@@ -195,6 +200,9 @@ void testPolymorphism()
 	std::cout << "Address of Base1 is " << &b->m_base1 << std::endl;
 	std::cout << "Address of Base2 is " << &dynamic_cast<Base2*>(b)->m_base2 << std::endl;
 	std::cout << "Address of Base3 is " << &dynamic_cast<Base3*>(b)->m_base3 << std::endl;
+
+	std::cout << "sizeof(int): " << sizeof(int) << std::endl;
+	std::cout << "sizeof(void*): " << sizeof(void*) << std::endl;
 
 	std::cout << "sizeof Base 1: " << sizeof(Base1) << std::endl;
 	std::cout << "sizeof Base 2: " << sizeof(Base2) << std::endl;

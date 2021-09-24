@@ -10,8 +10,8 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= 
-export NAME= codingInterview.out
+export LIBS= -lpthread -lgmock -lgtest -lm
+export NAME= finance.out
 
 .PHONY: depend clean
 

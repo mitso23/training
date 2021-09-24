@@ -11,7 +11,7 @@ include ../../common.mk
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
 export LIBS= 
-export NAME= C++17.out
+export NAME= codingInterview.out
 
 .PHONY: depend clean
 

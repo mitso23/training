@@ -14,12 +14,6 @@ Logging.h
 thread
 -
 
-/home/mitso23/training/testapps/Networking/src/networking/RTPHeader.cpp
-RTPHeader.h
-/home/mitso23/training/testapps/Networking/src/networking/RTPHeader.h
-Logging.h
-/home/mitso23/training/testapps/Networking/src/networking/Logging.h
-
 /home/mitso23/training/testapps/Networking/src/rtpstream/RTPStreaming.cpp
 RTPStreaming.h
 /home/mitso23/training/testapps/Networking/src/rtpstream/RTPStreaming.h
@@ -48,6 +42,8 @@ condition_variable
 memory
 -
 chrono
+-
+type_traits
 -
 
 include/FileReader.h

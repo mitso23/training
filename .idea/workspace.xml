@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="training" targetName="training" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fbe27914-64b7-4d8c-b235-7085f71f8164" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/testapps/Finance/STLAlgorithms.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testapps/Finance/Threading.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common.mk" beforeDir="false" afterPath="$PROJECT_DIR$/common.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fullContainer/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/fullContainer/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules.mk" beforeDir="false" afterPath="$PROJECT_DIR$/rules.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Algorithms/sorting/quicksort.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Algorithms/sorting/quicksort.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/C++17/C++17.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/C++17/C++17.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/C++17/FoldExpressions.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/C++17/FoldExpressions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/C++17/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/C++17/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/C++17/StructureBinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/C++17/StructureBinding.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/C++17/lambdas.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/C++17/lambdas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/ConcurrencyInAction/LockBasedDesign.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/ConcurrencyInAction/LockBasedDesign.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/ConcurrencyInAction/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/ConcurrencyInAction/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/EffectiveModernC++/EffectiveModernC++.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/EffectiveModernC++/EffectiveModernC++.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Finance/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Finance/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Finance/Numerics.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Finance/Numerics.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Finance/Primitives.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Finance/Primitives.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Finance/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Finance/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Finance/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Finance/main.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Interview/Basic.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Interview/Basic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Interview/Medium.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Interview/Medium.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Interview/interview.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Interview/interview.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/CMakeFiles/networking.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Networking/CMakeFiles/networking.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/CMakeFiles/networking.dir/main.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/CMakeFiles/networking.dir/src/rtpstream/RTPStreaming.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/RTPStreaming_copy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/include/BlockingQueue.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Networking/include/BlockingQueue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Networking/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/Networking/networking" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/Networking/networking" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/amazon/easy.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/amazon/easy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/crackingCodingInterview/ArraysStrings.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/crackingCodingInterview/ArraysStrings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/crackingCodingInterview/Graphs.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/crackingCodingInterview/Graphs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/crackingCodingInterview/LinkList.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/crackingCodingInterview/LinkList.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/crackingCodingInterview/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/crackingCodingInterview/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/crackingCodingInterview/Trees.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/crackingCodingInterview/Trees.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/crackingCodingInterview/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/crackingCodingInterview/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/templates/Templates.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/templates/Templates.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/templates/Templates.o" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/templates/Templates.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testapps/templates/Tuples.h" beforeDir="false" afterPath="$PROJECT_DIR$/testapps/templates/Tuples.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1mErp4MvvZm7C2iSGzfgsWGIU3n" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="ToolWindowDatabase.ShowToolbar" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.advertisement.text.overridden" value="true" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/testapps/Networking" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testapps/Networking" />
+      <recent name="$PROJECT_DIR$/testapps" />
+      <recent name="$PROJECT_DIR$/testapps/crackingCodingInterview" />
+      <recent name="$PROJECT_DIR$/testapps/ConcurrencyInAction" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.finance">
+    <configuration name="finance" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/bin/finance.out" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2" />
+    </configuration>
+    <configuration name="training" type="CMakeRunConfiguration" factoryName="Application" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="training" TARGET_NAME="training" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/bin/codingInterview.out">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.training" />
+      <item itemvalue="CMake Application.finance" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fbe27914-64b7-4d8c-b235-7085f71f8164" name="Default Changelist" comment="" />
+      <created>1609069770952</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1609069770952</updated>
+      <workItem from="1609069772880" duration="410000" />
+      <workItem from="1609070336285" duration="19232000" />
+      <workItem from="1609618092279" duration="13163000" />
+      <workItem from="1609915996058" duration="49506000" />
+      <workItem from="1611492935305" duration="617000" />
+      <workItem from="1611510723917" duration="2095000" />
+      <workItem from="1611513930339" duration="6545000" />
+      <workItem from="1611607166656" duration="5455000" />
+      <workItem from="1611728842927" duration="3248000" />
+      <workItem from="1612033290456" duration="5409000" />
+      <workItem from="1612949851114" duration="4177000" />
+      <workItem from="1613326062759" duration="3671000" />
+      <workItem from="1613820376605" duration="155000" />
+      <workItem from="1613856181899" duration="11996000" />
+      <workItem from="1615757741071" duration="1280000" />
+      <workItem from="1616357703100" duration="7236000" />
+      <workItem from="1620022192141" duration="13170000" />
+      <workItem from="1620203934029" duration="3920000" />
+      <workItem from="1620594439972" duration="12097000" />
+      <workItem from="1622456761162" duration="8434000" />
+      <workItem from="1622496228750" duration="10782000" />
+      <workItem from="1623012433205" duration="1656000" />
+      <workItem from="1623618742189" duration="2655000" />
+      <workItem from="1624216460920" duration="11272000" />
+      <workItem from="1624796652576" duration="19668000" />
+      <workItem from="1625032703327" duration="1825000" />
+      <workItem from="1625081144825" duration="4458000" />
+      <workItem from="1625126100466" duration="3341000" />
+      <workItem from="1625327116317" duration="2101000" />
+      <workItem from="1626241215614" duration="4180000" />
+      <workItem from="1626414633617" duration="1841000" />
+      <workItem from="1626939975778" duration="2881000" />
+      <workItem from="1627918729653" duration="15177000" />
+      <workItem from="1628152466847" duration="71000" />
+      <workItem from="1628152750558" duration="391000" />
+      <workItem from="1628154660518" duration="1513000" />
+      <workItem from="1628324927287" duration="9348000" />
+      <workItem from="1628493466544" duration="1453000" />
+      <workItem from="1628503669606" duration="202000" />
+      <workItem from="1628504884192" duration="1434000" />
+      <workItem from="1628574155159" duration="1670000" />
+      <workItem from="1628576826420" duration="39000" />
+      <workItem from="1628576906913" duration="25000" />
+      <workItem from="1628584811168" duration="9411000" />
+      <workItem from="1628746396665" duration="12934000" />
+      <workItem from="1628953913383" duration="471000" />
+      <workItem from="1628969770529" duration="1097000" />
+      <workItem from="1629104843033" duration="209000" />
+      <workItem from="1629113824517" duration="187000" />
+      <workItem from="1629114752784" duration="695000" />
+      <workItem from="1629191111810" duration="1086000" />
+      <workItem from="1629357167850" duration="8324000" />
+      <workItem from="1629998737785" duration="5549000" />
+      <workItem from="1630065574155" duration="8691000" />
+      <workItem from="1630316217723" duration="23644000" />
+      <workItem from="1630502315303" duration="24000" />
+      <workItem from="1630502377075" duration="3640000" />
+      <workItem from="1630519166711" duration="20504000" />
+      <workItem from="1630764444838" duration="13437000" />
+      <workItem from="1631263773580" duration="42000" />
+      <workItem from="1631263853665" duration="1606000" />
+      <workItem from="1631694575490" duration="22296000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="Makefile" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

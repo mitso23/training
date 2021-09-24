@@ -277,7 +277,10 @@ public:
     Bomb() : x(0) {std::cout << "Constructor called " << std::endl;}
 
     //DO NOT THROW IN THE DESTRUCTOR
-    ~Bomb() {  }
+    ~Bomb()
+    {
+    	throw 1;
+    }
 
     void * operator new(size_t n) throw()
     {
@@ -292,7 +295,7 @@ public:
     }
 };
 
-void f() throw(int)
+void f()
 {
     Bomb myBomb;
 
@@ -310,9 +313,6 @@ void f() throw(int)
 
 void misUseOfDelete()
 {
-	char* data= new char[10];
-	delete data;
-
 	Suicide *d= new Suicide();
 	d->suicide();
 }
@@ -348,8 +348,12 @@ void functorExample()
 	std::vector<int> src= { 1, 3, 4, 5, 8, 9, 12, 24, 25, 40};
 	std::vector<int> dst;
 
-	std::copy(src.begin(), src.end(), std::back_inserter(src));
-	auto new_end = std::remove_if(src.begin(), src.end(), boost::bind(compareTwoValues, _1, 20));
+	std::copy(src.begin(), src.end(), std::back_inserter(dst));
+	auto l = [](int v)
+	{
+		return v < 20;
+	};
+	auto new_end = std::remove_if(src.begin(), src.end(), l);
 	src.erase(new_end, src.end());
 	print_cont(src);
 }

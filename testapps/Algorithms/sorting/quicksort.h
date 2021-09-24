@@ -67,7 +67,7 @@ int partition (int* arr, int low, int high)
 
     std::swap(arr[i + 1],arr[high]);
 
-    return (i);
+    return (i + 1);
 }
 
 void quicksort_rec(int* arr, int low, int high)

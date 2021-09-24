@@ -184,7 +184,6 @@ struct DoubleList
 		{
 			m_head = new ListNode(data);
 			m_tail = m_head;
-
 		}
 		else
 		{
@@ -192,9 +191,7 @@ struct DoubleList
 
 			m_tail->next = node;
 			node->previous = m_tail;
-
 			m_tail = node;
-
 		}
 	}
 

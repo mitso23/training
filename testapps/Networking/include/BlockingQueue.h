@@ -5,6 +5,7 @@
 #include <condition_variable>
 #include <memory>
 #include <chrono>
+#include <type_traits>
 
 template <class T>
 class FixedBlockingQueue
@@ -30,7 +31,29 @@ class FixedBlockingQueue
 	 * @note This will block the caller if queue is full
 	 * @param event
 	 */
-	void Push(T&& event);
+	template<typename Y>
+	void Push(Y&& event)
+	{
+		static_assert(std::is_same<std::decay<Y>,std::decay<T>>::value,
+			"U must be the same as T");
+
+		std::unique_lock<std::mutex> lock(m_mutex);
+		if (m_queue.size() < m_maxSize)
+		{
+			m_queue.push(std::move(event));
+			m_con.notify_one();
+		}
+		else
+		{
+			while(m_queue.size() >= m_maxSize)
+			{
+				m_con.wait(lock);
+			}
+
+			m_queue.push(std::forward<Y>(event));
+			m_con.notify_one();
+		}
+	}
 
 	/**
 	 * @return an element from the queue.
@@ -38,7 +61,7 @@ class FixedBlockingQueue
 	 */
 	 T Pop();
 
-	/**
+	 /**
 	 * clear the queue and unblock producer
 	 */
 	void Clear();
@@ -65,27 +88,6 @@ FixedBlockingQueue<T>::~FixedBlockingQueue()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 	m_con.notify_all();
-}
-
-template <class T>
-void FixedBlockingQueue<T>::Push(T&& event)
-{
-	std::unique_lock<std::mutex> lock(m_mutex);
-	if (m_queue.size() < m_maxSize)
-	{
-		m_queue.push(std::move(event));
-		m_con.notify_one();
-	}
-	else
-	{
-		while(m_queue.size() >= m_maxSize)
-		{
-			m_con.wait(lock);
-		}
-
-		m_queue.push(std::move(event));
-		m_con.notify_one();
-	}
 }
 
 template <class T>

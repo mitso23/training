@@ -10,8 +10,8 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= -lpthread
-export NAME= Concurrency.out
+export LIBS= 
+export NAME= C++17.out
 
 .PHONY: depend clean
 
