@@ -12,6 +12,33 @@
 #include "lambdas.h"
 #include <utils/Noisy.h>
 #include <utils/counted.h>
+#include <benchmark/benchmark.h>
+#include <vector>
+#include "templates.h"
+
+static void BM_StringCreation(benchmark::State& state) {
+	for (auto _ : state)
+		std::string empty_string;
+}
+// Register the function as a benchmark
+BENCHMARK(BM_StringCreation);
+
+// Define another benchmark
+static void BM_StringCopy(benchmark::State& state) {
+	std::string x = "hello";
+	for (auto _ : state)
+		std::string copy(x);
+}
+BENCHMARK(BM_StringCopy);
+
+// Define another benchmark
+static void BM_StringMove(benchmark::State& state) {
+	std::string x = "hello";
+	for (auto _ : state)
+		std::string xx = std::move(x);
+}
+
+BENCHMARK(BM_StringMove);
 
 class skata2
 {
@@ -112,6 +139,35 @@ MyClass CopyElision(MyClass x)
 	return MyClass{};
 }
 
+//BENCHMARK_MAIN();
+
+auto ProcessMessage(const Message& m, Counted<std::string>& s)
+{
+	Hashed h = static_cast<Hashed>(strHasher(m.m_name));
+
+	switch(h)
+	{
+		case Hashed::one:
+		{
+			std::cout << "this is one " << std::endl;
+		}
+		break;
+
+		case Hashed::two:
+		{
+			std::cout << "this is two " << std::endl;
+		}
+		break;
+
+	default:
+		std::cout << "SHIT" << std::endl;
+	}
+
+	s+= "1";
+
+	return std::move(s);
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -200,8 +256,10 @@ int main(int argc, char* argv[])
 			  << objCounter.counter.moveConstructed << " move assigned: "
 			  << objCounter.counter.moveAssigned << std::endl;
 #endif
-
-
-
+	Counted<std::string> str{"Hello"};
+	std::vector v {1, 2, 3, 4};
+	ProcessMessage(Message{"one"}, str);
+	CountCalls cs {[](auto a, auto b) { return a < b;}};
+	std::sort(v.begin(), v.end(), std::ref(cs));
 }
 

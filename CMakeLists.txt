@@ -1,6 +1,487 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.20)
 project(training)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(training main.cpp testapps/C++17/StructureBinding.h testapps/crackingCodingInterview/Trees.h testapps/crackingCodingInterview/LinkList.h testapps/C++17/lambdas.h testapps/crackingCodingInterview/Graphs.h testapps/Finance/Primitives.h testapps/Networking/RTPStreaming.h testapps/Networking/include/MulticastClient.h testapps/Networking/src/networking/MulticastClient.cpp testapps/Finance/Numerics.h testapps/Finance/STLAlgorithms.h testapps/Finance/Threading.h)
+include_directories(include)
+include_directories(include/algorithms)
+include_directories(include/containers)
+include_directories(include/libbase)
+include_directories(include/libdatastructures)
+include_directories(include/libeconomics)
+include_directories(include/libipc)
+include_directories(include/libstatemachine)
+include_directories(include/libthread)
+include_directories(include/utils)
+include_directories(packages/googletest/googlemock/include)
+include_directories(packages/googletest/googlemock/include/gmock)
+include_directories(packages/googletest/googlemock/include/gmock/internal)
+include_directories(packages/googletest/googlemock/include/gmock/internal/custom)
+include_directories(packages/googletest/googlemock/test)
+include_directories(packages/googletest/googletest/include)
+include_directories(packages/googletest/googletest/include/gtest)
+include_directories(packages/googletest/googletest/include/gtest/internal)
+include_directories(packages/googletest/googletest/include/gtest/internal/custom)
+include_directories(packages/googletest/googletest/samples)
+include_directories(packages/googletest/googletest/src)
+include_directories(packages/googletest/googletest/test)
+include_directories(packages/googletest/googletest/xcode/Samples/FrameworkSample)
+include_directories(packages/zeromq)
+include_directories(packages/zeromq/cppzmq)
+include_directories(python)
+include_directories(python/temp)
+include_directories(python/temp/UpdateJM)
+include_directories(testapps/Algorithms/arrays)
+include_directories(testapps/Algorithms/backtracking)
+include_directories(testapps/Algorithms/bitmanipulation)
+include_directories(testapps/Algorithms/combinatronics)
+include_directories(testapps/Algorithms/dynamic_programming)
+include_directories(testapps/Algorithms/graphs)
+include_directories(testapps/Algorithms/hash)
+include_directories(testapps/Algorithms/heap)
+include_directories(testapps/Algorithms/image_processing)
+include_directories(testapps/Algorithms/linklist)
+include_directories(testapps/Algorithms/matrix)
+include_directories(testapps/Algorithms/parsers)
+include_directories(testapps/Algorithms/recursion)
+include_directories(testapps/Algorithms/sorting)
+include_directories(testapps/Algorithms/Stl)
+include_directories(testapps/Algorithms/strings)
+include_directories(testapps/Algorithms/trees)
+include_directories(testapps/bartek)
+include_directories(testapps/C++17)
+include_directories(testapps/ConcurrencyInAction)
+include_directories(testapps/crackingCodingInterview)
+include_directories(testapps/datastructures)
+include_directories(testapps/effectiveC++)
+include_directories(testapps/EffectiveModernC++)
+include_directories(testapps/effectiveStl)
+include_directories(testapps/Finance)
+include_directories(testapps/Gmock)
+include_directories(testapps/Interview)
+include_directories(testapps/ModernC++Design)
+include_directories(testapps/moreEffectiveC++)
+include_directories(testapps/MoveSemanticsJosutis)
+include_directories(testapps/Networking/include)
+include_directories(testapps/patterns)
+include_directories(testapps/quiz)
+include_directories(testapps/templates)
+include_directories(testapps/ThinkingC++)
+include_directories(testapps/Threading)
+include_directories(testapps/zeromq)
+
+add_executable(training
+        include/algorithms/quicksort.h
+        include/containers/lock_free_stack.h
+        include/containers/thread_safe_hash.h
+        include/containers/thread_safe_list.h
+        include/containers/thread_safe_queue.h
+        include/libbase/logger.h
+        include/libbase/random_generator.h
+        include/libbase/rwlock.h
+        include/libdatastructures/c_vector.h
+        include/libdatastructures/dynamic_queue.h
+        include/libdatastructures/hash.h
+        include/libdatastructures/list.h
+        include/libeconomics/interestcalc.h
+        include/libipc/ipc.h
+        include/libstatemachine/basicStateMachine.h
+        include/libthread/Thread.h
+        include/utils/counted.h
+        include/utils/generic_handles.h
+        include/utils/Noisy.h
+        include/utils/RCObjects.h
+        include/utils/SmartPointer.h
+        include/utils/thread_safe_boost_check.h
+        include/utils/utils.h
+        modules/hello.mod.c
+        modules/scull.c
+        packages/googletest/googlemock/include/gmock/internal/custom/gmock-generated-actions.h
+        packages/googletest/googlemock/include/gmock/internal/custom/gmock-matchers.h
+        packages/googletest/googlemock/include/gmock/internal/custom/gmock-port.h
+        packages/googletest/googlemock/include/gmock/internal/gmock-generated-internal-utils.h
+        packages/googletest/googlemock/include/gmock/internal/gmock-internal-utils.h
+        packages/googletest/googlemock/include/gmock/internal/gmock-port.h
+        packages/googletest/googlemock/include/gmock/gmock-actions.h
+        packages/googletest/googlemock/include/gmock/gmock-cardinalities.h
+        packages/googletest/googlemock/include/gmock/gmock-generated-actions.h
+        packages/googletest/googlemock/include/gmock/gmock-generated-function-mockers.h
+        packages/googletest/googlemock/include/gmock/gmock-generated-matchers.h
+        packages/googletest/googlemock/include/gmock/gmock-generated-nice-strict.h
+        packages/googletest/googlemock/include/gmock/gmock-matchers.h
+        packages/googletest/googlemock/include/gmock/gmock-more-actions.h
+        packages/googletest/googlemock/include/gmock/gmock-more-matchers.h
+        packages/googletest/googlemock/include/gmock/gmock-spec-builders.h
+        packages/googletest/googlemock/include/gmock/gmock.h
+        packages/googletest/googlemock/src/gmock-all.cc
+        packages/googletest/googlemock/src/gmock-cardinalities.cc
+        packages/googletest/googlemock/src/gmock-internal-utils.cc
+        packages/googletest/googlemock/src/gmock-matchers.cc
+        packages/googletest/googlemock/src/gmock-spec-builders.cc
+        packages/googletest/googlemock/src/gmock.cc
+        packages/googletest/googlemock/src/gmock_main.cc
+        packages/googletest/googlemock/test/gmock-actions_test.cc
+        packages/googletest/googlemock/test/gmock-cardinalities_test.cc
+        packages/googletest/googlemock/test/gmock-generated-actions_test.cc
+        packages/googletest/googlemock/test/gmock-generated-function-mockers_test.cc
+        packages/googletest/googlemock/test/gmock-generated-internal-utils_test.cc
+        packages/googletest/googlemock/test/gmock-generated-matchers_test.cc
+        packages/googletest/googlemock/test/gmock-internal-utils_test.cc
+        packages/googletest/googlemock/test/gmock-matchers_test.cc
+        packages/googletest/googlemock/test/gmock-more-actions_test.cc
+        packages/googletest/googlemock/test/gmock-nice-strict_test.cc
+        packages/googletest/googlemock/test/gmock-port_test.cc
+        packages/googletest/googlemock/test/gmock-spec-builders_test.cc
+        packages/googletest/googlemock/test/gmock_all_test.cc
+        packages/googletest/googlemock/test/gmock_ex_test.cc
+        packages/googletest/googlemock/test/gmock_leak_test_.cc
+        packages/googletest/googlemock/test/gmock_link2_test.cc
+        packages/googletest/googlemock/test/gmock_link_test.cc
+        packages/googletest/googlemock/test/gmock_link_test.h
+        packages/googletest/googlemock/test/gmock_output_test_.cc
+        packages/googletest/googlemock/test/gmock_stress_test.cc
+        packages/googletest/googlemock/test/gmock_test.cc
+        packages/googletest/googletest/codegear/gtest_all.cc
+        packages/googletest/googletest/codegear/gtest_link.cc
+        packages/googletest/googletest/include/gtest/internal/custom/gtest-port.h
+        packages/googletest/googletest/include/gtest/internal/custom/gtest-printers.h
+        packages/googletest/googletest/include/gtest/internal/custom/gtest.h
+        packages/googletest/googletest/include/gtest/internal/gtest-death-test-internal.h
+        packages/googletest/googletest/include/gtest/internal/gtest-filepath.h
+        packages/googletest/googletest/include/gtest/internal/gtest-internal.h
+        packages/googletest/googletest/include/gtest/internal/gtest-linked_ptr.h
+        packages/googletest/googletest/include/gtest/internal/gtest-param-util-generated.h
+        packages/googletest/googletest/include/gtest/internal/gtest-param-util.h
+        packages/googletest/googletest/include/gtest/internal/gtest-port-arch.h
+        packages/googletest/googletest/include/gtest/internal/gtest-port.h
+        packages/googletest/googletest/include/gtest/internal/gtest-string.h
+        packages/googletest/googletest/include/gtest/internal/gtest-tuple.h
+        packages/googletest/googletest/include/gtest/internal/gtest-type-util.h
+        packages/googletest/googletest/include/gtest/gtest-death-test.h
+        packages/googletest/googletest/include/gtest/gtest-message.h
+        packages/googletest/googletest/include/gtest/gtest-param-test.h
+        packages/googletest/googletest/include/gtest/gtest-printers.h
+        packages/googletest/googletest/include/gtest/gtest-spi.h
+        packages/googletest/googletest/include/gtest/gtest-test-part.h
+        packages/googletest/googletest/include/gtest/gtest-typed-test.h
+        packages/googletest/googletest/include/gtest/gtest.h
+        packages/googletest/googletest/include/gtest/gtest_pred_impl.h
+        packages/googletest/googletest/include/gtest/gtest_prod.h
+        packages/googletest/googletest/samples/prime_tables.h
+        packages/googletest/googletest/samples/sample1.cc
+        packages/googletest/googletest/samples/sample1.h
+        packages/googletest/googletest/samples/sample10_unittest.cc
+        packages/googletest/googletest/samples/sample1_unittest.cc
+        packages/googletest/googletest/samples/sample2.cc
+        packages/googletest/googletest/samples/sample2.h
+        packages/googletest/googletest/samples/sample2_unittest.cc
+        packages/googletest/googletest/samples/sample3-inl.h
+        packages/googletest/googletest/samples/sample3_unittest.cc
+        packages/googletest/googletest/samples/sample4.cc
+        packages/googletest/googletest/samples/sample4.h
+        packages/googletest/googletest/samples/sample4_unittest.cc
+        packages/googletest/googletest/samples/sample5_unittest.cc
+        packages/googletest/googletest/samples/sample6_unittest.cc
+        packages/googletest/googletest/samples/sample7_unittest.cc
+        packages/googletest/googletest/samples/sample8_unittest.cc
+        packages/googletest/googletest/samples/sample9_unittest.cc
+        packages/googletest/googletest/src/gtest-all.cc
+        packages/googletest/googletest/src/gtest-death-test.cc
+        packages/googletest/googletest/src/gtest-filepath.cc
+        packages/googletest/googletest/src/gtest-internal-inl.h
+        packages/googletest/googletest/src/gtest-port.cc
+        packages/googletest/googletest/src/gtest-printers.cc
+        packages/googletest/googletest/src/gtest-test-part.cc
+        packages/googletest/googletest/src/gtest-typed-test.cc
+        packages/googletest/googletest/src/gtest.cc
+        packages/googletest/googletest/src/gtest_main.cc
+        packages/googletest/googletest/test/gtest-death-test_ex_test.cc
+        packages/googletest/googletest/test/gtest-death-test_test.cc
+        packages/googletest/googletest/test/gtest-filepath_test.cc
+        packages/googletest/googletest/test/gtest-linked_ptr_test.cc
+        packages/googletest/googletest/test/gtest-listener_test.cc
+        packages/googletest/googletest/test/gtest-message_test.cc
+        packages/googletest/googletest/test/gtest-options_test.cc
+        packages/googletest/googletest/test/gtest-param-test2_test.cc
+        packages/googletest/googletest/test/gtest-param-test_test.cc
+        packages/googletest/googletest/test/gtest-param-test_test.h
+        packages/googletest/googletest/test/gtest-port_test.cc
+        packages/googletest/googletest/test/gtest-printers_test.cc
+        packages/googletest/googletest/test/gtest-test-part_test.cc
+        packages/googletest/googletest/test/gtest-tuple_test.cc
+        packages/googletest/googletest/test/gtest-typed-test2_test.cc
+        packages/googletest/googletest/test/gtest-typed-test_test.cc
+        packages/googletest/googletest/test/gtest-typed-test_test.h
+        packages/googletest/googletest/test/gtest-unittest-api_test.cc
+        packages/googletest/googletest/test/gtest_all_test.cc
+        packages/googletest/googletest/test/gtest_break_on_failure_unittest_.cc
+        packages/googletest/googletest/test/gtest_catch_exceptions_test_.cc
+        packages/googletest/googletest/test/gtest_color_test_.cc
+        packages/googletest/googletest/test/gtest_env_var_test_.cc
+        packages/googletest/googletest/test/gtest_environment_test.cc
+        packages/googletest/googletest/test/gtest_filter_unittest_.cc
+        packages/googletest/googletest/test/gtest_help_test_.cc
+        packages/googletest/googletest/test/gtest_list_tests_unittest_.cc
+        packages/googletest/googletest/test/gtest_main_unittest.cc
+        packages/googletest/googletest/test/gtest_no_test_unittest.cc
+        packages/googletest/googletest/test/gtest_output_test_.cc
+        packages/googletest/googletest/test/gtest_pred_impl_unittest.cc
+        packages/googletest/googletest/test/gtest_premature_exit_test.cc
+        packages/googletest/googletest/test/gtest_prod_test.cc
+        packages/googletest/googletest/test/gtest_repeat_test.cc
+        packages/googletest/googletest/test/gtest_shuffle_test_.cc
+        packages/googletest/googletest/test/gtest_sole_header_test.cc
+        packages/googletest/googletest/test/gtest_stress_test.cc
+        packages/googletest/googletest/test/gtest_throw_on_failure_ex_test.cc
+        packages/googletest/googletest/test/gtest_throw_on_failure_test_.cc
+        packages/googletest/googletest/test/gtest_uninitialized_test_.cc
+        packages/googletest/googletest/test/gtest_unittest.cc
+        packages/googletest/googletest/test/gtest_xml_outfile1_test_.cc
+        packages/googletest/googletest/test/gtest_xml_outfile2_test_.cc
+        packages/googletest/googletest/test/gtest_xml_output_unittest_.cc
+        packages/googletest/googletest/test/production.cc
+        packages/googletest/googletest/test/production.h
+        packages/googletest/googletest/xcode/Samples/FrameworkSample/widget.cc
+        packages/googletest/googletest/xcode/Samples/FrameworkSample/widget.h
+        packages/googletest/googletest/xcode/Samples/FrameworkSample/widget_test.cc
+        packages/zeromq/cppzmq/zmq.hpp
+        packages/zeromq/cppzmq/zmq_addon.hpp
+        python/temp/UpdateJM/2.
+        resources/text1_diff.c
+        resources/text2_diff.c
+        src/libcontainers/unit_tests/thread_safe_cont_unit_test.cpp
+        src/libdatastructures/unit_tests/datastructures_unit_test.cpp
+        src/libdatastructures/datastructures.c
+        src/libipc/ipc.cpp
+        src/libthread/Thread.cpp
+        src/libutils/unit_tests/rcObject/rcobject_unit_test.cpp
+        src/libutils/unit_tests/smartPtr/smart_pointer_unit_test.cpp
+        testapps/Algorithms/arrays/count_triplets_sum_smaller_value.h
+        testapps/Algorithms/arrays/find_matching_brackets_no_extra_space.h
+        testapps/Algorithms/arrays/generate_combinations_two_sorted_arrays.h
+        testapps/Algorithms/arrays/longest_sequence_array.h
+        testapps/Algorithms/arrays/longest_sub_array_cont_seq.h
+        testapps/Algorithms/arrays/print_array_spiral.h
+        testapps/Algorithms/arrays/reverse_array_special_characters.h
+        testapps/Algorithms/arrays/sort_array_zero_one_three.h
+        testapps/Algorithms/backtracking/collect_max_points_before_hitting_dead_end.h
+        testapps/Algorithms/backtracking/escape_from_room.h
+        testapps/Algorithms/backtracking/fillCanvas.h
+        testapps/Algorithms/backtracking/find_edge_picture.h
+        testapps/Algorithms/backtracking/find_path_magic_triangle.h
+        testapps/Algorithms/backtracking/HourGlassBacktracking.h
+        testapps/Algorithms/backtracking/labyrinth.h
+        testapps/Algorithms/backtracking/labyrinth_wall.h
+        testapps/Algorithms/backtracking/longest_path_hurdels.h
+        testapps/Algorithms/backtracking/max_bins_2d_array.h
+        testapps/Algorithms/backtracking/max_non_parallel_lines.h
+        testapps/Algorithms/backtracking/min_cost_in_matrix.h
+        testapps/Algorithms/backtracking/N-Queen-Problem.h
+        testapps/Algorithms/backtracking/pattern_matching.h
+        testapps/Algorithms/backtracking/rat_in_a_maze.h
+        testapps/Algorithms/backtracking/shortest_source_dst_bfs.h
+        testapps/Algorithms/backtracking/WordBreaking.h
+        testapps/Algorithms/bitmanipulation/bit_manipulation.h
+        testapps/Algorithms/combinatronics/combination.h
+        testapps/Algorithms/combinatronics/combination_k_out_of_n_items.h
+        testapps/Algorithms/combinatronics/Knapsack.h
+        testapps/Algorithms/combinatronics/numberofPossibleScores.h
+        testapps/Algorithms/combinatronics/PairOfNumbersGivenSum.h
+        testapps/Algorithms/combinatronics/permutation.h
+        testapps/Algorithms/dynamic_programming/binominal_coefficents.h
+        testapps/Algorithms/dynamic_programming/coin_changing_problem.h
+        testapps/Algorithms/dynamic_programming/longest_common_subsequence.h
+        testapps/Algorithms/dynamic_programming/paintfence_algorithm.h
+        testapps/Algorithms/graphs/boggle.h
+        testapps/Algorithms/graphs/find_all_possible_islands.h
+        testapps/Algorithms/graphs/find_articulation_point.h
+        testapps/Algorithms/graphs/graph.h
+        testapps/Algorithms/graphs/graph_mst_prime.h
+        testapps/Algorithms/graphs/minimizing_cach_flow.h
+        testapps/Algorithms/graphs/shortest_path_dijkstra.h
+        testapps/Algorithms/graphs/shortest_path_floyd.h
+        testapps/Algorithms/graphs/shortest_path_graph_naive.h
+        testapps/Algorithms/graphs/shortest_path_warmhole.h
+        testapps/Algorithms/graphs/topological_sort.h
+        testapps/Algorithms/graphs/union_find_detect_circle.h
+        testapps/Algorithms/hash/hash.h
+        testapps/Algorithms/heap/binary_heap.h
+        testapps/Algorithms/heap/k_largest_elements.h
+        testapps/Algorithms/heap/merge_k_sorted_arrays.h
+        testapps/Algorithms/heap/sort_almost_sorted_array.h
+        testapps/Algorithms/image_processing/k_means_algorithm.h
+        testapps/Algorithms/linklist/list.h
+        testapps/Algorithms/linklist/mergesort.h
+        testapps/Algorithms/linklist/remove_duplicate.h
+        testapps/Algorithms/matrix/arrays.h
+        testapps/Algorithms/matrix/communication_stations.h
+        testapps/Algorithms/parsers/basic_regex.h
+        testapps/Algorithms/parsers/matching_brackets.h
+        testapps/Algorithms/recursion/num_ways_to_reach_stairs.h
+        testapps/Algorithms/recursion/numers_have_four_digit.h
+        testapps/Algorithms/recursion/power_number.h
+        testapps/Algorithms/recursion/sum_digits.h
+        testapps/Algorithms/sorting/binary_heap.h
+        testapps/Algorithms/sorting/find_element_sorted_rotated.h
+        testapps/Algorithms/sorting/heap_sort.h
+        testapps/Algorithms/sorting/insertion_sort.h
+        testapps/Algorithms/sorting/mergeSort.h
+        testapps/Algorithms/sorting/quicksort.h
+        testapps/Algorithms/sorting/warmhole_contest.h
+        testapps/Algorithms/Stl/stl.h
+        testapps/Algorithms/strings/all_possible_palindromic_partition.h
+        testapps/Algorithms/trees/binary_indexed_tree.h
+        testapps/Algorithms/trees/bottom_view_tree.h
+        testapps/Algorithms/trees/check_binary_tree_bst.h
+        testapps/Algorithms/trees/check_binary_tree_full.h
+        testapps/Algorithms/trees/check_binary_tree_subtree_another.h
+        testapps/Algorithms/trees/check_tree_balanced.h
+        testapps/Algorithms/trees/convert_bst_sum_tree.h
+        testapps/Algorithms/trees/find_common_anchestor.h
+        testapps/Algorithms/trees/find_distance_between_two_nodes.h
+        testapps/Algorithms/trees/find_max_sum_path_binary_tree.h
+        testapps/Algorithms/trees/find_minimum_height_binary_tree.h
+        testapps/Algorithms/trees/k_smallest_element_bst.h
+        testapps/Algorithms/trees/red_black_tree.h
+        testapps/Algorithms/trees/reverse_alternate_levels.h
+        testapps/Algorithms/trees/segment_tree.h
+        testapps/Algorithms/trees/sorted_array_to_bst.h
+        testapps/Algorithms/trees/suffix_tree.h
+        testapps/Algorithms/trees/ternary_search_tree.h
+        testapps/Algorithms/trees/transform_bst_greater_sum.h
+        testapps/Algorithms/trees/tree.h
+        testapps/Algorithms/algorithms.cpp
+        testapps/assembly/main.cpp
+        testapps/bartek/main.cpp
+        testapps/bartek/optional.h
+        testapps/bartek/optional_standard.h
+        testapps/bartek/time.h
+        testapps/C++17/AutomaticTypeDeduction.h
+        testapps/C++17/templates.h
+        testapps/C++17/C++17.cpp
+        testapps/C++17/FoldExpressions.h
+        testapps/C++17/lambdas.h
+        testapps/C++17/StructureBinding.h
+        testapps/ConcurrencyInAction/C++17.cpp
+        testapps/ConcurrencyInAction/Concurrency.cpp
+        testapps/ConcurrencyInAction/DesigningConcurrentCode.h
+        testapps/ConcurrencyInAction/FoldExpressions.h
+        testapps/ConcurrencyInAction/LockBasedDesign.cpp
+        testapps/ConcurrencyInAction/LockBasedDesign.h
+        testapps/ConcurrencyInAction/ManagingThreads.h
+        testapps/ConcurrencyInAction/MemoryModel.cpp
+        testapps/ConcurrencyInAction/MemoryModel.h
+        testapps/ConcurrencyInAction/SharingDataThreads.h
+        testapps/ConcurrencyInAction/Synchronization.h
+        testapps/ConcurrencyInAction/ThreadPools.h
+        testapps/crackingCodingInterview/ArraysStrings.h
+        testapps/crackingCodingInterview/Graphs.h
+        testapps/crackingCodingInterview/LinkList.h
+        testapps/crackingCodingInterview/main.cpp
+        testapps/crackingCodingInterview/Trees.h
+        testapps/datastructures/Hash.h
+        testapps/effectiveC++/Constructors.h
+        testapps/effectiveC++/Date.h
+        testapps/effectiveC++/DateFwd.h
+        testapps/effectiveC++/Designs.h
+        testapps/effectiveC++/effective.cpp
+        testapps/effectiveC++/Inheritance.h
+        testapps/effectiveC++/Person.cpp
+        testapps/effectiveC++/Person.h
+        testapps/effectiveC++/PersonImpl.h
+        testapps/effectiveC++/ResourceManagement.h
+        testapps/effectiveC++/Templates.h
+        testapps/EffectiveModernC++/Concurrency.h
+        testapps/EffectiveModernC++/EffectiveModernC++.cpp
+        testapps/EffectiveModernC++/lambdas.h
+        testapps/EffectiveModernC++/ModernC++.h
+        testapps/EffectiveModernC++/RValueReferences.h
+        testapps/EffectiveModernC++/SmartPointers.h
+        testapps/EffectiveModernC++/TypeDeduction.h
+        testapps/effectiveStl/Algorithms.h
+        testapps/effectiveStl/Containers.h
+        testapps/effectiveStl/Functors.h
+        testapps/effectiveStl/Iterators.h
+        testapps/effectiveStl/main.cpp
+        testapps/effectiveStl/ProgrammingStl.h
+        testapps/Finance/main.cpp
+        testapps/Finance/Numerics.h
+        testapps/Finance/Primitives.h
+        testapps/Finance/STLAlgorithms.h
+        testapps/Finance/Threading.h
+        testapps/Gmock/hal.h
+        testapps/Gmock/main.cpp
+        testapps/Interview/Basic.h
+        testapps/Interview/interview.cpp
+        testapps/Interview/Medium.h
+        testapps/ipc/ipctest.cpp
+        testapps/ModernC++Design/main.cpp
+        testapps/ModernC++Design/PolicyBasedDesign.h
+        testapps/ModernC++Design/TypeTraits.h
+        testapps/moreEffectiveC++/Efficiency.h
+        testapps/moreEffectiveC++/Techniques.h
+        testapps/MoveSemanticsJosutis/MoveSemantics.cpp
+        testapps/MoveSemanticsJosutis/PowerOfMoveSemantics.h
+        testapps/Networking/include/BlockingQueue.h
+        testapps/Networking/include/FileReader.h
+        testapps/Networking/include/IGMPListener.h
+        testapps/Networking/include/Logging.h
+        testapps/Networking/include/MulticastClient.h
+        testapps/Networking/include/RTPHeader.h
+        testapps/Networking/include/RTPStreaming.h
+        testapps/Networking/include/TSPacket.h
+        testapps/Networking/src/filesystem/FileReader.cpp
+        testapps/Networking/src/networking/IGMPListener.cpp
+        testapps/Networking/src/networking/MulticastClient.cpp
+        testapps/Networking/src/networking/RTPHeader.cpp
+        testapps/Networking/src/rtpstream/RTPStreaming.cpp
+        testapps/Networking/src/utils/Logging.cpp
+        testapps/Networking/main.cpp
+        testapps/patterns/behavioral.h
+        testapps/patterns/creational.h
+        testapps/patterns/patterns.cpp
+        testapps/patterns/structural.h
+        testapps/quiz/main.cpp
+        testapps/quiz/quiz1.h
+        testapps/statemachines/statemachine.cpp
+        testapps/syscall/syscall.cpp
+        testapps/templates/Basics.h
+        testapps/templates/Expected.h
+        testapps/templates/ExpressionTemplates.h
+        testapps/templates/Metaprograms.h
+        testapps/templates/PolicyTypeTraits.h
+        testapps/templates/simple_function.h
+        testapps/templates/SmartPointers.h
+        testapps/templates/Templates.cpp
+        testapps/templates/TemplatesInDepth.h
+        testapps/templates/TemplatesInheritance.h
+        testapps/templates/Tuples.h
+        testapps/templates/TypeClassification.h
+        testapps/templates/TypeErasure.h
+        testapps/templates/TypeFunctions.h
+        testapps/ThinkingC++/Algorithms.h
+        testapps/ThinkingC++/BuildingStableSystems.h
+        testapps/ThinkingC++/DesignPatterns.h
+        testapps/ThinkingC++/Exceptions.h
+        testapps/ThinkingC++/Functors.h
+        testapps/ThinkingC++/iostreams.h
+        testapps/ThinkingC++/MultipleInheritance.h
+        testapps/ThinkingC++/Stl.h
+        testapps/ThinkingC++/strings.h
+        testapps/ThinkingC++/Templates.h
+        testapps/ThinkingC++/ThinkingC++.cpp
+        testapps/Threading/PthreadUsage.h
+        testapps/Threading/SimpleThreading.h
+        testapps/Threading/ThreadingProblems.h
+        testapps/Threading/Threads.cpp
+        testapps/Various/Various.cpp
+        testapps/video/main.cpp
+        testapps/zeromq/main.cpp
+        testapps/zeromq/publish_subscribe_pattern.h
+        testapps/zeromq/pull_push_pattern.h
+        testapps/zeromq/request_broker_reply.h
+        testapps/zeromq/request_reply_pattern.h
+        testapps/zeromq/router_to_dealer.h
+        testapps/zeromq/router_to_req.h
+        testapps/zeromq/simple_req_router.h
+        testapps/main.cpp)

@@ -1,3 +1,3 @@
-/home/mitso23/training/testapps/Networking/CMakeFiles/edit_cache.dir
-/home/mitso23/training/testapps/Networking/CMakeFiles/rebuild_cache.dir
-/home/mitso23/training/testapps/Networking/CMakeFiles/networking.dir
+/home/mitso23/c++/training/testapps/Networking/CMakeFiles/rebuild_cache.dir
+/home/mitso23/c++/training/testapps/Networking/CMakeFiles/edit_cache.dir
+/home/mitso23/c++/training/testapps/Networking/CMakeFiles/networking.dir

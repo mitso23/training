@@ -1,0 +1,40 @@
+FROM ubuntu:20.04
+
+ENV TZ=Asia/Dubai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update  && apt-get install -y \
+build-essential \
+vim \
+tar \
+wget \
+net-tools \
+iputils-ping \
+ssh \
+curl \
+sudo \
+gcovr \
+valgrind \
+cppcheck \
+gdb \
+linux-tools-common \
+linux-tools-generic \ 
+linux-tools-`uname -r` \
+tcpdump \
+iperf3 \ 
+ 
+RUN useradd -ms /bin/bash mitso23 && adduser mitso23 sudo
+RUN chown -R mitso23:mitso23 /usr/local/lib/
+RUN chown -R mitso23:mitso23 /usr/local/include/
+RUN chown -R mitso23:mitso23 /usr/include/
+RUN chown -R mitso23:mitso23 /usr/local/share
+USER mitso23
+
+
+ENV PRJ_ROOT=/home/mitso23/c++/training
+WORKDIR /home/mitso23
+
+
+
+
+

@@ -36,4 +36,3 @@ endif
 /home/mitso23/c++/training//testapps/C++17/C++17.o: /home/mitso23/c++/training/testapps/C++17/lambdas.h
 /home/mitso23/c++/training//testapps/C++17/C++17.o: /home/mitso23/c++/training/include/utils/Noisy.h
 /home/mitso23/c++/training//testapps/C++17/C++17.o: /home/mitso23/c++/training/include/utils/counted.h
-/home/mitso23/c++/training//testapps/C++17/C++17.o: /home/mitso23/c++/training/testapps/C++17/templates.h

@@ -76,6 +76,13 @@ struct ObjCounter
 
         unsigned int assigned;
         unsigned int moveAssigned;
+
+		~Counter()
+		{
+			std::cout << "type: " <<
+			typeid(T).name() << " created: " << created << " destroyed: " << destroyed <<  " copy constructed: " << copyConstructed
+									  << " move constructed: " << moveConstructed << " assigned: " << assigned << " move assigned: " << moveAssigned << std::endl;
+		}
     };
 
     static Counter counter;

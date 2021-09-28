@@ -15,20 +15,32 @@ constexpr auto normalFunc(const char* str)
 
 auto strHasher = [](const char* str) constexpr
 {
-	unsigned hash = 5567;
-
+	unsigned int val = 0;
 	while(*str)
 	{
-		hash = hash << 2 ^ *str++;
+		val|= *str++;
+		val<<= 5;
 	}
 
-	return hash;
+	return val;
+};
+
+struct Message
+{
+	explicit constexpr Message(const char* name)
+		:m_name(name)
+	{
+
+	}
+
+ public:
+	const char* m_name;
 };
 
 enum Hashed
 {
 	one = strHasher("one"),
-	twp [[maybe_unused]] = strHasher("two"),
+	two [[maybe_unused]] = strHasher("two"),
 	three [[maybe_unused]] = strHasher("three"),
 };
 

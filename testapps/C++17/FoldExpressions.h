@@ -1,9 +1,9 @@
-<<<<<<< HEAD
 #include <type_traits>
 #include <sstream>
 #include <ctype.h>
 #include <array>
 #include <string.h>
+#include <vector>
 
 template<typename T, typename _ = void>
 struct is_stl_container : std::false_type {};
