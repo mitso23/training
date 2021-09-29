@@ -12,33 +12,9 @@
 #include "lambdas.h"
 #include <utils/Noisy.h>
 #include <utils/counted.h>
-#include <benchmark/benchmark.h>
 #include <vector>
 #include "templates.h"
 
-static void BM_StringCreation(benchmark::State& state) {
-	for (auto _ : state)
-		std::string empty_string;
-}
-// Register the function as a benchmark
-BENCHMARK(BM_StringCreation);
-
-// Define another benchmark
-static void BM_StringCopy(benchmark::State& state) {
-	std::string x = "hello";
-	for (auto _ : state)
-		std::string copy(x);
-}
-BENCHMARK(BM_StringCopy);
-
-// Define another benchmark
-static void BM_StringMove(benchmark::State& state) {
-	std::string x = "hello";
-	for (auto _ : state)
-		std::string xx = std::move(x);
-}
-
-BENCHMARK(BM_StringMove);
 
 class skata2
 {
@@ -256,10 +232,16 @@ int main(int argc, char* argv[])
 			  << objCounter.counter.moveConstructed << " move assigned: "
 			  << objCounter.counter.moveAssigned << std::endl;
 #endif
+
+#if 0
 	Counted<std::string> str{"Hello"};
 	std::vector v {1, 2, 3, 4};
 	ProcessMessage(Message{"one"}, str);
 	CountCalls cs {[](auto a, auto b) { return a < b;}};
 	std::sort(v.begin(), v.end(), std::ref(cs));
+#endif
+
+	S h("hello");
+	std::cout << asString(1.33333333344) << std::endl;
 }
 

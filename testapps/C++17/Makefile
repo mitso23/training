@@ -10,7 +10,7 @@ include ../../common.mk
 
 export DIR=$(patsubst $(PRJ_ROOT)%,%,$(shell pwd))
 export SRCS:= $(wildcard *.cpp)
-export LIBS= -lbenchmark -lbenchmark_main -lm
+export LIBS= -lm
 export NAME= C++17.out
 
 .PHONY: depend clean

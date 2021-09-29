@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 template<typename T, int SZ>
 class Array
 {
@@ -36,3 +38,52 @@ class CountCalls
 		return calls;
 	}
 };
+
+template<typename T>
+struct S
+{
+    S(const T& val_)
+        : val(val_)
+    {
+
+    }
+
+    T val;
+};
+
+explicit S(const char*) -> S<std::string>;
+
+template<typename T>
+struct Ptr
+{
+    Ptr(T)
+    {
+        std::cout << "Ptr(T)\n";
+    }
+
+    template<typename U>
+    Ptr(U)
+    {
+        std::cout << "Ptr(U)\n";
+    }
+};
+
+template<typename T>
+explicit Ptr(T) -> Ptr<T*>;
+
+template<typename T>
+std::string asString(T x)
+{
+    if constexpr(std::is_same_v < T, std::string >)
+    {
+        return x; // statement invalid if no conversion to string
+    }
+    else if constexpr(std::is_arithmetic_v < T >)
+    {
+        return std::to_string(x); // statement invalid if x is not numeric
+    }
+    else
+    {
+        return std::string(x); // statement invalid if no conversion to string
+    }
+}
