@@ -243,5 +243,7 @@ int main(int argc, char* argv[])
 
 	S h("hello");
 	std::cout << asString(1.33333333344) << std::endl;
+	std::cout << TestIntegral("hello") << std::endl;
+    Call([](int a, int b){}, 1, 2);
 }
 

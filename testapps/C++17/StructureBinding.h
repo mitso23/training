@@ -36,6 +36,7 @@ struct std::tuple_size<Customer>
 	static constexpr int value = 3;
 	// we have 3 attributes
 };
+
 template<>
 struct std::tuple_element<2, Customer>
 {
