@@ -14,7 +14,29 @@
 #include <utils/counted.h>
 #include <vector>
 #include "templates.h"
+#include <boost/stacktrace.hpp>
 
+#include <cstdlib>
+#include <iostream>
+#include <stdexcept>
+#include <execinfo.h>
+#include <thread>
+
+//run from a thread
+int foo()
+{
+    throw std::runtime_error( "hello" );
+}
+
+void bar()
+{
+    foo();
+}
+
+void baz()
+{
+    bar();
+}
 
 class skata2
 {
@@ -56,26 +78,6 @@ public:
 
 };
 
-
-template<typename T>
-void bar2(T&& t)
-{
-    std::cout << __PRETTY_FUNCTION__ << ' '
-               << std::is_rvalue_reference<decltype(t)>::value << '\n';
-}
-
-void foo(int x, int y, int z)
-{
-	std::cout << __PRETTY_FUNCTION__ << ' '
-	               << std::is_rvalue_reference<decltype(x)>::value << '\n';
-}
-
-
-
-void writeThread()
-{
-
-}
 
 struct Foo
 {
@@ -144,8 +146,11 @@ auto ProcessMessage(const Message& m, Counted<std::string>& s)
 	return std::move(s);
 }
 
+
+
 int main(int argc, char* argv[])
 {
+    std::set_terminate( handler );
 
 #if 0
 	//iterateMap();
